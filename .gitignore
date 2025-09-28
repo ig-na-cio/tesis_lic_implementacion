@@ -1,5 +1,11 @@
 quartus/*.sof
 quartus/*.rpt
+quartus/*.pof
 quartus/db/
 quartus/incremental_db/
 quartus/output_files/
+quartus/simulation/
+
+rtl/*.bak
+
+sim/testbenches/*.bak
