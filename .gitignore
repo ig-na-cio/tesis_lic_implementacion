@@ -1,0 +1,5 @@
+quartus/*.sof
+quartus/*.rpt
+quartus/db/
+quartus/incremental_db/
+quartus/output_files/
