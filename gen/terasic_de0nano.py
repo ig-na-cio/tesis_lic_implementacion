@@ -17,6 +17,7 @@ from litex.gen import *
 
 from litex.build.io import DDROutput
 
+# Archivo donde se definen los pines y especificaciones de la FPGA
 from litex_boards.platforms import terasic_de0nano
 
 from litex.soc.cores.clock import CycloneIVPLL
@@ -24,10 +25,13 @@ from litex.soc.integration.soc_core import *
 from litex.soc.integration.builder import *
 from litex.soc.cores.led import LedChaser
 
+# IS42S16160 es el modelo de la SDRAM
 from litedram.modules import IS42S16160
+# Controlador para la SDRAM
 from litedram.phy import GENSDRPHY, HalfRateGENSDRPHY
 
 # CRG ----------------------------------------------------------------------------------------------
+# Clock and Reset Generator: Genera los clocks para todo el SoC
 
 class _CRG(LiteXModule):
     def __init__(self, platform, sys_clk_freq, sdram_rate="1:1"):
@@ -60,9 +64,12 @@ class _CRG(LiteXModule):
         self.specials += DDROutput(1, 0, platform.request("sdram_clock"), sdram_clk)
 
 # BaseSoC ------------------------------------------------------------------------------------------
+# Definicion del SoC, parametros y perifericos.
 
 class BaseSoC(SoCCore):
-    def __init__(self, sys_clk_freq=50e6, sdram_rate="1:1", with_led_chaser=True, **kwargs):
+    def __init__(self, sys_clk_freq=50e6, sdram_rate="1:1",
+                 with_led_chaser=True,
+                  **kwargs):
         platform = terasic_de0nano.Platform()
 
         # CRG --------------------------------------------------------------------------------------
@@ -72,6 +79,7 @@ class BaseSoC(SoCCore):
         SoCCore.__init__(self, platform, sys_clk_freq, ident="LiteX SoC on DE0-Nano", **kwargs)
 
         # SDR SDRAM --------------------------------------------------------------------------------
+        # Si no definimos una RAM integrada, se usa la SDRAM
         if not self.integrated_main_ram_size:
             sdrphy_cls = HalfRateGENSDRPHY if sdram_rate == "1:2" else GENSDRPHY
             self.sdrphy = sdrphy_cls(platform.request("sdram"), sys_clk_freq)
@@ -87,6 +95,10 @@ class BaseSoC(SoCCore):
                 pads         = platform.request_all("user_led"),
                 sys_clk_freq = sys_clk_freq)
 
+        # BootROM
+        # Viene por defecto con nombre rom
+        # En los parametros definimos tamano y contenido
+        # Mas en soc_core.py linea 72
 # Build --------------------------------------------------------------------------------------------
 
 def main():
@@ -96,10 +108,21 @@ def main():
     parser.add_target_argument("--sdram-rate",   default="1:1",            help="SDRAM Rate (1:1 Full Rate or 1:2 Half Rate).")
     args = parser.parse_args()
 
+    # Parametros que no queremos por defecto de soc_core.py
+    soc_args = parser.soc_argdict
+    soc_args.pop("integrated_rom_size", None)
+    soc_args.pop("integrated_rom_init", None)
+
     soc = BaseSoC(
         sys_clk_freq = args.sys_clk_freq,
         sdram_rate   = args.sdram_rate,
-        **parser.soc_argdict
+        
+        # Bootrom
+        integrated_rom_size = 0x400, # En bytes (1KB) Puedo poner 1024 tambien
+        integrated_rom_init = None, #init_bootrom.hex,
+
+
+        **soc_args # **parser.soc_argdict
     )
     builder = Builder(soc, **parser.builder_argdict)
     if args.build:
