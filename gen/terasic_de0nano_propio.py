@@ -97,13 +97,14 @@ class BaseSoC(SoCCore):
                 sys_clk_freq = sys_clk_freq)
 
         # BootROM
-        # Viene por defecto con nombre rom
-        # En los parametros definimos tamano y contenido
-        # Mas en soc_core.py linea 72
+        # Por parametros
 
         # SD Card via SPI
         if with_spi_sdcard:
             self.add_spi_sdcard("spisdcard", spi_clk_freq=400e3)
+
+        # UART
+        # Por parametros
 
 # Build --------------------------------------------------------------------------------------------
 
@@ -121,6 +122,13 @@ def main():
     soc_args.pop("mem_map", None)
     soc_args.pop("integrated_main_ram_size", None)
     soc_args.pop("integrated_main_ram_init", None)
+    soc_args.pop("with_uart", None)
+    soc_args.pop("uart_name", None)
+    soc_args.pop("uart_baudrate", None)
+    soc_args.pop("uart_fifo_depth", None)
+    soc_args.pop("uart_pads", None)
+    soc_args.pop("uart_with_dynamic_baudrate", None)
+    soc_args.pop("uart_rx_fifo_rx_we", None)
 
     soc = BaseSoC(
         sys_clk_freq = args.sys_clk_freq,
@@ -144,6 +152,16 @@ def main():
 
         # SD Card via SPI
         with_spi_sdcard = True,
+
+        # UART
+        # Estan como por defecto
+        with_uart                = True,
+        uart_name                = "serial",
+        uart_baudrate            = 115200,
+        uart_fifo_depth          = 16,
+        uart_pads                = None,
+        uart_with_dynamic_baudrate = False,
+        uart_rx_fifo_rx_we       = False,
 
         **soc_args # **parser.soc_argdict
     )

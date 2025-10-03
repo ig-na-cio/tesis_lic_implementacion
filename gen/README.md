@@ -47,12 +47,16 @@ Entonces ahora los pasos son:
 
 1. Instalamos el CPU
 
-2. Escribimos nuestro propio targets/terasic_de0nano.py
+2. Modificamos el CPU si queremos en GenCoreDefault.scala
 
-3. Lo ejecutamos
+3. Escribimos nuestro propio targets/terasic_de0nano_propio.py
+
+4. Agregamos la configuracion de los pines de ser necesario en platforms/terasic_de0nano_propio_pl.py
+
+5. Ejecutamos el target
 
 ```
-$ ./terasic_de0nano.py --build
+$ ./terasic_de0nano_propio.py --build
 ```
 
-4. Tenemos el proyecto de Quartus y archivos HDL y de inicializacion listos.
+6. Tenemos el proyecto de Quartus y archivos HDL y de inicializacion listos en targets/build.
