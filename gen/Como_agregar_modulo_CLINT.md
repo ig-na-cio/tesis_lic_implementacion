@@ -28,7 +28,7 @@ Para agregar un modulo de CLINT debemos:
 
 2. Implementar la clase CLINT heredada de LiteXModule. Ver uart.py de ejemplo.
 
-3. Importar el modulo a soc.py e implementar el metodo add_clint.
+3. Importar el modulo a soc.py e implementar el metodo add_clint. Capaz puede hacerse directamente en terasic_de0nano_propio.py sobre la clase BaseSoC
 
 4. Llamar al metodo en el BaseSoc de terasic_de0nano_propio.py
 

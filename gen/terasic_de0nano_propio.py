@@ -30,6 +30,9 @@ from litedram.modules import IS42S16160
 # Controlador para la SDRAM
 from litedram.phy import GENSDRPHY, HalfRateGENSDRPHY
 
+# Modulos propios
+from litex.soc.cores.clint import CLINT
+
 # CRG ----------------------------------------------------------------------------------------------
 # Clock and Reset Generator: Genera los clocks para todo el SoC
 
@@ -105,6 +108,20 @@ class BaseSoC(SoCCore):
 
         # UART
         # Por parametros
+
+        # CLINT
+        self.add_clint()
+
+    def add_clint(self):
+        # Instanciamos el modulo
+        self.submodules.clint = CLINT(sys_clk_freq=self.sys_clk_freq)
+        # Con esto indicamos que tiene registros CSRs
+        # para que se agregue al csr_map
+        self.add_csr("clint")
+        # Agregamos a las irq que van al CPU
+        # Se agregan solas al interruption_map
+        self.irq.add("clint_msip")
+        self.irq.add("clint_mtip")
 
 # Build --------------------------------------------------------------------------------------------
 
