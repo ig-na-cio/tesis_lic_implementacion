@@ -8,11 +8,6 @@ En este directorio almacenaremos el archivo de Litex que se usa para generar el 
 
 4. Listo
 
-> **_NOTA:_** Ademas del setup que indica el instructivo puede hacer falta ejecutar el siguiente comando:
->```
->$ ./litex_setup.py init install
->```
-
 Algunos archivos que tendremos que ver:
 ```
 - litex/
@@ -27,8 +22,12 @@ Algunos archivos que tendremos que ver:
 
 ```
 - pythondata-cpu-vexriscv/
+    - pythondata_cpu_vexriscv/verilog/
+        - src/main/scala/vexriscv/
+            - GenCoreDefault.scala 
 ```
 - pythondata-cpu-vexriscv/: Particular de nuestra eleccion de CPU. Contiene instrucciones en un README.md para instalar el CPU de Vexriscv.
+- GenCoreDefault.scala: Contiene los parametros y plugins para generar el procesador.
 
 ```
 - litex-boards/
