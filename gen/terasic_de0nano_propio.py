@@ -76,6 +76,7 @@ class BaseSoC(SoCCore):
                  with_led_chaser=True,
                  with_spi_sdcard=False,
                  mem_map=None,
+                 with_clint=False,
                   **kwargs):
         platform = terasic_de0nano_propio_pl.Platform()
         self.mem_map = mem_map
@@ -113,7 +114,8 @@ class BaseSoC(SoCCore):
         # Por parametros
 
         # CLINT
-        self.add_clint()
+        if with_clint:
+            self.add_clint()
 
     def add_clint(self):
         # Instanciamos el modulo
@@ -185,6 +187,9 @@ def main():
         uart_pads                = None,
         uart_with_dynamic_baudrate = False,
         uart_rx_fifo_rx_we       = False,
+
+        # CLINT
+        with_clint = True,
 
         **soc_args # **parser.soc_argdict
     )

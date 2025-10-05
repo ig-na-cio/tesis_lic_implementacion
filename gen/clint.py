@@ -62,10 +62,10 @@ class CLINT(LiteXModule):
             If(self.bus.cyc & self.bus.stb & ~self.bus.we, # Es una lectura
                 Case(self.bus.adr, {
                     0x0000 >> 2: self.bus.dat_r.eq(self.msip),
-                    0x4000 >> 2: self.bus.dat_r.eq(self.mtimecmp[0:32]), # dividimos porque es rv32
-                    0x4004 >> 2: self.bus.dat_r.eq(self.mtimecmp[32:64]),
-                    0xBFF8 >> 2: self.bus.dat_r.eq(self.mtime[0:32]), # idem
-                    0xBFFC >> 2: self.bus.dat_r.eq(self.mtime[32:64]),
+                    0x4000 >> 2: self.bus.dat_r.eq(self.mtimecmp[0:31]), # dividimos porque es rv32
+                    0x4004 >> 2: self.bus.dat_r.eq(self.mtimecmp[31:63]),
+                    0xBFF8 >> 2: self.bus.dat_r.eq(self.mtime[0:31]), # idem
+                    0xBFFC >> 2: self.bus.dat_r.eq(self.mtime[31:63]),
                 })
             )
         ]
