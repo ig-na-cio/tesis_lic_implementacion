@@ -30,6 +30,8 @@ from litedram.modules import IS42S16160
 # Controlador para la SDRAM
 from litedram.phy import GENSDRPHY, HalfRateGENSDRPHY
 
+
+
 # Modulos propios
 from litex.soc.cores.clint import CLINT
 
@@ -73,14 +75,15 @@ class BaseSoC(SoCCore):
     def __init__(self, sys_clk_freq=50e6, sdram_rate="1:1",
                  with_led_chaser=True,
                  with_spi_sdcard=False,
+                 mem_map=None,
                   **kwargs):
         platform = terasic_de0nano_propio_pl.Platform()
-
+        self.mem_map = mem_map
         # CRG --------------------------------------------------------------------------------------
         self.crg = _CRG(platform, sys_clk_freq, sdram_rate=sdram_rate)
 
         # SoCCore ----------------------------------------------------------------------------------
-        SoCCore.__init__(self, platform, sys_clk_freq, ident="LiteX SoC on DE0-Nano", **kwargs)
+        SoCCore.__init__(self, platform, sys_clk_freq, ident="LiteX SoC on DE0-Nano", mem_map=self.mem_map, **kwargs)
 
         # SDR SDRAM --------------------------------------------------------------------------------
         # Si no definimos una RAM integrada, se usa la SDRAM
@@ -115,15 +118,13 @@ class BaseSoC(SoCCore):
     def add_clint(self):
         # Instanciamos el modulo
         self.clint = CLINT(sys_clk_freq=self.sys_clk_freq)
-        # Con esto indicamos que tiene registros CSRs
-        # para que se agregue al csr_map
-        self.add_csr("clint")
+        # Con esto indicamos que tiene registros MMIO
+        self.bus.add_slave(name   = "clint",
+                           slave  = self.clint.bus,
+                           region = SoCRegion(self.mem_map["clint"], 0x10000))# El que definimos en mem map.
         # Agregamos a las irq que van al CPU
         self.comb += self.cpu.software_irq.eq(self.clint.irq_msip)
         self.comb += self.cpu.timer_irq.eq(self.clint.irq_mtip)
-        # Se agregan solas al interruption_map con
-        self.irq.add("software_irq")
-        self.irq.add("timer_irq")
         
 
 # Build --------------------------------------------------------------------------------------------
@@ -158,9 +159,11 @@ def main():
         mem_map = {
             "rom":      0x00000000,
             "sram":     0x01000000,
+            "clint":    0x02000000,
             "main_ram": 0x40000000,
             "spisdcard":0x80000000,
         },
+        
 
         # Bootrom
         integrated_rom_size = 0x400, # En bytes (1KB) Puedo poner 1024 tambien

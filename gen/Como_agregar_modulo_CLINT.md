@@ -174,3 +174,99 @@ Para esto debemos modificar el archivo core.py de vexriscv, localizado en en lit
 
         # {...}
 ```
+
+# Problema!!
+
+Resulta que si los registros internos son CSR, no lo mapea al MMIO como queriamos. Hay que haceros registros accesibles por bus. Esto trae los siguientes cambios:
+
+
+``` Python
+        # CLINT
+        self.add_clint()
+
+    def add_clint(self):
+        # Instanciamos el modulo
+        self.clint = CLINT(sys_clk_freq=self.sys_clk_freq)
+        # Con esto indicamos que tiene registros MMIO
+        self.bus.add_slave(name   = "clint",
+                           slave  = self.clint.bus,
+                           region = SoCRegion(self.mem_map["clint"], 0x10000)) # El que definimos en mem map.
+        # Agregamos a las irq que van al CPU
+        self.comb += self.cpu.software_irq.eq(self.clint.irq_msip)
+        self.comb += self.cpu.timer_irq.eq(self.clint.irq_mtip)
+
+```
+
+y
+
+``` Python
+class CLINT(LiteXModule):
+    def __init__(self, sys_clk_freq):
+        # msip: Genera interrupciones de software cuando habilitado
+        self.msip      = Signal(1) #, description="Software interrupt")
+        # mtimecmp: Valor de comparacion del timer
+        self.mtimecmp  = Signal(64) #, description="Timer compare value")
+        # mtime: Valor del contador
+        self.mtime     = Signal(64) #, description="Timer")
+
+        self.ev      = EventManager()
+        self.ev.msip = EventSourceLevel(description="Software interrupt")
+        self.ev.mtip = EventSourceLevel(description="Timer interrupt")
+        self.ev.finalize()
+
+        self.irq_msip = Signal()
+        self.irq_mtip = Signal()
+
+        # msip
+        # Se escribe desde software
+
+        # mtimecmp
+        # Se escribe desde software
+
+        # mtime
+        self.counter = Signal(64) # Contador auxiliar
+        # x.eq(y): Asignar a x el valor y
+        # sync significa que se ejecuta en subida de cada clock.
+        self.sync   += self.counter.eq(self.counter + 1)
+        # comb es siempre
+        self.comb   += self.mtime.eq(self.counter)
+
+        # Interrupciones
+        self.comb   += self.ev.msip.trigger.eq(self.msip)
+        self.comb   += self.irq_msip.eq(self.ev.msip.trigger)
+
+        self.comb   += self.ev.mtip.trigger.eq(self.mtime >= self.mtimecmp)
+        self.comb   += self.irq_mtip.eq(self.ev.mtip.trigger)
+
+
+        # Y ahora la parte del bus y MMIO
+        # Seria nuestro "adaptador"
+        self.bus = wishbone.Interface(data_width=32, adr_width=16) # 16 para decodificar bien
+
+        # self.bus.cyc: se esta usando el bus
+        # self.bus.stb: strobe activo, se quiere comunicar
+        # self.bus.we: write enable
+        # El >> 2 es para manejar correctamente el tamano de las palabras
+        
+        self.sync += [
+            If(self.bus.cyc & self.bus.stb & ~self.bus.we, # Es una lectura
+                Case(self.bus.adr, {
+                    0x0000 >> 2: self.bus.dat_r.eq(self.msip),
+                    0x4000 >> 2: self.bus.dat_r.eq(self.mtimecmp[0:32]), # dividimos porque es rv32
+                    0x4004 >> 2: self.bus.dat_r.eq(self.mtimecmp[32:64]),
+                    0xBFF8 >> 2: self.bus.dat_r.eq(self.mtime[0:32]), # idem
+                    0xBFFC >> 2: self.bus.dat_r.eq(self.mtime[32:64]),
+                })
+            )
+        ]
+
+        self.sync += [
+            If(self.bus.cyc & self.bus.stb & self.bus.we, # Es una escritura
+                Case(self.bus.adr, {
+                    0x0000 >> 2: self.msip.eq(self.bus.dat_w[0]),
+                    0x4000 >> 2: self.mtimecmp.eq(self.bus.dat_w), # dividimos porque es rv32
+                    0x4004 >> 2: self.mtimecmp.eq(self.bus.dat_w),
+                })
+            )
+        ]
+```
