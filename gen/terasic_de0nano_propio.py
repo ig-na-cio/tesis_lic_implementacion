@@ -119,9 +119,12 @@ class BaseSoC(SoCCore):
         # para que se agregue al csr_map
         self.add_csr("clint")
         # Agregamos a las irq que van al CPU
-        # Se agregan solas al interruption_map
         self.comb += self.cpu.software_irq.eq(self.clint.irq_msip)
         self.comb += self.cpu.timer_irq.eq(self.clint.irq_mtip)
+        # Se agregan solas al interruption_map con
+        self.irq.add("software_irq")
+        self.irq.add("timer_irq")
+        
 
 # Build --------------------------------------------------------------------------------------------
 
