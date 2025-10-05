@@ -90,3 +90,85 @@ class UART(LiteXModule, UARTInterface):
 - Con CSRStorage() creamos un registro que puede ser escrito por el software. Accedido en la implementacion nuestra como name.storage
 
 - Con CSRStatus() creamos uno que puede ser leido por el software. Accedido en la implementacion nuestra como name.status
+
+
+## Modificacion
+
+La implementacion del modulo puede verse en clint.py
+Luego en terasic_de0nano_propio.py agregamos:
+
+``` Python
+    # {...}
+
+        # CLINT
+        self.add_clint()
+
+    def add_clint(self):
+        # Instanciamos el modulo
+        self.clint = CLINT(sys_clk_freq=self.sys_clk_freq)
+        # Con esto indicamos que tiene registros CSRs
+        # para que se agregue al csr_map
+        self.add_csr("clint")
+        # Agregamos a las irq que van al CPU
+        # Se agregan solas al interruption_map
+        self.comb += self.cpu.software_irq.eq(self.clint.irq_msip)
+        self.comb += self.cpu.timer_irq.eq(self.clint.irq_mtip)
+
+    # {...}
+```
+
+Y luego nos aseguramos que se conecten con el CPU:
+```
+module VexRiscv (
+  input  wire [31:0]   externalResetVector,
+  input  wire          timerInterrupt,
+  input  wire          softwareInterrupt,
+  // {...}
+  }
+```
+y en la instanciacion del modulo en el SoC
+```
+VexRiscv VexRiscv(
+	// Inputs.
+	.clk                    (sys_clk),
+	.dBusWishbone_ACK       (main_basesoc_dbus_ack),
+	.dBusWishbone_DAT_MISO  (main_basesoc_dbus_dat_r),
+	.dBusWishbone_ERR       (main_basesoc_dbus_err),
+	.externalInterruptArray (main_basesoc_interrupt),
+	.externalResetVector    (main_basesoc_vexriscv),
+	.iBusWishbone_ACK       (main_basesoc_ibus_ack),
+	.iBusWishbone_DAT_MISO  (main_basesoc_ibus_dat_r),
+	.iBusWishbone_ERR       (main_basesoc_ibus_err),
+	.reset                  ((sys_rst | main_basesoc_reset)),
+	.softwareInterrupt      (main_basesoc_software_irq),
+	.timerInterrupt         (main_basesoc_timer_irq0),
+    // {...}
+    }
+```
+
+Para esto debemos modificar el archivo core.py de vexriscv, localizado en en litex/litex/soc/cores/cpu/vexriscv
+
+``` Python
+    def __init__(self, platform, variant="standard", with_timer=False):
+        
+        # {...}
+        
+        # Agregado por CLINT {
+        self.timer_irq = Signal()
+        self.software_irq = Signal()
+        # Agregado por CLINT }
+        # # #
+
+        # CPU Instance.
+        self.cpu_params = dict(
+            i_clk                    = ClockSignal("sys"),
+            i_reset                  = ResetSignal("sys") | self.reset,
+
+            i_externalInterruptArray = self.interrupt,
+            # Agregado por CLINT {
+            i_timerInterrupt         = self.timer_irq,
+            i_softwareInterrupt      = self.software_irq,
+            # Agregado por CLINT }
+
+        # {...}
+```

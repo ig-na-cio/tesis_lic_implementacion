@@ -114,14 +114,14 @@ class BaseSoC(SoCCore):
 
     def add_clint(self):
         # Instanciamos el modulo
-        self.submodules.clint = CLINT(sys_clk_freq=self.sys_clk_freq)
+        self.clint = CLINT(sys_clk_freq=self.sys_clk_freq)
         # Con esto indicamos que tiene registros CSRs
         # para que se agregue al csr_map
         self.add_csr("clint")
         # Agregamos a las irq que van al CPU
         # Se agregan solas al interruption_map
-        self.irq.add("clint_msip")
-        self.irq.add("clint_mtip")
+        self.comb += self.cpu.software_irq.eq(self.clint.irq_msip)
+        self.comb += self.cpu.timer_irq.eq(self.clint.irq_mtip)
 
 # Build --------------------------------------------------------------------------------------------
 
