@@ -34,6 +34,7 @@ from litedram.phy import GENSDRPHY, HalfRateGENSDRPHY
 
 # Modulos propios
 from litex.soc.cores.clint import CLINT
+from litex.soc.cores.plic import PLIC
 
 # CRG ----------------------------------------------------------------------------------------------
 # Clock and Reset Generator: Genera los clocks para todo el SoC
@@ -77,6 +78,7 @@ class BaseSoC(SoCCore):
                  with_spi_sdcard=False,
                  mem_map=None,
                  with_clint=False,
+                 with_plic=False,
                   **kwargs):
         platform = terasic_de0nano_propio_pl.Platform()
         self.mem_map = mem_map
@@ -117,6 +119,16 @@ class BaseSoC(SoCCore):
         if with_clint:
             self.add_clint()
 
+        # PLIC
+        if with_plic:
+            irqs = [
+                self.uart.ev.irq,
+                self.spisdcard.irq,
+                # self.spisdcard.ev.irq
+                # Capaz podemos agregar la del timer
+            ]
+            self.add_plic(irqs)
+
     def add_clint(self):
         # Instanciamos el modulo
         self.clint = CLINT(sys_clk_freq=self.sys_clk_freq)
@@ -127,6 +139,14 @@ class BaseSoC(SoCCore):
         # Agregamos a las irq que van al CPU
         self.comb += self.cpu.software_irq.eq(self.clint.irq_msip)
         self.comb += self.cpu.timer_irq.eq(self.clint.irq_mtip)
+
+    def add_plic(self, irqs=[]):
+        self.plic = PLIC(self.sys_clk_freq, irqs)
+        
+        self.bus.add_slave(name = "plic",
+                           slave = self.plic.bus,
+                           region = SoCRegion(self.mem_map["plic"], 0x10000))
+        self.comb += self.cpu.interrupt[31].eq(self.plic.irq_out) # Cuidado despues, notar esto
         
 
 # Build --------------------------------------------------------------------------------------------
@@ -162,6 +182,7 @@ def main():
             "rom":      0x00000000,
             "sram":     0x01000000,
             "clint":    0x02000000,
+            "plic":     0x04000000,
             "main_ram": 0x40000000,
             "spisdcard":0x80000000,
         },
@@ -190,6 +211,9 @@ def main():
 
         # CLINT
         with_clint = True,
+
+        # PLIC
+        with_plic = True,
 
         **soc_args # **parser.soc_argdict
     )

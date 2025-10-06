@@ -82,7 +82,7 @@ class CLINT(LiteXModule):
 
         # Conviene agregar un acknoledge para que no se trabe el bus.
         self.sync += [
-            self.bus.ack.eq(0)
+            self.bus.ack.eq(0),
             If(self.bus.cyc & self.bus.stb, 
                 self.bus.ack.eq(1)
             )
