@@ -9,3 +9,25 @@ quartus/simulation/
 rtl/*.bak
 
 sim/testbenches/*.bak
+
+testing/project/*.sof
+testing/project/*.rpt
+testing/project/*.pof
+testing/project/db/
+testing/project/incremental_db/
+testing/project/output_files/
+testing/project/simulation/
+
+testing/project/*.sh
+testing/project/*.done
+testing/project/*.smsg
+testing/project/*.summary
+testing/project/*.jdi
+testing/project/*.pin
+testing/project/*.rbf
+testing/project/*.sdc
+testing/project/*.sld
+testing/project/*.svf
+testing/project/*.bak
+
+testing/project/sim/*.bak
