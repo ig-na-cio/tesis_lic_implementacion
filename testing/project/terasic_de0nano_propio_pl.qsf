@@ -1,0 +1,119 @@
+set_global_assignment -name DEVICE EP4CE22F17C6
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name SYSTEMVERILOG_FILE /home/tesisvm/Desktop/litexnuevo/pythondata-cpu-vexriscv/pythondata_cpu_vexriscv/verilog/VexRiscv_Linux.v -library work
+set_global_assignment -name SYSTEMVERILOG_FILE /home/tesisvm/Desktop/litexnuevo/litex-boards/litex_boards/targets/build/terasic_de0nano_propio_pl/gateware/terasic_de0nano_propio_pl.v -library work
+set_global_assignment -name top_level_entity terasic_de0nano_propio_pl
+set_location_assignment -comment "clk50:0" -to clk50 Pin_R8
+set_instance_assignment -name io_standard -comment "clk50:0" "3.3-V LVTTL" -to clk50
+set_location_assignment -comment "sdram_clock:0" -to sdram_clock Pin_R4
+set_instance_assignment -name io_standard -comment "sdram_clock:0" "3.3-V LVTTL" -to sdram_clock
+set_location_assignment -comment "serial:0.tx" -to serial_tx Pin_B5
+set_instance_assignment -name io_standard -comment "serial:0.tx" "3.3-V LVTTL" -to serial_tx
+set_location_assignment -comment "serial:0.rx" -to serial_rx Pin_B4
+set_instance_assignment -name io_standard -comment "serial:0.rx" "3.3-V LVTTL" -to serial_rx
+set_location_assignment -comment "sdram:0.a" -to sdram_a[0] Pin_P2
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[0]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[1] Pin_N5
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[1]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[2] Pin_N6
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[2]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[3] Pin_M8
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[3]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[4] Pin_P8
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[4]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[5] Pin_T7
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[5]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[6] Pin_N8
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[6]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[7] Pin_T6
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[7]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[8] Pin_R1
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[8]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[9] Pin_P1
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[9]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[10] Pin_N2
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[10]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[11] Pin_N1
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[11]
+set_location_assignment -comment "sdram:0.a" -to sdram_a[12] Pin_L4
+set_instance_assignment -name io_standard -comment "sdram:0.a" "3.3-V LVTTL" -to sdram_a[12]
+set_location_assignment -comment "sdram:0.ba" -to sdram_ba[0] Pin_M7
+set_instance_assignment -name io_standard -comment "sdram:0.ba" "3.3-V LVTTL" -to sdram_ba[0]
+set_location_assignment -comment "sdram:0.ba" -to sdram_ba[1] Pin_M6
+set_instance_assignment -name io_standard -comment "sdram:0.ba" "3.3-V LVTTL" -to sdram_ba[1]
+set_location_assignment -comment "sdram:0.cs_n" -to sdram_cs_n Pin_P6
+set_instance_assignment -name io_standard -comment "sdram:0.cs_n" "3.3-V LVTTL" -to sdram_cs_n
+set_location_assignment -comment "sdram:0.cke" -to sdram_cke Pin_L7
+set_instance_assignment -name io_standard -comment "sdram:0.cke" "3.3-V LVTTL" -to sdram_cke
+set_location_assignment -comment "sdram:0.ras_n" -to sdram_ras_n Pin_L2
+set_instance_assignment -name io_standard -comment "sdram:0.ras_n" "3.3-V LVTTL" -to sdram_ras_n
+set_location_assignment -comment "sdram:0.cas_n" -to sdram_cas_n Pin_L1
+set_instance_assignment -name io_standard -comment "sdram:0.cas_n" "3.3-V LVTTL" -to sdram_cas_n
+set_location_assignment -comment "sdram:0.we_n" -to sdram_we_n Pin_C2
+set_instance_assignment -name io_standard -comment "sdram:0.we_n" "3.3-V LVTTL" -to sdram_we_n
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[0] Pin_G2
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[0]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[1] Pin_G1
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[1]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[2] Pin_L8
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[2]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[3] Pin_K5
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[3]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[4] Pin_K2
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[4]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[5] Pin_J2
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[5]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[6] Pin_J1
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[6]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[7] Pin_R7
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[7]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[8] Pin_T4
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[8]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[9] Pin_T2
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[9]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[10] Pin_T3
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[10]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[11] Pin_R3
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[11]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[12] Pin_R5
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[12]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[13] Pin_P3
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[13]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[14] Pin_N3
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[14]
+set_location_assignment -comment "sdram:0.dq" -to sdram_dq[15] Pin_K1
+set_instance_assignment -name io_standard -comment "sdram:0.dq" "3.3-V LVTTL" -to sdram_dq[15]
+set_location_assignment -comment "sdram:0.dm" -to sdram_dm[0] Pin_R6
+set_instance_assignment -name io_standard -comment "sdram:0.dm" "3.3-V LVTTL" -to sdram_dm[0]
+set_location_assignment -comment "sdram:0.dm" -to sdram_dm[1] Pin_T5
+set_instance_assignment -name io_standard -comment "sdram:0.dm" "3.3-V LVTTL" -to sdram_dm[1]
+set_location_assignment -comment "user_led:0" -to user_led0 Pin_A15
+set_instance_assignment -name io_standard -comment "user_led:0" "3.3-V LVTTL" -to user_led0
+set_location_assignment -comment "user_led:1" -to user_led1 Pin_A13
+set_instance_assignment -name io_standard -comment "user_led:1" "3.3-V LVTTL" -to user_led1
+set_location_assignment -comment "user_led:2" -to user_led2 Pin_B13
+set_instance_assignment -name io_standard -comment "user_led:2" "3.3-V LVTTL" -to user_led2
+set_location_assignment -comment "user_led:3" -to user_led3 Pin_A11
+set_instance_assignment -name io_standard -comment "user_led:3" "3.3-V LVTTL" -to user_led3
+set_location_assignment -comment "user_led:4" -to user_led4 Pin_D1
+set_instance_assignment -name io_standard -comment "user_led:4" "3.3-V LVTTL" -to user_led4
+set_location_assignment -comment "user_led:5" -to user_led5 Pin_F3
+set_instance_assignment -name io_standard -comment "user_led:5" "3.3-V LVTTL" -to user_led5
+set_location_assignment -comment "user_led:6" -to user_led6 Pin_B1
+set_instance_assignment -name io_standard -comment "user_led:6" "3.3-V LVTTL" -to user_led6
+set_location_assignment -comment "user_led:7" -to user_led7 Pin_L3
+set_instance_assignment -name io_standard -comment "user_led:7" "3.3-V LVTTL" -to user_led7
+set_location_assignment -comment "spisdcard:0.mosi" -to spisdcard_mosi Pin_D3
+set_instance_assignment -name io_standard -comment "spisdcard:0.mosi" "3.3-V LVTTL" -to spisdcard_mosi
+set_location_assignment -comment "spisdcard:0.miso" -to spisdcard_miso Pin_C3
+set_instance_assignment -name io_standard -comment "spisdcard:0.miso" "3.3-V LVTTL" -to spisdcard_miso
+set_location_assignment -comment "spisdcard:0.cs_n" -to spisdcard_cs_n Pin_A2
+set_instance_assignment -name io_standard -comment "spisdcard:0.cs_n" "3.3-V LVTTL" -to spisdcard_cs_n
+set_location_assignment -comment "spisdcard:0.clk" -to spisdcard_clk Pin_A3
+set_instance_assignment -name io_standard -comment "spisdcard:0.clk" "3.3-V LVTTL" -to spisdcard_clk
+set_global_assignment -name SDC_FILE terasic_de0nano_propio_pl.sdc
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
