@@ -172,6 +172,30 @@ def main():
     soc_args.pop("uart_pads", None)
     soc_args.pop("uart_with_dynamic_baudrate", None)
     soc_args.pop("uart_rx_fifo_rx_we", None)
+    soc_args.pop("bus_standard", None)
+    soc_args.pop("bus_data_width", None)
+    soc_args.pop("bus_address_width", None)
+    soc_args.pop("bus_timeout", None)
+    soc_args.pop("bus_bursting", None)
+    soc_args.pop("bus_interconnect", None)
+    soc_args.pop("cpu_type", None)
+    soc_args.pop("cpu_reset_address", None)
+    soc_args.pop("cpu_variant", None)
+    soc_args.pop("cpu_cfu", None)
+    soc_args.pop("csr_data_width", None)
+    soc_args.pop("csr_address_width", None)
+    soc_args.pop("csr_paging", None)
+    soc_args.pop("csr_ordering", None)
+    soc_args.pop("irq_n_irqs", None)
+    soc_args.pop("with_timer", None)
+    soc_args.pop("timer_uptime", None)
+    soc_args.pop("with_ctrl", None)
+    soc_args.pop("with_jtagbone", None)
+    soc_args.pop("jtagbone_chain", None)
+    soc_args.pop("with_uartbone", None)
+    soc_args.pop("with_watchdog", None)
+    soc_args.pop("watchdog_width", None)
+    soc_args.pop("watchdog_reset_delay", None)
 
     soc = BaseSoC(
         sys_clk_freq = args.sys_clk_freq,
@@ -187,6 +211,49 @@ def main():
             "spisdcard":0x80000000,
         },
         
+        # Copio los parametros de soc_core.py ---------------
+        # Bus parameters.
+        bus_standard             = "wishbone",
+        bus_data_width           = 32,
+        bus_address_width        = 32,
+        bus_timeout              = 1e6,
+        bus_bursting             = False,
+        bus_interconnect         = "shared",
+
+        # CPU parameters.
+        cpu_type                 = "vexriscv",
+        cpu_reset_address        = None,
+        cpu_variant              = "linux",
+        cpu_cfu                  = None,
+
+        # CSR parameters.
+        csr_data_width           = 32,
+        csr_address_width        = 14,
+        csr_paging               = 0x800,
+        csr_ordering             = "big",
+
+        # Interrupt parameters.
+        irq_n_irqs               = 32,
+
+        # Timer parameters.
+        with_timer               = True,
+        timer_uptime             = False,
+
+        # Controller parameters.
+        with_ctrl                = True,
+
+        # JTAGBone.
+        with_jtagbone            = False,
+        jtagbone_chain           = 1,
+
+        # UARTBone.
+        with_uartbone            = False,
+
+        # Watchdog.
+        with_watchdog            = False,
+        watchdog_width           = 32,
+        watchdog_reset_delay     = None,
+        #-----------------------------------------------------
 
         # Bootrom
         integrated_rom_size = 0x400, # En bytes (1KB) Puedo poner 1024 tambien
