@@ -74,10 +74,17 @@ class CLINT(LiteXModule):
             If(self.bus.cyc & self.bus.stb & self.bus.we, # Es una escritura
                 Case(self.bus.adr, {
                     0x0000 >> 2: self.msip.eq(self.bus.dat_w[0]),
-                    0x4000 >> 2: self.mtimecmp.eq(self.bus.dat_w), # dividimos porque es rv32
-                    0x4004 >> 2: self.mtimecmp.eq(self.bus.dat_w),
+                    0x4000 >> 2: self.mtimecmp[0:31].eq(self.bus.dat_w), # dividimos porque es rv32
+                    0x4004 >> 2: self.mtimecmp[32:63].eq(self.bus.dat_w),
                 })
             )
         ]
 
+        # Conviene agregar un acknoledge para que no se trabe el bus.
+        self.sync += [
+            self.bus.ack.eq(0)
+            If(self.bus.cyc & self.bus.stb, 
+                self.bus.ack.eq(1)
+            )
+        ]
 
