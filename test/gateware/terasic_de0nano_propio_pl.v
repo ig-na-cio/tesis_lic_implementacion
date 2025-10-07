@@ -8,8 +8,8 @@
 //
 // Filename   : terasic_de0nano_propio_pl.v
 // Device     : EP4CE22F17C6
-// LiteX sha1 : --------
-// Date       : 2025-10-06 17:01:55
+// LiteX sha1 : 863a2b14f
+// Date       : 2025-10-07 00:34:14
 //------------------------------------------------------------------------------
 
 `timescale 1ns / 1ps
@@ -246,17 +246,8 @@ BaseSoC
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
+└─── [DFF]
+└─── [DFF]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
@@ -266,31 +257,40 @@ BaseSoC
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [DFF]
-└─── [DFF]
 └─── [ALTDDIO_OUT]
 └─── [DFF]
-└─── [DFF]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
@@ -714,7 +714,7 @@ wire          builder_wait;
 reg     [1:0] builder_wishbone2csr_next_state = 2'd0;
 reg     [1:0] builder_wishbone2csr_state = 2'd0;
 reg     [1:0] main_basesoc_adr_offset_r = 2'd0;
-wire    [7:0] main_basesoc_basesoc_adr;
+wire    [9:0] main_basesoc_basesoc_adr;
 reg           main_basesoc_basesoc_adr_burst = 1'd0;
 wire   [31:0] main_basesoc_basesoc_dat_r;
 reg           main_basesoc_basesoc_ram_bus_ack = 1'd0;
@@ -1913,7 +1913,7 @@ assign main_basesoc_dbus_err = (builder_shared_err & (builder_grant == 1'd1));
 assign builder_request = {main_basesoc_dbus_cyc, main_basesoc_ibus_cyc};
 always @(*) begin
     builder_master <= 6'd0;
-    builder_master[0] <= (builder_shared_adr[29:8] == 1'd0);
+    builder_master[0] <= (builder_shared_adr[29:10] == 1'd0);
     builder_master[1] <= (builder_shared_adr[29:11] == 16'd32768);
     builder_master[2] <= (builder_shared_adr[29:23] == 6'd32);
     builder_master[3] <= (builder_shared_adr[29:14] == 10'd512);
@@ -1984,7 +1984,7 @@ always @(*) begin
 end
 assign builder_done = (builder_count == 1'd0);
 assign main_basesoc_bus_errors_status = main_basesoc_bus_errors;
-assign main_basesoc_basesoc_adr = main_basesoc_basesoc_ram_bus_adr[7:0];
+assign main_basesoc_basesoc_adr = main_basesoc_basesoc_ram_bus_adr[9:0];
 assign main_basesoc_basesoc_ram_bus_dat_r = main_basesoc_basesoc_dat_r;
 always @(*) begin
     main_basesoc_ram_we <= 4'd0;
@@ -6758,10 +6758,13 @@ assign main_basesoc_data_port_dat_r[127:120] = data_mem_grain15[data_mem_grain15
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain0: 256-words x 8-bit
+// Memory rom_grain0: 768-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain0[0:255];
+reg [7:0] rom_grain0[0:767];
+initial begin
+	$readmemh("terasic_de0nano_propio_pl_rom_grain0.init", rom_grain0);
+end
 reg [7:0] rom_grain0_dat0;
 always @(posedge sys_clk) begin
 	rom_grain0_dat0 <= rom_grain0[main_basesoc_basesoc_adr];
@@ -6770,10 +6773,13 @@ assign main_basesoc_basesoc_dat_r[7:0] = rom_grain0_dat0;
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain1: 256-words x 8-bit
+// Memory rom_grain1: 768-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain1[0:255];
+reg [7:0] rom_grain1[0:767];
+initial begin
+	$readmemh("terasic_de0nano_propio_pl_rom_grain1.init", rom_grain1);
+end
 reg [7:0] rom_grain1_dat0;
 always @(posedge sys_clk) begin
 	rom_grain1_dat0 <= rom_grain1[main_basesoc_basesoc_adr];
@@ -6782,10 +6788,13 @@ assign main_basesoc_basesoc_dat_r[15:8] = rom_grain1_dat0;
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain2: 256-words x 8-bit
+// Memory rom_grain2: 768-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain2[0:255];
+reg [7:0] rom_grain2[0:767];
+initial begin
+	$readmemh("terasic_de0nano_propio_pl_rom_grain2.init", rom_grain2);
+end
 reg [7:0] rom_grain2_dat0;
 always @(posedge sys_clk) begin
 	rom_grain2_dat0 <= rom_grain2[main_basesoc_basesoc_adr];
@@ -6794,10 +6803,13 @@ assign main_basesoc_basesoc_dat_r[23:16] = rom_grain2_dat0;
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain3: 256-words x 8-bit
+// Memory rom_grain3: 768-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain3[0:255];
+reg [7:0] rom_grain3[0:767];
+initial begin
+	$readmemh("terasic_de0nano_propio_pl_rom_grain3.init", rom_grain3);
+end
 reg [7:0] rom_grain3_dat0;
 always @(posedge sys_clk) begin
 	rom_grain3_dat0 <= rom_grain3[main_basesoc_basesoc_adr];
@@ -7860,5 +7872,5 @@ ALTDDIO_IN #(
 endmodule
 
 // -----------------------------------------------------------------------------
-//  Auto-Generated by LiteX on 2025-10-06 17:01:55.
+//  Auto-Generated by LiteX on 2025-10-07 00:34:14.
 //------------------------------------------------------------------------------
