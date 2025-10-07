@@ -55,15 +55,15 @@ module terasic_de0nano_propio_pl (
 BaseSoC
 └─── crg (_CRG)
 │    └─── pll (CycloneIVPLL)
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [ALTPLL]
+│    │    └─── [dffe]
+│    │    └─── [dffe]
+│    │    └─── [dffe]
+│    │    └─── [dffe]
+│    │    └─── [dffe]
+│    │    └─── [dffe]
+│    │    └─── [dffe]
+│    │    └─── [dffe]
+│    │    └─── [altpll]
 └─── bus (SoCBusHandler)
 │    └─── _interconnect (InterconnectShared)
 │    │    └─── arbiter (Arbiter)
@@ -237,65 +237,65 @@ BaseSoC
 │    │    └─── csrstatus_4* (CSRStatus)
 │    │    └─── csrstatus_5* (CSRStatus)
 └─── csr_interconnect (InterconnectShared)
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [DFF]
-└─── [DFF]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [DFF]
-└─── [ALTDDIO_OUT]
-└─── [DFF]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [dff]
+└─── [dff]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_in]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [dff]
+└─── [altddio_out]
+└─── [dff]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
+└─── [altddio_out]
 * : Generated name.
 []: BlackBox.
 */
@@ -6345,9 +6345,9 @@ assign main_basesoc_tag_port_dat_r = tag_mem[tag_mem_adr0];
 
 
 //------------------------------------------------------------------------------
-// Instance DFFE of DFFE Module.
+// Instance dffe of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE(
+dffe dffe(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6360,9 +6360,9 @@ DFFE DFFE(
 );
 
 //------------------------------------------------------------------------------
-// Instance DFFE_1 of DFFE Module.
+// Instance dffe_1 of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE_1(
+dffe dffe_1(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6375,9 +6375,9 @@ DFFE DFFE_1(
 );
 
 //------------------------------------------------------------------------------
-// Instance DFFE_2 of DFFE Module.
+// Instance dffe_2 of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE_2(
+dffe dffe_2(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6390,9 +6390,9 @@ DFFE DFFE_2(
 );
 
 //------------------------------------------------------------------------------
-// Instance DFFE_3 of DFFE Module.
+// Instance dffe_3 of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE_3(
+dffe dffe_3(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6405,9 +6405,9 @@ DFFE DFFE_3(
 );
 
 //------------------------------------------------------------------------------
-// Instance DFFE_4 of DFFE Module.
+// Instance dffe_4 of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE_4(
+dffe dffe_4(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6420,9 +6420,9 @@ DFFE DFFE_4(
 );
 
 //------------------------------------------------------------------------------
-// Instance DFFE_5 of DFFE Module.
+// Instance dffe_5 of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE_5(
+dffe dffe_5(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6435,9 +6435,9 @@ DFFE DFFE_5(
 );
 
 //------------------------------------------------------------------------------
-// Instance DFFE_6 of DFFE Module.
+// Instance dffe_6 of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE_6(
+dffe dffe_6(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6450,9 +6450,9 @@ DFFE DFFE_6(
 );
 
 //------------------------------------------------------------------------------
-// Instance DFFE_7 of DFFE Module.
+// Instance dffe_7 of dffe Module.
 //------------------------------------------------------------------------------
-DFFE DFFE_7(
+dffe dffe_7(
 	// Inputs.
 	.clk  (main_crg_clkin),
 	.clrn (1'd1),
@@ -6465,35 +6465,35 @@ DFFE DFFE_7(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTPLL of ALTPLL Module.
+// Instance altpll of altpll Module.
 //------------------------------------------------------------------------------
-ALTPLL #(
+altpll #(
 	// Parameters.
-	.BANDWIDTH_TYPE         ("AUTO"),
-	.CLK0_DIVIDE_BY         (9'd260),
-	.CLK0_DUTY_CYCLE        (6'd50),
-	.CLK0_MULTIPLY_BY       (9'd260),
-	.CLK0_PHASE_SHIFT       (1'd0),
-	.CLK1_DIVIDE_BY         (9'd260),
-	.CLK1_DUTY_CYCLE        (6'd50),
-	.CLK1_MULTIPLY_BY       (9'd260),
-	.CLK1_PHASE_SHIFT       (13'd5000),
-	.COMPENSATE_CLOCK       ("CLK0"),
-	.INCLK0_INPUT_FREQUENCY (15'd20000),
-	.OPERATION_MODE         ("NORMAL")
-) ALTPLL (
+	.bandwidth_type         ("AUTO"),
+	.clk0_divide_by         (9'd260),
+	.clk0_duty_cycle       (6'd50),
+	.clk0_multiply_by       (9'd260),
+	.clk0_phase_shift       (1'd0),
+	.clk1_divide_by         (9'd260),
+	.clk1_duty_cycle        (6'd50),
+	.clk1_multiply_by       (9'd260),
+	.clk1_phase_shift       (13'd5000),
+	.compensate_clock       ("CLK0"),
+	.inclk0_input_frequency (15'd20000),
+	.operation_mode         ("NORMAL")
+) altpll (
 	// Inputs.
-	.ARESET    (builder_reset7),
-	.CLKENA    (5'd31),
-	.EXTCLKENA (4'd15),
-	.FBIN      (1'd1),
-	.INCLK     (main_crg_clkin),
-	.PFDENA    (1'd1),
-	.PLLENA    (1'd1),
+	.areset    (builder_reset7),
+	.clkena    (5'd31),
+	.extclkena (4'd15),
+	.fbin      (1'd1),
+	.inclk     (main_crg_clkin),
+	.pfdena    (1'd1),
+	.pllena    (1'd1),
 
 	// Outputs.
-	.CLK       (builder_clks),
-	.LOCKED    (main_crg_locked)
+	.clk       (builder_clks),
+	.locked    (main_crg_locked)
 );
 
 //------------------------------------------------------------------------------
@@ -6886,9 +6886,9 @@ assign main_basesoc_ram_dat_r[31:24] = sram_grain3[sram_grain3_adr0];
 
 
 //------------------------------------------------------------------------------
-// Instance ars_cd_sys_ff0 of DFF Module.
+// Instance ars_cd_sys_ff0 of dff Module.
 //------------------------------------------------------------------------------
-DFF ars_cd_sys_ff0(
+dff ars_cd_sys_ff0(
 	// Inputs.
 	.clk  (sys_clk),
 	.clrn (1'd1),
@@ -6900,9 +6900,9 @@ DFF ars_cd_sys_ff0(
 );
 
 //------------------------------------------------------------------------------
-// Instance ars_cd_sys_ff1 of DFF Module.
+// Instance ars_cd_sys_ff1 of dff Module.
 //------------------------------------------------------------------------------
-DFF ars_cd_sys_ff1(
+dff ars_cd_sys_ff1(
 	// Inputs.
 	.clk  (sys_clk),
 	.clrn (1'd1),
@@ -6914,9 +6914,9 @@ DFF ars_cd_sys_ff1(
 );
 
 //------------------------------------------------------------------------------
-// Instance ars_cd_sys_ps_ff0 of DFF Module.
+// Instance ars_cd_sys_ps_ff0 of dff Module.
 //------------------------------------------------------------------------------
-DFF ars_cd_sys_ps_ff0(
+dff ars_cd_sys_ps_ff0(
 	// Inputs.
 	.clk  (sys_ps_clk),
 	.clrn (1'd1),
@@ -6928,9 +6928,9 @@ DFF ars_cd_sys_ps_ff0(
 );
 
 //------------------------------------------------------------------------------
-// Instance ars_cd_sys_ps_ff1 of DFF Module.
+// Instance ars_cd_sys_ps_ff1 of dff Module.
 //------------------------------------------------------------------------------
-DFF ars_cd_sys_ps_ff1(
+dff ars_cd_sys_ps_ff1(
 	// Inputs.
 	.clk  (sys_ps_clk),
 	.clrn (1'd1),
@@ -6942,12 +6942,12 @@ DFF ars_cd_sys_ps_ff1(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT of ALTDDIO_OUT Module.
+// Instance altddio_out of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT (
+	.width (1'd1)
+) altddio_out (
 	// Inputs.
 	.datain_h (1'd1),
 	.datain_l (1'd0),
@@ -6958,12 +6958,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_1 of ALTDDIO_OUT Module.
+// Instance altddio_out_1 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_1 (
+	.width (1'd1)
+) altddio_out_1 (
 	// Inputs.
 	.datain_h (main_dfi_p0_cs_n),
 	.datain_l (main_dfi_p0_cs_n),
@@ -6974,12 +6974,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_2 of ALTDDIO_OUT Module.
+// Instance altddio_out_2 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_2 (
+	.width (1'd1)
+) altddio_out_2 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[0]),
 	.datain_l (main_dfi_p0_address[0]),
@@ -6990,12 +6990,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_3 of ALTDDIO_OUT Module.
+// Instance altddio_out_3 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_3 (
+	.width (1'd1)
+) altddio_out_3 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[1]),
 	.datain_l (main_dfi_p0_address[1]),
@@ -7006,12 +7006,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_4 of ALTDDIO_OUT Module.
+// Instance altddio_out_4 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_4 (
+	.width (1'd1)
+) altddio_out_4 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[2]),
 	.datain_l (main_dfi_p0_address[2]),
@@ -7022,12 +7022,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_5 of ALTDDIO_OUT Module.
+// Instance altddio_out_5 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_5 (
+	.width (1'd1)
+) altddio_out_5 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[3]),
 	.datain_l (main_dfi_p0_address[3]),
@@ -7038,12 +7038,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_6 of ALTDDIO_OUT Module.
+// Instance altddio_out_6 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_6 (
+	.width (1'd1)
+) altddio_out_6 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[4]),
 	.datain_l (main_dfi_p0_address[4]),
@@ -7054,12 +7054,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_7 of ALTDDIO_OUT Module.
+// Instance altddio_out_7 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_7 (
+	.width (1'd1)
+) altddio_out_7 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[5]),
 	.datain_l (main_dfi_p0_address[5]),
@@ -7070,12 +7070,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_8 of ALTDDIO_OUT Module.
+// Instance altddio_out_8 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_8 (
+	.width (1'd1)
+) altddio_out_8 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[6]),
 	.datain_l (main_dfi_p0_address[6]),
@@ -7086,12 +7086,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_9 of ALTDDIO_OUT Module.
+// Instance altddio_out_9 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_9 (
+	.width (1'd1)
+) altddio_out_9 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[7]),
 	.datain_l (main_dfi_p0_address[7]),
@@ -7102,12 +7102,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_10 of ALTDDIO_OUT Module.
+// Instance altddio_out_10 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_10 (
+	.width (1'd1)
+) altddio_out_10 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[8]),
 	.datain_l (main_dfi_p0_address[8]),
@@ -7118,12 +7118,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_11 of ALTDDIO_OUT Module.
+// Instance altddio_out_11 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_11 (
+	.width (1'd1)
+) altddio_out_11 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[9]),
 	.datain_l (main_dfi_p0_address[9]),
@@ -7134,12 +7134,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_12 of ALTDDIO_OUT Module.
+// Instance altddio_out_12 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_12 (
+	.width (1'd1)
+) altddio_out_12 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[10]),
 	.datain_l (main_dfi_p0_address[10]),
@@ -7150,12 +7150,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_13 of ALTDDIO_OUT Module.
+// Instance altddio_out_13 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_13 (
+	.width (1'd1)
+) altddio_out_13 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[11]),
 	.datain_l (main_dfi_p0_address[11]),
@@ -7166,12 +7166,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_14 of ALTDDIO_OUT Module.
+// Instance altddio_out_14 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_14 (
+	.width (1'd1)
+) altddio_out_14 (
 	// Inputs.
 	.datain_h (main_dfi_p0_address[12]),
 	.datain_l (main_dfi_p0_address[12]),
@@ -7182,12 +7182,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_15 of ALTDDIO_OUT Module.
+// Instance altddio_out_15 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_15 (
+	.width (1'd1)
+) altddio_out_15 (
 	// Inputs.
 	.datain_h (main_dfi_p0_bank[0]),
 	.datain_l (main_dfi_p0_bank[0]),
@@ -7198,12 +7198,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_16 of ALTDDIO_OUT Module.
+// Instance altddio_out_16 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_16 (
+	.width (1'd1)
+) altddio_out_16 (
 	// Inputs.
 	.datain_h (main_dfi_p0_bank[1]),
 	.datain_l (main_dfi_p0_bank[1]),
@@ -7214,12 +7214,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_17 of ALTDDIO_OUT Module.
+// Instance altddio_out_17 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_17 (
+	.width (1'd1)
+) altddio_out_17 (
 	// Inputs.
 	.datain_h (main_dfi_p0_ras_n),
 	.datain_l (main_dfi_p0_ras_n),
@@ -7230,12 +7230,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_18 of ALTDDIO_OUT Module.
+// Instance altddio_out_18 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_18 (
+	.width (1'd1)
+) altddio_out_18 (
 	// Inputs.
 	.datain_h (main_dfi_p0_cas_n),
 	.datain_l (main_dfi_p0_cas_n),
@@ -7246,12 +7246,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_19 of ALTDDIO_OUT Module.
+// Instance altddio_out_19 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_19 (
+	.width (1'd1)
+) altddio_out_19 (
 	// Inputs.
 	.datain_h (main_dfi_p0_we_n),
 	.datain_l (main_dfi_p0_we_n),
@@ -7262,12 +7262,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_20 of ALTDDIO_OUT Module.
+// Instance altddio_out_20 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_20 (
+	.width (1'd1)
+) altddio_out_20 (
 	// Inputs.
 	.datain_h (main_dfi_p0_cke),
 	.datain_l (main_dfi_p0_cke),
@@ -7326,12 +7326,12 @@ assign sdram_dq[15] = builder_impl_inferedsdrtristate15_oe ? builder_impl_infere
 assign builder_impl_inferedsdrtristate15 = sdram_dq[15];
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_21 of ALTDDIO_OUT Module.
+// Instance altddio_out_21 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_21 (
+	.width (1'd1)
+) altddio_out_21 (
 	// Inputs.
 	.datain_h ((main_dfi_p0_wrdata_en & main_dfi_p0_wrdata_mask[0])),
 	.datain_l ((main_dfi_p0_wrdata_en & main_dfi_p0_wrdata_mask[0])),
@@ -7342,12 +7342,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_22 of ALTDDIO_OUT Module.
+// Instance altddio_out_22 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_22 (
+	.width (1'd1)
+) altddio_out_22 (
 	// Inputs.
 	.datain_h ((main_dfi_p0_wrdata_en & main_dfi_p0_wrdata_mask[1])),
 	.datain_l ((main_dfi_p0_wrdata_en & main_dfi_p0_wrdata_mask[1])),
@@ -7358,12 +7358,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_23 of ALTDDIO_OUT Module.
+// Instance altddio_out_23 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_23 (
+	.width (1'd1)
+) altddio_out_23 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[0]),
 	.datain_l (main_dfi_p0_wrdata[0]),
@@ -7374,12 +7374,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN of ALTDDIO_IN Module.
+// Instance altddio_in of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN (
+	.width (1'd1)
+) altddio_in (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate0),
 	.inclock   (sys_clk),
@@ -7390,12 +7390,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_24 of ALTDDIO_OUT Module.
+// Instance altddio_out_24 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_24 (
+	.width (1'd1)
+) altddio_out_24 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[1]),
 	.datain_l (main_dfi_p0_wrdata[1]),
@@ -7406,12 +7406,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_1 of ALTDDIO_IN Module.
+// Instance altddio_in_1 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_1 (
+	.width (1'd1)
+) altddio_in_1 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate1),
 	.inclock   (sys_clk),
@@ -7422,12 +7422,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_25 of ALTDDIO_OUT Module.
+// Instance altddio_out_25 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_25 (
+	.width (1'd1)
+) altddio_out_25 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[2]),
 	.datain_l (main_dfi_p0_wrdata[2]),
@@ -7438,12 +7438,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_2 of ALTDDIO_IN Module.
+// Instance altddio_in_2 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_2 (
+	.width (1'd1)
+) altddio_in_2 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate2),
 	.inclock   (sys_clk),
@@ -7454,12 +7454,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_26 of ALTDDIO_OUT Module.
+// Instance altddio_out_26 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_26 (
+	.width (1'd1)
+) altddio_out_26 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[3]),
 	.datain_l (main_dfi_p0_wrdata[3]),
@@ -7470,12 +7470,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_3 of ALTDDIO_IN Module.
+// Instance altddio_in_3 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_3 (
+	.width (1'd1)
+) altddio_in_3 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate3),
 	.inclock   (sys_clk),
@@ -7486,12 +7486,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_27 of ALTDDIO_OUT Module.
+// Instance altddio_out_27 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_27 (
+	.width (1'd1)
+) altddio_out_27 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[4]),
 	.datain_l (main_dfi_p0_wrdata[4]),
@@ -7502,12 +7502,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_4 of ALTDDIO_IN Module.
+// Instance altddio_in_4 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_4 (
+	.width (1'd1)
+) altddio_in_4 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate4),
 	.inclock   (sys_clk),
@@ -7518,12 +7518,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_28 of ALTDDIO_OUT Module.
+// Instance altddio_out_28 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_28 (
+	.width (1'd1)
+) altddio_out_28 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[5]),
 	.datain_l (main_dfi_p0_wrdata[5]),
@@ -7534,12 +7534,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_5 of ALTDDIO_IN Module.
+// Instance altddio_in_5 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_5 (
+	.width (1'd1)
+) altddio_in_5 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate5),
 	.inclock   (sys_clk),
@@ -7550,12 +7550,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_29 of ALTDDIO_OUT Module.
+// Instance altddio_out_29 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_29 (
+	.width (1'd1)
+) altddio_out_29 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[6]),
 	.datain_l (main_dfi_p0_wrdata[6]),
@@ -7566,12 +7566,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_6 of ALTDDIO_IN Module.
+// Instance altddio_in_6 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_6 (
+	.width (1'd1)
+) altddio_in_6 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate6),
 	.inclock   (sys_clk),
@@ -7582,12 +7582,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_30 of ALTDDIO_OUT Module.
+// Instance altddio_out_30 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_30 (
+	.width (1'd1)
+) altddio_out_30 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[7]),
 	.datain_l (main_dfi_p0_wrdata[7]),
@@ -7598,12 +7598,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_7 of ALTDDIO_IN Module.
+// Instance altddio_in_7 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_7 (
+	.width (1'd1)
+) altddio_in_7 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate7),
 	.inclock   (sys_clk),
@@ -7614,12 +7614,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_31 of ALTDDIO_OUT Module.
+// Instance altddio_out_31 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_31 (
+	.width (1'd1)
+) altddio_out_31 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[8]),
 	.datain_l (main_dfi_p0_wrdata[8]),
@@ -7630,12 +7630,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_8 of ALTDDIO_IN Module.
+// Instance altddio_in_8 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_8 (
+	.width (1'd1)
+) altddio_in_8 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate8),
 	.inclock   (sys_clk),
@@ -7646,12 +7646,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_32 of ALTDDIO_OUT Module.
+// Instance altddio_out_32 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_32 (
+	.width (1'd1)
+) altddio_out_32 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[9]),
 	.datain_l (main_dfi_p0_wrdata[9]),
@@ -7662,12 +7662,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_9 of ALTDDIO_IN Module.
+// Instance altddio_in_9 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_9 (
+	.width (1'd1)
+) altddio_in_9 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate9),
 	.inclock   (sys_clk),
@@ -7678,12 +7678,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_33 of ALTDDIO_OUT Module.
+// Instance altddio_out_33 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_33 (
+	.width (1'd1)
+) altddio_out_33 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[10]),
 	.datain_l (main_dfi_p0_wrdata[10]),
@@ -7694,12 +7694,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_10 of ALTDDIO_IN Module.
+// Instance altddio_in_10 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_10 (
+	.width (1'd1)
+) altddio_in_10 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate10),
 	.inclock   (sys_clk),
@@ -7710,12 +7710,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_34 of ALTDDIO_OUT Module.
+// Instance altddio_out_34 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_34 (
+	.width (1'd1)
+) altddio_out_34 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[11]),
 	.datain_l (main_dfi_p0_wrdata[11]),
@@ -7726,12 +7726,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_11 of ALTDDIO_IN Module.
+// Instance altddio_in_11 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_11 (
+	.width (1'd1)
+) altddio_in_11 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate11),
 	.inclock   (sys_clk),
@@ -7742,12 +7742,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_35 of ALTDDIO_OUT Module.
+// Instance altddio_out_35 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_35 (
+	.width (1'd1)
+) altddio_out_35 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[12]),
 	.datain_l (main_dfi_p0_wrdata[12]),
@@ -7758,12 +7758,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_12 of ALTDDIO_IN Module.
+// Instance altddio_in_12 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_12 (
+	.width (1'd1)
+) altddio_in_12 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate12),
 	.inclock   (sys_clk),
@@ -7774,12 +7774,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_36 of ALTDDIO_OUT Module.
+// Instance altddio_out_36 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_36 (
+	.width (1'd1)
+) altddio_out_36 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[13]),
 	.datain_l (main_dfi_p0_wrdata[13]),
@@ -7790,12 +7790,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_13 of ALTDDIO_IN Module.
+// Instance altddio_in_13 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_13 (
+	.width (1'd1)
+) altddio_in_13 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate13),
 	.inclock   (sys_clk),
@@ -7806,12 +7806,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_37 of ALTDDIO_OUT Module.
+// Instance altddio_out_37 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_37 (
+	.width (1'd1)
+) altddio_out_37 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[14]),
 	.datain_l (main_dfi_p0_wrdata[14]),
@@ -7822,12 +7822,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_14 of ALTDDIO_IN Module.
+// Instance altddio_in_14 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_14 (
+	.width (1'd1)
+) altddio_in_14 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate14),
 	.inclock   (sys_clk),
@@ -7838,12 +7838,12 @@ ALTDDIO_IN #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_OUT_38 of ALTDDIO_OUT Module.
+// Instance altddio_out_38 of altddio_out Module.
 //------------------------------------------------------------------------------
-ALTDDIO_OUT #(
+altddio_out #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_OUT_38 (
+	.width (1'd1)
+) altddio_out_38 (
 	// Inputs.
 	.datain_h (main_dfi_p0_wrdata[15]),
 	.datain_l (main_dfi_p0_wrdata[15]),
@@ -7854,12 +7854,12 @@ ALTDDIO_OUT #(
 );
 
 //------------------------------------------------------------------------------
-// Instance ALTDDIO_IN_15 of ALTDDIO_IN Module.
+// Instance altddio_in_15 of altddio_in Module.
 //------------------------------------------------------------------------------
-ALTDDIO_IN #(
+altddio_in #(
 	// Parameters.
-	.WIDTH (1'd1)
-) ALTDDIO_IN_15 (
+	.width (1'd1)
+) altddio_in_15 (
 	// Inputs.
 	.datain    (builder_impl_inferedsdrtristate15),
 	.inclock   (sys_clk),

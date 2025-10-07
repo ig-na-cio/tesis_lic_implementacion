@@ -61,7 +61,7 @@ module terasic_de0nano_propio_pl_tb();
       .cs_n(sdram_cs_n),
       .dm(sdram_dm),
       .dq(sdram_dq),
-      .ras_n(dram_ras_n),
+      .ras_n(sdram_ras_n),
       .we_n(sdram_we_n)
    ); */
 

@@ -132,5 +132,5 @@ set_global_assignment -name EDA_TEST_BENCH_NAME terasic_de0nano_propio_pl_tb -se
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id terasic_de0nano_propio_pl_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME terasic_de0nano_propio_pl_tb -section_id terasic_de0nano_propio_pl_tb
 set_global_assignment -name SYSTEMVERILOG_FILE ../sim/testbenches/sdram.sv
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name EDA_TEST_BENCH_FILE ../sim/testbenches/terasic_de0nano_propio_pl_tb.sv -section_id terasic_de0nano_propio_pl_tb
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
