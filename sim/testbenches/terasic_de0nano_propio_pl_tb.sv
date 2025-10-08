@@ -76,7 +76,7 @@ module terasic_de0nano_propio_pl_tb();
       $dumpfile("resultados.vcd");
       $dumpvars(0, terasic_de0nano_propio_pl_tb);
       #10000;
-      $finish;
+      //$finish;
    end
 
 endmodule

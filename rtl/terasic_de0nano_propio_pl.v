@@ -6207,7 +6207,7 @@ end
 // Port 0 | Read: Sync  | Write: ---- | 
 reg [7:0] mem[0:41];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_mem.init", mem);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_mem.init", mem);
 end
 reg [5:0] mem_adr0;
 always @(posedge sys_clk) begin
@@ -6763,7 +6763,7 @@ assign main_basesoc_data_port_dat_r[127:120] = data_mem_grain15[data_mem_grain15
 // Port 0 | Read: Sync  | Write: ---- | 
 reg [7:0] rom_grain0[0:767];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_rom_grain0.init", rom_grain0);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_rom_grain0.init", rom_grain0);
 end
 reg [7:0] rom_grain0_dat0;
 always @(posedge sys_clk) begin
@@ -6778,7 +6778,7 @@ assign main_basesoc_basesoc_dat_r[7:0] = rom_grain0_dat0;
 // Port 0 | Read: Sync  | Write: ---- | 
 reg [7:0] rom_grain1[0:767];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_rom_grain1.init", rom_grain1);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_rom_grain1.init", rom_grain1);
 end
 reg [7:0] rom_grain1_dat0;
 always @(posedge sys_clk) begin
@@ -6793,7 +6793,7 @@ assign main_basesoc_basesoc_dat_r[15:8] = rom_grain1_dat0;
 // Port 0 | Read: Sync  | Write: ---- | 
 reg [7:0] rom_grain2[0:767];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_rom_grain2.init", rom_grain2);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_rom_grain2.init", rom_grain2);
 end
 reg [7:0] rom_grain2_dat0;
 always @(posedge sys_clk) begin
@@ -6808,7 +6808,7 @@ assign main_basesoc_basesoc_dat_r[23:16] = rom_grain2_dat0;
 // Port 0 | Read: Sync  | Write: ---- | 
 reg [7:0] rom_grain3[0:767];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_rom_grain3.init", rom_grain3);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_rom_grain3.init", rom_grain3);
 end
 reg [7:0] rom_grain3_dat0;
 always @(posedge sys_clk) begin
@@ -6823,7 +6823,7 @@ assign main_basesoc_basesoc_dat_r[31:24] = rom_grain3_dat0;
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
 reg [7:0] sram_grain0[0:2047];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_sram_grain0.init", sram_grain0);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_sram_grain0.init", sram_grain0);
 end
 reg [10:0] sram_grain0_adr0;
 always @(posedge sys_clk) begin
@@ -6840,7 +6840,7 @@ assign main_basesoc_ram_dat_r[7:0] = sram_grain0[sram_grain0_adr0];
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
 reg [7:0] sram_grain1[0:2047];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_sram_grain1.init", sram_grain1);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_sram_grain1.init", sram_grain1);
 end
 reg [10:0] sram_grain1_adr0;
 always @(posedge sys_clk) begin
@@ -6857,7 +6857,7 @@ assign main_basesoc_ram_dat_r[15:8] = sram_grain1[sram_grain1_adr0];
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
 reg [7:0] sram_grain2[0:2047];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_sram_grain2.init", sram_grain2);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_sram_grain2.init", sram_grain2);
 end
 reg [10:0] sram_grain2_adr0;
 always @(posedge sys_clk) begin
@@ -6874,7 +6874,7 @@ assign main_basesoc_ram_dat_r[23:16] = sram_grain2[sram_grain2_adr0];
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
 reg [7:0] sram_grain3[0:2047];
 initial begin
-	$readmemh("terasic_de0nano_propio_pl_sram_grain3.init", sram_grain3);
+	$readmemh("initfiles/terasic_de0nano_propio_pl_sram_grain3.init", sram_grain3);
 end
 reg [10:0] sram_grain3_adr0;
 always @(posedge sys_clk) begin
