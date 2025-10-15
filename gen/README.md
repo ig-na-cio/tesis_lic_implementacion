@@ -60,3 +60,48 @@ $ ./terasic_de0nano_propio.py --build
 ```
 
 6. Tenemos el proyecto de Quartus y archivos HDL y de inicializacion listos en targets/build.
+
+
+
+
+
+
+# Linux on VexRiscv Litex
+
+Modificaciones por ahora
+``` Python
+# SPI SD Card
+    ("spisdcard", 0,
+        Subsignal("mosi",   Pins("D3")),    # De GPIO 0
+        Subsignal("miso",   Pins("C3")),    # De GPIO 0
+        Subsignal("cs_n",   Pins("A2")),    # De GPIO 0
+        Subsignal("clk",    Pins("A3")),    # De GPIO 0
+        IOStandard("3.3-V LVTTL")
+    ),
+    
+```
+
+Eso va en platforms/de0nano
+
+Y en el boards.py
+``` Python
+Board.__init__(self, terasic_de0nano.BaseSoC, soc_capabilities={
+            # Communication
+            "serial",
+            "spisdcard" #nuevo
+        })
+```
+        
+        
+  Esto agrega Spi por CSR.
+        
+Ademas cambie esto porque sino no entraba en la FPGA
+``` Python
+soc_kwargs = {
+        "l2_size" : 256, # Use Wishbone and L2 for memory accesses.
+        "integrated_sram_size": 0x1000, # Power of 2 so Quartus infers it properly.
+    }
+    
+```
+
+Recordar hacer el prepareverilogs y ademas para simular poner los rom init en la carpeta de simulation/modelsim. Por cierto agregar la SDcard duplico los elementos logicos y registros me parece.

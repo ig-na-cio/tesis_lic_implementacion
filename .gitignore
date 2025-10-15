@@ -17,6 +17,11 @@ quartus/*.sld
 quartus/*.svf
 quartus/*.bak
 
+quartus/initfiles/*.bin
+quartus/initfiles/*.elf
+quartus/initfiles/*.hex
+quartus/initfiles/*.o
+
 rtl/*.bak
 
 sim/rtl/*.bak
