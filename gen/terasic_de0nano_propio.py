@@ -107,6 +107,8 @@ class BaseSoC(SoCCore):
 
         # BootROM
         # Por parametros
+        self.add_rom("bootrom", 0x20000000, 2**10, contents=get_mem_data("bootrom.bin", endianness="little"))
+        self.add_constant("ROM_BOOT_ADDRESS", 0x20000000)
 
         # SD Card via SPI
         if with_spi_sdcard:
@@ -160,8 +162,8 @@ def main():
 
     # Parametros que no queremos por defecto de soc_core.py
     soc_args = parser.soc_argdict
-    soc_args.pop("integrated_rom_size", None)
-    soc_args.pop("integrated_rom_init", None)
+    #soc_args.pop("integrated_rom_size", None)
+    #soc_args.pop("integrated_rom_init", None)
     soc_args.pop("mem_map", None)
     soc_args.pop("integrated_main_ram_size", None)
     soc_args.pop("integrated_main_ram_init", None)
@@ -256,8 +258,8 @@ def main():
         #-----------------------------------------------------
 
         # Bootrom
-        integrated_rom_size = 0x400, # En bytes (1KB) Puedo poner 1024 tambien
-        integrated_rom_init = None, #init_bootrom.hex,
+        #integrated_rom_size = 0x400, # En bytes (1KB) Puedo poner 1024 tambien
+        #integrated_rom_init = None, #init_bootrom.hex,
 
         # SDRAM
         integrated_main_ram_size = 0, # Definimos que no haya memoria integrada...

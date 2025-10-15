@@ -8,7 +8,7 @@ module terasic_de0nano_propio_pl_tb();
    wire    [1:0] sdram_ba;
    wire          sdram_cas_n;
    wire          sdram_cke;
-   wire          sdram_cloc;
+   wire          sdram_clock;
    wire          sdram_cs_n;
    wire    [1:0] sdram_dm;
    wire   [15:0] sdram_dq;
@@ -24,14 +24,14 @@ module terasic_de0nano_propio_pl_tb();
 	terasic_de0nano_propio_pl dut (
 		.clk50(clk50),
 		.sdram_a(sdram_a),
-      .sdram_ba(sdram_b),
+      .sdram_ba(sdram_ba),
       .sdram_cas_n(sdram_cas_n),
       .sdram_cke(sdram_cke),
       .sdram_clock(sdram_clock),
       .sdram_cs_n(sdram_cs_n),
       .sdram_dm(sdram_dm),
       .sdram_dq(sdram_dq),
-      .sdram_ras_n(dram_ras_n),
+      .sdram_ras_n(sdram_ras_n),
       .sdram_we_n(sdram_we_n),
       .serial_rx(serial_rx),
       .serial_tx(serial_tx),
@@ -49,12 +49,10 @@ module terasic_de0nano_propio_pl_tb();
       .user_led7()
    );
 
-
-   //Modelo sdram
-   /*
+   
 	sdram SDRAM (
 		.a(sdram_a),
-      .ba(sdram_b),
+      .ba(sdram_ba),
       .cas_n(sdram_cas_n),
       .cke(sdram_cke),
       .clock(sdram_clock),
@@ -63,20 +61,15 @@ module terasic_de0nano_propio_pl_tb();
       .dq(sdram_dq),
       .ras_n(sdram_ras_n),
       .we_n(sdram_we_n)
-   ); */
+   );
 
 
    always #10 clk50 = ~clk50;
    
    initial begin
-      #100 reset = 0;
+      #10 reset = 0;
    end
 
-   initial begin
-      $dumpfile("resultados.vcd");
-      $dumpvars(0, terasic_de0nano_propio_pl_tb);
-      #10000;
-      //$finish;
-   end
+  
 
 endmodule
