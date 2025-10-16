@@ -12,10 +12,11 @@ quartus/*.summary
 quartus/*.jdi
 quartus/*.pin
 quartus/*.rbf
-quartus/*.sdc
+# quartus/*.sdc
 quartus/*.sld
 quartus/*.svf
 quartus/*.bak
+quartus/qar_info.json
 
 quartus/first/*.sof
 quartus/first/*.rpt

@@ -3,7 +3,7 @@
 # Este Script modifica todas las ocurrencias necesarias en los 
 # .v para que puedan ser simulables.
 
-soc_file = "de0nano.v"
+soc_file = "../rtl/de0nano.v"
 
 
 # Agreguese toda aquella que resulte en un error de simulacion
