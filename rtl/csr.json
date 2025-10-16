@@ -5,7 +5,8 @@
         "uart": 4026535936,
         "timer0": 4026537984,
         "leds": 4026540032,
-        "sdram": 4026542080
+        "sdram": 4026542080,
+        "spisdcard": 4026544128
     },
     "csr_registers": {
         "ctrl_reset": {
@@ -142,6 +143,41 @@
             "addr": 4026542104,
             "size": 1,
             "type": "ro"
+        },
+        "spisdcard_control": {
+            "addr": 4026544128,
+            "size": 1,
+            "type": "rw"
+        },
+        "spisdcard_status": {
+            "addr": 4026544132,
+            "size": 1,
+            "type": "ro"
+        },
+        "spisdcard_mosi": {
+            "addr": 4026544136,
+            "size": 1,
+            "type": "rw"
+        },
+        "spisdcard_miso": {
+            "addr": 4026544140,
+            "size": 1,
+            "type": "ro"
+        },
+        "spisdcard_cs": {
+            "addr": 4026544144,
+            "size": 1,
+            "type": "rw"
+        },
+        "spisdcard_loopback": {
+            "addr": 4026544148,
+            "size": 1,
+            "type": "rw"
+        },
+        "spisdcard_clk_divider": {
+            "addr": 4026544152,
+            "size": 1,
+            "type": "rw"
         }
     },
     "constants": {
@@ -170,7 +206,7 @@
         "config_cpu_nop": "nop",
         "config_bios_no_build_time": null,
         "config_identifier": "litex soc on de0-nano",
-        "config_l2_size": 2048,
+        "config_l2_size": 256,
         "config_csr_data_width": 32,
         "config_csr_alignment": 32,
         "config_csr_ordering_big": null,

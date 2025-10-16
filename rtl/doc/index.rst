@@ -24,6 +24,7 @@ Register Groups
     timer0
     leds
     sdram
+    spisdcard
 
 Indices and tables
 ==================

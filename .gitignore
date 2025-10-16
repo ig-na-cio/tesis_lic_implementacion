@@ -17,6 +17,7 @@ quartus/*.sld
 quartus/*.svf
 quartus/*.bak
 quartus/qar_info.json
+quartus/*.qws
 
 quartus/first/*.sof
 quartus/first/*.rpt

@@ -9,7 +9,7 @@
 // Filename   : de0nano.v
 // Device     : EP4CE22F17C6
 // LiteX sha1 : 6d10d8175
-// Date       : 2025-10-16 14:21:33
+// Date       : 2025-10-16 14:57:17
 //------------------------------------------------------------------------------
 
 `timescale 1ns / 1ps
@@ -32,6 +32,10 @@ module de0nano (
     output wire          sdram_we_n,
     input  wire          serial_rx,
     output reg           serial_tx,
+    output reg           spisdcard_clk,
+    output reg           spisdcard_cs_n,
+    input  wire          spisdcard_miso,
+    output reg           spisdcard_mosi,
     output wire          user_led0,
     output wire          user_led1,
     output wire          user_led2,
@@ -51,15 +55,15 @@ module de0nano (
 _SoCLinux
 └─── crg (_CRG)
 │    └─── pll (CycloneIVPLL)
+│    │    └─── [DFFE]
+│    │    └─── [DFFE]
+│    │    └─── [DFFE]
+│    │    └─── [DFFE]
+│    │    └─── [DFFE]
+│    │    └─── [DFFE]
+│    │    └─── [DFFE]
+│    │    └─── [DFFE]
 │    │    └─── [ALTPLL]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
-│    │    └─── [DFFE]
 └─── bus (SoCBusHandler)
 │    └─── _interconnect (InterconnectShared)
 │    │    └─── arbiter (Arbiter)
@@ -179,6 +183,8 @@ _SoCLinux
 │    └─── fsm (FSM)
 └─── leds (LedChaser)
 │    └─── waittimer_0* (WaitTimer)
+└─── spisdcard (SPIMaster)
+│    └─── fsm (FSM)
 └─── csr_bridge (Wishbone2CSR)
 │    └─── fsm (FSM)
 └─── csr_bankarray (CSRBankArray)
@@ -198,6 +204,14 @@ _SoCLinux
 │    │    └─── csrstatus_0* (CSRStatus)
 │    └─── csrbank_3* (CSRBank)
 │    │    └─── csrstorage_0* (CSRStorage)
+│    │    └─── csrstatus_0* (CSRStatus)
+│    │    └─── csrstorage_1* (CSRStorage)
+│    │    └─── csrstatus_1* (CSRStatus)
+│    │    └─── csrstorage_2* (CSRStorage)
+│    │    └─── csrstorage_3* (CSRStorage)
+│    │    └─── csrstorage_4* (CSRStorage)
+│    └─── csrbank_4* (CSRBank)
+│    │    └─── csrstorage_0* (CSRStorage)
 │    │    └─── csrstorage_1* (CSRStorage)
 │    │    └─── csrstorage_2* (CSRStorage)
 │    │    └─── csrstorage_3* (CSRStorage)
@@ -205,7 +219,7 @@ _SoCLinux
 │    │    └─── csrstatus_1* (CSRStatus)
 │    │    └─── csrstatus_2* (CSRStatus)
 │    │    └─── csrstorage_4* (CSRStorage)
-│    └─── csrbank_4* (CSRBank)
+│    └─── csrbank_5* (CSRBank)
 │    │    └─── csrstatus_0* (CSRStatus)
 │    │    └─── csrstatus_1* (CSRStatus)
 │    │    └─── csrstatus_2* (CSRStatus)
@@ -216,8 +230,18 @@ _SoCLinux
 └─── csr_interconnect (InterconnectShared)
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_IN]
+└─── [DFF]
+└─── [DFF]
+└─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
@@ -238,39 +262,29 @@ _SoCLinux
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
-└─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_IN]
-└─── [ALTDDIO_IN]
 └─── [ALTDDIO_OUT]
-└─── [ALTDDIO_IN]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
+└─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [DFF]
 └─── [DFF]
-└─── [DFF]
-└─── [DFF]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
-└─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 └─── [ALTDDIO_OUT]
 * : Generated name.
@@ -292,6 +306,44 @@ reg     [2:0] builder_bankmachine2_state = 3'd0;
 reg     [2:0] builder_bankmachine3_next_state = 3'd0;
 reg     [2:0] builder_bankmachine3_state = 3'd0;
 wire    [1:0] builder_clks;
+reg    [29:0] builder_comb_rhs_self0 = 30'd0;
+reg    [31:0] builder_comb_rhs_self1 = 32'd0;
+reg     [1:0] builder_comb_rhs_self10 = 2'd0;
+reg           builder_comb_rhs_self11 = 1'd0;
+reg           builder_comb_rhs_self12 = 1'd0;
+reg           builder_comb_rhs_self13 = 1'd0;
+reg           builder_comb_rhs_self14 = 1'd0;
+reg    [12:0] builder_comb_rhs_self15 = 13'd0;
+reg     [1:0] builder_comb_rhs_self16 = 2'd0;
+reg           builder_comb_rhs_self17 = 1'd0;
+reg           builder_comb_rhs_self18 = 1'd0;
+reg           builder_comb_rhs_self19 = 1'd0;
+reg     [3:0] builder_comb_rhs_self2 = 4'd0;
+reg    [21:0] builder_comb_rhs_self20 = 22'd0;
+reg           builder_comb_rhs_self21 = 1'd0;
+reg           builder_comb_rhs_self22 = 1'd0;
+reg    [21:0] builder_comb_rhs_self23 = 22'd0;
+reg           builder_comb_rhs_self24 = 1'd0;
+reg           builder_comb_rhs_self25 = 1'd0;
+reg    [21:0] builder_comb_rhs_self26 = 22'd0;
+reg           builder_comb_rhs_self27 = 1'd0;
+reg           builder_comb_rhs_self28 = 1'd0;
+reg    [21:0] builder_comb_rhs_self29 = 22'd0;
+reg           builder_comb_rhs_self3 = 1'd0;
+reg           builder_comb_rhs_self30 = 1'd0;
+reg           builder_comb_rhs_self31 = 1'd0;
+reg           builder_comb_rhs_self4 = 1'd0;
+reg           builder_comb_rhs_self5 = 1'd0;
+reg     [2:0] builder_comb_rhs_self6 = 3'd0;
+reg     [1:0] builder_comb_rhs_self7 = 2'd0;
+reg           builder_comb_rhs_self8 = 1'd0;
+reg    [12:0] builder_comb_rhs_self9 = 13'd0;
+reg           builder_comb_t_self0 = 1'd0;
+reg           builder_comb_t_self1 = 1'd0;
+reg           builder_comb_t_self2 = 1'd0;
+reg           builder_comb_t_self3 = 1'd0;
+reg           builder_comb_t_self4 = 1'd0;
+reg           builder_comb_t_self5 = 1'd0;
 reg    [19:0] builder_count = 20'd1000000;
 wire    [4:0] builder_csr_bankarray_adr;
 wire   [31:0] builder_csr_bankarray_csrbank0_bus_errors_r;
@@ -337,68 +389,97 @@ reg           builder_csr_bankarray_csrbank2_dfii_pi0_wrdata0_re = 1'd0;
 wire   [15:0] builder_csr_bankarray_csrbank2_dfii_pi0_wrdata0_w;
 reg           builder_csr_bankarray_csrbank2_dfii_pi0_wrdata0_we = 1'd0;
 wire          builder_csr_bankarray_csrbank2_sel;
-wire          builder_csr_bankarray_csrbank3_en0_r;
-reg           builder_csr_bankarray_csrbank3_en0_re = 1'd0;
-wire          builder_csr_bankarray_csrbank3_en0_w;
-reg           builder_csr_bankarray_csrbank3_en0_we = 1'd0;
-wire          builder_csr_bankarray_csrbank3_ev_enable0_r;
-reg           builder_csr_bankarray_csrbank3_ev_enable0_re = 1'd0;
-wire          builder_csr_bankarray_csrbank3_ev_enable0_w;
-reg           builder_csr_bankarray_csrbank3_ev_enable0_we = 1'd0;
-wire          builder_csr_bankarray_csrbank3_ev_pending_r;
-reg           builder_csr_bankarray_csrbank3_ev_pending_re = 1'd0;
-wire          builder_csr_bankarray_csrbank3_ev_pending_w;
-reg           builder_csr_bankarray_csrbank3_ev_pending_we = 1'd0;
-wire          builder_csr_bankarray_csrbank3_ev_status_r;
-reg           builder_csr_bankarray_csrbank3_ev_status_re = 1'd0;
-wire          builder_csr_bankarray_csrbank3_ev_status_w;
-reg           builder_csr_bankarray_csrbank3_ev_status_we = 1'd0;
-wire   [31:0] builder_csr_bankarray_csrbank3_load0_r;
-reg           builder_csr_bankarray_csrbank3_load0_re = 1'd0;
-wire   [31:0] builder_csr_bankarray_csrbank3_load0_w;
-reg           builder_csr_bankarray_csrbank3_load0_we = 1'd0;
-wire   [31:0] builder_csr_bankarray_csrbank3_reload0_r;
-reg           builder_csr_bankarray_csrbank3_reload0_re = 1'd0;
-wire   [31:0] builder_csr_bankarray_csrbank3_reload0_w;
-reg           builder_csr_bankarray_csrbank3_reload0_we = 1'd0;
+wire   [15:0] builder_csr_bankarray_csrbank3_clk_divider0_r;
+reg           builder_csr_bankarray_csrbank3_clk_divider0_re = 1'd0;
+wire   [15:0] builder_csr_bankarray_csrbank3_clk_divider0_w;
+reg           builder_csr_bankarray_csrbank3_clk_divider0_we = 1'd0;
+wire   [15:0] builder_csr_bankarray_csrbank3_control0_r;
+reg           builder_csr_bankarray_csrbank3_control0_re = 1'd0;
+wire   [15:0] builder_csr_bankarray_csrbank3_control0_w;
+reg           builder_csr_bankarray_csrbank3_control0_we = 1'd0;
+wire   [16:0] builder_csr_bankarray_csrbank3_cs0_r;
+reg           builder_csr_bankarray_csrbank3_cs0_re = 1'd0;
+wire   [16:0] builder_csr_bankarray_csrbank3_cs0_w;
+reg           builder_csr_bankarray_csrbank3_cs0_we = 1'd0;
+wire          builder_csr_bankarray_csrbank3_loopback0_r;
+reg           builder_csr_bankarray_csrbank3_loopback0_re = 1'd0;
+wire          builder_csr_bankarray_csrbank3_loopback0_w;
+reg           builder_csr_bankarray_csrbank3_loopback0_we = 1'd0;
+wire    [7:0] builder_csr_bankarray_csrbank3_miso_r;
+reg           builder_csr_bankarray_csrbank3_miso_re = 1'd0;
+wire    [7:0] builder_csr_bankarray_csrbank3_miso_w;
+reg           builder_csr_bankarray_csrbank3_miso_we = 1'd0;
+wire    [7:0] builder_csr_bankarray_csrbank3_mosi0_r;
+reg           builder_csr_bankarray_csrbank3_mosi0_re = 1'd0;
+wire    [7:0] builder_csr_bankarray_csrbank3_mosi0_w;
+reg           builder_csr_bankarray_csrbank3_mosi0_we = 1'd0;
 wire          builder_csr_bankarray_csrbank3_sel;
-wire          builder_csr_bankarray_csrbank3_update_value0_r;
-reg           builder_csr_bankarray_csrbank3_update_value0_re = 1'd0;
-wire          builder_csr_bankarray_csrbank3_update_value0_w;
-reg           builder_csr_bankarray_csrbank3_update_value0_we = 1'd0;
-wire   [31:0] builder_csr_bankarray_csrbank3_value_r;
-reg           builder_csr_bankarray_csrbank3_value_re = 1'd0;
-wire   [31:0] builder_csr_bankarray_csrbank3_value_w;
-reg           builder_csr_bankarray_csrbank3_value_we = 1'd0;
-wire    [1:0] builder_csr_bankarray_csrbank4_ev_enable0_r;
+wire    [1:0] builder_csr_bankarray_csrbank3_status_r;
+reg           builder_csr_bankarray_csrbank3_status_re = 1'd0;
+wire    [1:0] builder_csr_bankarray_csrbank3_status_w;
+reg           builder_csr_bankarray_csrbank3_status_we = 1'd0;
+wire          builder_csr_bankarray_csrbank4_en0_r;
+reg           builder_csr_bankarray_csrbank4_en0_re = 1'd0;
+wire          builder_csr_bankarray_csrbank4_en0_w;
+reg           builder_csr_bankarray_csrbank4_en0_we = 1'd0;
+wire          builder_csr_bankarray_csrbank4_ev_enable0_r;
 reg           builder_csr_bankarray_csrbank4_ev_enable0_re = 1'd0;
-wire    [1:0] builder_csr_bankarray_csrbank4_ev_enable0_w;
+wire          builder_csr_bankarray_csrbank4_ev_enable0_w;
 reg           builder_csr_bankarray_csrbank4_ev_enable0_we = 1'd0;
-wire    [1:0] builder_csr_bankarray_csrbank4_ev_pending_r;
+wire          builder_csr_bankarray_csrbank4_ev_pending_r;
 reg           builder_csr_bankarray_csrbank4_ev_pending_re = 1'd0;
-wire    [1:0] builder_csr_bankarray_csrbank4_ev_pending_w;
+wire          builder_csr_bankarray_csrbank4_ev_pending_w;
 reg           builder_csr_bankarray_csrbank4_ev_pending_we = 1'd0;
-wire    [1:0] builder_csr_bankarray_csrbank4_ev_status_r;
+wire          builder_csr_bankarray_csrbank4_ev_status_r;
 reg           builder_csr_bankarray_csrbank4_ev_status_re = 1'd0;
-wire    [1:0] builder_csr_bankarray_csrbank4_ev_status_w;
+wire          builder_csr_bankarray_csrbank4_ev_status_w;
 reg           builder_csr_bankarray_csrbank4_ev_status_we = 1'd0;
-wire          builder_csr_bankarray_csrbank4_rxempty_r;
-reg           builder_csr_bankarray_csrbank4_rxempty_re = 1'd0;
-wire          builder_csr_bankarray_csrbank4_rxempty_w;
-reg           builder_csr_bankarray_csrbank4_rxempty_we = 1'd0;
-wire          builder_csr_bankarray_csrbank4_rxfull_r;
-reg           builder_csr_bankarray_csrbank4_rxfull_re = 1'd0;
-wire          builder_csr_bankarray_csrbank4_rxfull_w;
-reg           builder_csr_bankarray_csrbank4_rxfull_we = 1'd0;
+wire   [31:0] builder_csr_bankarray_csrbank4_load0_r;
+reg           builder_csr_bankarray_csrbank4_load0_re = 1'd0;
+wire   [31:0] builder_csr_bankarray_csrbank4_load0_w;
+reg           builder_csr_bankarray_csrbank4_load0_we = 1'd0;
+wire   [31:0] builder_csr_bankarray_csrbank4_reload0_r;
+reg           builder_csr_bankarray_csrbank4_reload0_re = 1'd0;
+wire   [31:0] builder_csr_bankarray_csrbank4_reload0_w;
+reg           builder_csr_bankarray_csrbank4_reload0_we = 1'd0;
 wire          builder_csr_bankarray_csrbank4_sel;
-wire          builder_csr_bankarray_csrbank4_txempty_r;
-reg           builder_csr_bankarray_csrbank4_txempty_re = 1'd0;
-wire          builder_csr_bankarray_csrbank4_txempty_w;
-reg           builder_csr_bankarray_csrbank4_txempty_we = 1'd0;
-wire          builder_csr_bankarray_csrbank4_txfull_r;
-reg           builder_csr_bankarray_csrbank4_txfull_re = 1'd0;
-wire          builder_csr_bankarray_csrbank4_txfull_w;
-reg           builder_csr_bankarray_csrbank4_txfull_we = 1'd0;
+wire          builder_csr_bankarray_csrbank4_update_value0_r;
+reg           builder_csr_bankarray_csrbank4_update_value0_re = 1'd0;
+wire          builder_csr_bankarray_csrbank4_update_value0_w;
+reg           builder_csr_bankarray_csrbank4_update_value0_we = 1'd0;
+wire   [31:0] builder_csr_bankarray_csrbank4_value_r;
+reg           builder_csr_bankarray_csrbank4_value_re = 1'd0;
+wire   [31:0] builder_csr_bankarray_csrbank4_value_w;
+reg           builder_csr_bankarray_csrbank4_value_we = 1'd0;
+wire    [1:0] builder_csr_bankarray_csrbank5_ev_enable0_r;
+reg           builder_csr_bankarray_csrbank5_ev_enable0_re = 1'd0;
+wire    [1:0] builder_csr_bankarray_csrbank5_ev_enable0_w;
+reg           builder_csr_bankarray_csrbank5_ev_enable0_we = 1'd0;
+wire    [1:0] builder_csr_bankarray_csrbank5_ev_pending_r;
+reg           builder_csr_bankarray_csrbank5_ev_pending_re = 1'd0;
+wire    [1:0] builder_csr_bankarray_csrbank5_ev_pending_w;
+reg           builder_csr_bankarray_csrbank5_ev_pending_we = 1'd0;
+wire    [1:0] builder_csr_bankarray_csrbank5_ev_status_r;
+reg           builder_csr_bankarray_csrbank5_ev_status_re = 1'd0;
+wire    [1:0] builder_csr_bankarray_csrbank5_ev_status_w;
+reg           builder_csr_bankarray_csrbank5_ev_status_we = 1'd0;
+wire          builder_csr_bankarray_csrbank5_rxempty_r;
+reg           builder_csr_bankarray_csrbank5_rxempty_re = 1'd0;
+wire          builder_csr_bankarray_csrbank5_rxempty_w;
+reg           builder_csr_bankarray_csrbank5_rxempty_we = 1'd0;
+wire          builder_csr_bankarray_csrbank5_rxfull_r;
+reg           builder_csr_bankarray_csrbank5_rxfull_re = 1'd0;
+wire          builder_csr_bankarray_csrbank5_rxfull_w;
+reg           builder_csr_bankarray_csrbank5_rxfull_we = 1'd0;
+wire          builder_csr_bankarray_csrbank5_sel;
+wire          builder_csr_bankarray_csrbank5_txempty_r;
+reg           builder_csr_bankarray_csrbank5_txempty_re = 1'd0;
+wire          builder_csr_bankarray_csrbank5_txempty_w;
+reg           builder_csr_bankarray_csrbank5_txempty_we = 1'd0;
+wire          builder_csr_bankarray_csrbank5_txfull_r;
+reg           builder_csr_bankarray_csrbank5_txfull_re = 1'd0;
+wire          builder_csr_bankarray_csrbank5_txfull_w;
+reg           builder_csr_bankarray_csrbank5_txfull_we = 1'd0;
 wire    [7:0] builder_csr_bankarray_dat_r;
 wire   [13:0] builder_csr_bankarray_interface0_bank_bus_adr;
 reg    [31:0] builder_csr_bankarray_interface0_bank_bus_dat_r = 32'd0;
@@ -425,6 +506,11 @@ reg    [31:0] builder_csr_bankarray_interface4_bank_bus_dat_r = 32'd0;
 wire   [31:0] builder_csr_bankarray_interface4_bank_bus_dat_w;
 wire          builder_csr_bankarray_interface4_bank_bus_re;
 wire          builder_csr_bankarray_interface4_bank_bus_we;
+wire   [13:0] builder_csr_bankarray_interface5_bank_bus_adr;
+reg    [31:0] builder_csr_bankarray_interface5_bank_bus_dat_r = 32'd0;
+wire   [31:0] builder_csr_bankarray_interface5_bank_bus_dat_w;
+wire          builder_csr_bankarray_interface5_bank_bus_re;
+wire          builder_csr_bankarray_interface5_bank_bus_we;
 wire          builder_csr_bankarray_sel;
 reg           builder_csr_bankarray_sel_r = 1'd0;
 wire   [13:0] builder_csr_bankarray_sram_bus_adr;
@@ -522,18 +608,18 @@ wire    [3:0] builder_interface0_sel;
 wire          builder_interface0_stb;
 wire          builder_interface0_we;
 reg    [13:0] builder_interface1_adr = 14'd0;
-reg    [13:0] builder_interface1_adr_next_value1 = 14'd0;
-reg           builder_interface1_adr_next_value_ce1 = 1'd0;
+reg    [13:0] builder_interface1_adr_wishbone2csr_next_value1 = 14'd0;
+reg           builder_interface1_adr_wishbone2csr_next_value_ce1 = 1'd0;
 wire   [31:0] builder_interface1_dat_r;
 reg    [31:0] builder_interface1_dat_w = 32'd0;
-reg    [31:0] builder_interface1_dat_w_next_value0 = 32'd0;
-reg           builder_interface1_dat_w_next_value_ce0 = 1'd0;
+reg    [31:0] builder_interface1_dat_w_wishbone2csr_next_value0 = 32'd0;
+reg           builder_interface1_dat_w_wishbone2csr_next_value_ce0 = 1'd0;
 reg           builder_interface1_re = 1'd0;
-reg           builder_interface1_re_next_value2 = 1'd0;
-reg           builder_interface1_re_next_value_ce2 = 1'd0;
+reg           builder_interface1_re_wishbone2csr_next_value2 = 1'd0;
+reg           builder_interface1_re_wishbone2csr_next_value_ce2 = 1'd0;
 reg           builder_interface1_we = 1'd0;
-reg           builder_interface1_we_next_value3 = 1'd0;
-reg           builder_interface1_we_next_value_ce3 = 1'd0;
+reg           builder_interface1_we_wishbone2csr_next_value3 = 1'd0;
+reg           builder_interface1_we_wishbone2csr_next_value_ce3 = 1'd0;
 reg           builder_litedramnativeportconverter_next_state = 1'd0;
 reg           builder_litedramnativeportconverter_state = 1'd0;
 reg           builder_locked0 = 1'd0;
@@ -559,38 +645,6 @@ wire          builder_reset4;
 wire          builder_reset5;
 wire          builder_reset6;
 wire          builder_reset7;
-reg    [29:0] builder_rhs_self0 = 30'd0;
-reg    [31:0] builder_rhs_self1 = 32'd0;
-reg     [1:0] builder_rhs_self10 = 2'd0;
-reg           builder_rhs_self11 = 1'd0;
-reg           builder_rhs_self12 = 1'd0;
-reg           builder_rhs_self13 = 1'd0;
-reg           builder_rhs_self14 = 1'd0;
-reg    [12:0] builder_rhs_self15 = 13'd0;
-reg     [1:0] builder_rhs_self16 = 2'd0;
-reg           builder_rhs_self17 = 1'd0;
-reg           builder_rhs_self18 = 1'd0;
-reg           builder_rhs_self19 = 1'd0;
-reg     [3:0] builder_rhs_self2 = 4'd0;
-reg    [21:0] builder_rhs_self20 = 22'd0;
-reg           builder_rhs_self21 = 1'd0;
-reg           builder_rhs_self22 = 1'd0;
-reg    [21:0] builder_rhs_self23 = 22'd0;
-reg           builder_rhs_self24 = 1'd0;
-reg           builder_rhs_self25 = 1'd0;
-reg    [21:0] builder_rhs_self26 = 22'd0;
-reg           builder_rhs_self27 = 1'd0;
-reg           builder_rhs_self28 = 1'd0;
-reg    [21:0] builder_rhs_self29 = 22'd0;
-reg           builder_rhs_self3 = 1'd0;
-reg           builder_rhs_self30 = 1'd0;
-reg           builder_rhs_self31 = 1'd0;
-reg           builder_rhs_self4 = 1'd0;
-reg           builder_rhs_self5 = 1'd0;
-reg     [2:0] builder_rhs_self6 = 3'd0;
-reg     [1:0] builder_rhs_self7 = 2'd0;
-reg           builder_rhs_self8 = 1'd0;
-reg    [12:0] builder_rhs_self9 = 13'd0;
 wire          builder_roundrobin0_ce;
 wire          builder_roundrobin0_grant;
 wire          builder_roundrobin0_request;
@@ -607,13 +661,6 @@ reg           builder_rs232phyrx_next_state = 1'd0;
 reg           builder_rs232phyrx_state = 1'd0;
 reg           builder_rs232phytx_next_state = 1'd0;
 reg           builder_rs232phytx_state = 1'd0;
-reg     [1:0] builder_self0 = 2'd0;
-reg    [12:0] builder_self1 = 13'd0;
-reg           builder_self2 = 1'd0;
-reg           builder_self3 = 1'd0;
-reg           builder_self4 = 1'd0;
-reg           builder_self5 = 1'd0;
-reg           builder_self6 = 1'd0;
 reg           builder_shared_ack = 1'd0;
 wire   [29:0] builder_shared_adr;
 wire    [1:0] builder_shared_bte;
@@ -626,12 +673,16 @@ wire    [3:0] builder_shared_sel;
 wire          builder_shared_stb;
 wire          builder_shared_we;
 reg     [5:0] builder_slaves = 6'd0;
-reg           builder_t_self0 = 1'd0;
-reg           builder_t_self1 = 1'd0;
-reg           builder_t_self2 = 1'd0;
-reg           builder_t_self3 = 1'd0;
-reg           builder_t_self4 = 1'd0;
-reg           builder_t_self5 = 1'd0;
+reg     [1:0] builder_spimaster_next_state = 2'd0;
+reg     [1:0] builder_spimaster_state = 2'd0;
+reg           builder_sync_f_self = 1'd0;
+reg     [1:0] builder_sync_rhs_self0 = 2'd0;
+reg    [12:0] builder_sync_rhs_self1 = 13'd0;
+reg           builder_sync_rhs_self2 = 1'd0;
+reg           builder_sync_rhs_self3 = 1'd0;
+reg           builder_sync_rhs_self4 = 1'd0;
+reg           builder_sync_rhs_self5 = 1'd0;
+reg           builder_sync_rhs_self6 = 1'd0;
 wire          builder_wait;
 reg     [1:0] builder_wishbone2csr_next_state = 2'd0;
 reg     [1:0] builder_wishbone2csr_state = 2'd0;
@@ -682,7 +733,7 @@ wire    [3:0] main_soclinux_clintbus_sel;
 wire          main_soclinux_clintbus_stb;
 wire          main_soclinux_clintbus_we;
 wire          main_soclinux_cpu_rst;
-wire    [6:0] main_soclinux_data_port_adr;
+wire    [3:0] main_soclinux_data_port_adr;
 wire  [127:0] main_soclinux_data_port_dat_r;
 reg   [127:0] main_soclinux_data_port_dat_w = 128'd0;
 reg    [15:0] main_soclinux_data_port_we = 16'd0;
@@ -1399,12 +1450,12 @@ wire    [3:0] main_soclinux_soclinux_ram_bus_sel;
 wire          main_soclinux_soclinux_ram_bus_stb;
 wire          main_soclinux_soclinux_ram_bus_we;
 reg           main_soclinux_tag_di_dirty = 1'd0;
-wire   [22:0] main_soclinux_tag_di_tag;
+wire   [25:0] main_soclinux_tag_di_tag;
 wire          main_soclinux_tag_do_dirty;
-wire   [22:0] main_soclinux_tag_do_tag;
-wire    [6:0] main_soclinux_tag_port_adr;
-wire   [23:0] main_soclinux_tag_port_dat_r;
-wire   [23:0] main_soclinux_tag_port_dat_w;
+wire   [25:0] main_soclinux_tag_do_tag;
+wire    [3:0] main_soclinux_tag_port_adr;
+wire   [26:0] main_soclinux_tag_port_dat_r;
+wire   [26:0] main_soclinux_tag_port_dat_w;
 reg           main_soclinux_tag_port_we = 1'd0;
 reg           main_soclinux_timer_en_re = 1'd0;
 reg           main_soclinux_timer_en_storage = 1'd0;
@@ -1696,6 +1747,52 @@ wire          sdrio_clk_6;
 wire          sdrio_clk_7;
 wire          sdrio_clk_8;
 wire          sdrio_clk_9;
+wire   [15:0] soclinux_clk_divider0;
+reg    [15:0] soclinux_clk_divider1 = 16'd0;
+reg           soclinux_clk_enable = 1'd0;
+wire          soclinux_clk_fall;
+wire          soclinux_clk_rise;
+reg           soclinux_control_re = 1'd0;
+reg    [15:0] soclinux_control_storage = 16'd0;
+reg     [2:0] soclinux_count = 3'd0;
+reg     [2:0] soclinux_count_spimaster_next_value = 3'd0;
+reg           soclinux_count_spimaster_next_value_ce = 1'd0;
+wire          soclinux_cs;
+wire          soclinux_cs_mode;
+reg           soclinux_cs_re = 1'd0;
+reg    [16:0] soclinux_cs_storage = 17'd1;
+reg           soclinux_done0 = 1'd0;
+wire          soclinux_done1;
+reg           soclinux_irq = 1'd0;
+wire    [7:0] soclinux_length0;
+wire    [7:0] soclinux_length1;
+wire          soclinux_loopback;
+reg           soclinux_loopback_re = 1'd0;
+reg           soclinux_loopback_storage = 1'd0;
+reg     [7:0] soclinux_miso = 8'd0;
+reg     [7:0] soclinux_miso_data = 8'd0;
+reg           soclinux_miso_latch = 1'd0;
+reg           soclinux_miso_re = 1'd0;
+wire    [7:0] soclinux_miso_status;
+wire          soclinux_miso_we;
+wire          soclinux_mode0;
+wire          soclinux_mode1;
+wire          soclinux_mode2;
+wire    [7:0] soclinux_mosi;
+reg           soclinux_mosi_latch = 1'd0;
+reg           soclinux_mosi_re = 1'd0;
+reg     [2:0] soclinux_mosi_sel = 3'd0;
+reg     [7:0] soclinux_mosi_storage = 8'd0;
+reg           soclinux_re = 1'd0;
+wire          soclinux_sel;
+reg     [7:0] soclinux_self = 8'd0;
+wire          soclinux_start0;
+reg           soclinux_start1 = 1'd0;
+reg           soclinux_status_re = 1'd0;
+reg     [1:0] soclinux_status_status = 2'd0;
+wire          soclinux_status_we;
+reg    [15:0] soclinux_storage = 16'd125;
+reg           soclinux_xfer_enable = 1'd0;
 wire          sys_clk;
 wire          sys_ps_clk;
 wire          sys_ps_rst;
@@ -1724,14 +1821,14 @@ assign sys_clk = main_crg_clkout0;
 assign sys_ps_clk = main_crg_clkout1;
 assign main_crg_clkout0 = builder_clks[0];
 assign main_crg_clkout1 = builder_clks[1];
-assign builder_shared_adr = builder_rhs_self0;
-assign builder_shared_dat_w = builder_rhs_self1;
-assign builder_shared_sel = builder_rhs_self2;
-assign builder_shared_cyc = builder_rhs_self3;
-assign builder_shared_stb = builder_rhs_self4;
-assign builder_shared_we = builder_rhs_self5;
-assign builder_shared_cti = builder_rhs_self6;
-assign builder_shared_bte = builder_rhs_self7;
+assign builder_shared_adr = builder_comb_rhs_self0;
+assign builder_shared_dat_w = builder_comb_rhs_self1;
+assign builder_shared_sel = builder_comb_rhs_self2;
+assign builder_shared_cyc = builder_comb_rhs_self3;
+assign builder_shared_stb = builder_comb_rhs_self4;
+assign builder_shared_we = builder_comb_rhs_self5;
+assign builder_shared_cti = builder_comb_rhs_self6;
+assign builder_shared_bte = builder_comb_rhs_self7;
 assign main_soclinux_pbus_dat_r = builder_shared_dat_r;
 assign main_soclinux_pbus_ack = (builder_shared_ack & (builder_grant == 1'd0));
 assign main_soclinux_pbus_err = (builder_shared_err & (builder_grant == 1'd0));
@@ -2911,28 +3008,28 @@ always @(*) begin
     main_soclinux_sdram_choose_cmd_requests[3] <= (main_soclinux_sdram_bankmachine3_cmd_valid & (((main_soclinux_sdram_bankmachine3_cmd_payload_is_cmd & main_soclinux_sdram_choose_cmd_want_cmds) & ((~((main_soclinux_sdram_bankmachine3_cmd_payload_ras & (~main_soclinux_sdram_bankmachine3_cmd_payload_cas)) & (~main_soclinux_sdram_bankmachine3_cmd_payload_we))) | main_soclinux_sdram_choose_cmd_want_activates)) | ((main_soclinux_sdram_bankmachine3_cmd_payload_is_read == main_soclinux_sdram_choose_cmd_want_reads) & (main_soclinux_sdram_bankmachine3_cmd_payload_is_write == main_soclinux_sdram_choose_cmd_want_writes))));
 end
 assign main_soclinux_sdram_choose_cmd_request = main_soclinux_sdram_choose_cmd_requests;
-assign main_soclinux_sdram_choose_cmd_cmd_valid = builder_rhs_self8;
-assign main_soclinux_sdram_choose_cmd_cmd_payload_a = builder_rhs_self9;
-assign main_soclinux_sdram_choose_cmd_cmd_payload_ba = builder_rhs_self10;
-assign main_soclinux_sdram_choose_cmd_cmd_payload_is_read = builder_rhs_self11;
-assign main_soclinux_sdram_choose_cmd_cmd_payload_is_write = builder_rhs_self12;
-assign main_soclinux_sdram_choose_cmd_cmd_payload_is_cmd = builder_rhs_self13;
+assign main_soclinux_sdram_choose_cmd_cmd_valid = builder_comb_rhs_self8;
+assign main_soclinux_sdram_choose_cmd_cmd_payload_a = builder_comb_rhs_self9;
+assign main_soclinux_sdram_choose_cmd_cmd_payload_ba = builder_comb_rhs_self10;
+assign main_soclinux_sdram_choose_cmd_cmd_payload_is_read = builder_comb_rhs_self11;
+assign main_soclinux_sdram_choose_cmd_cmd_payload_is_write = builder_comb_rhs_self12;
+assign main_soclinux_sdram_choose_cmd_cmd_payload_is_cmd = builder_comb_rhs_self13;
 always @(*) begin
     main_soclinux_sdram_choose_cmd_cmd_payload_cas <= 1'd0;
     if (main_soclinux_sdram_choose_cmd_cmd_valid) begin
-        main_soclinux_sdram_choose_cmd_cmd_payload_cas <= builder_t_self0;
+        main_soclinux_sdram_choose_cmd_cmd_payload_cas <= builder_comb_t_self0;
     end
 end
 always @(*) begin
     main_soclinux_sdram_choose_cmd_cmd_payload_ras <= 1'd0;
     if (main_soclinux_sdram_choose_cmd_cmd_valid) begin
-        main_soclinux_sdram_choose_cmd_cmd_payload_ras <= builder_t_self1;
+        main_soclinux_sdram_choose_cmd_cmd_payload_ras <= builder_comb_t_self1;
     end
 end
 always @(*) begin
     main_soclinux_sdram_choose_cmd_cmd_payload_we <= 1'd0;
     if (main_soclinux_sdram_choose_cmd_cmd_valid) begin
-        main_soclinux_sdram_choose_cmd_cmd_payload_we <= builder_t_self2;
+        main_soclinux_sdram_choose_cmd_cmd_payload_we <= builder_comb_t_self2;
     end
 end
 assign main_soclinux_sdram_choose_cmd_ce = (main_soclinux_sdram_choose_cmd_cmd_ready | (~main_soclinux_sdram_choose_cmd_cmd_valid));
@@ -2944,28 +3041,28 @@ always @(*) begin
     main_soclinux_sdram_choose_req_requests[3] <= (main_soclinux_sdram_bankmachine3_cmd_valid & (((main_soclinux_sdram_bankmachine3_cmd_payload_is_cmd & main_soclinux_sdram_choose_req_want_cmds) & ((~((main_soclinux_sdram_bankmachine3_cmd_payload_ras & (~main_soclinux_sdram_bankmachine3_cmd_payload_cas)) & (~main_soclinux_sdram_bankmachine3_cmd_payload_we))) | main_soclinux_sdram_choose_req_want_activates)) | ((main_soclinux_sdram_bankmachine3_cmd_payload_is_read == main_soclinux_sdram_choose_req_want_reads) & (main_soclinux_sdram_bankmachine3_cmd_payload_is_write == main_soclinux_sdram_choose_req_want_writes))));
 end
 assign main_soclinux_sdram_choose_req_request = main_soclinux_sdram_choose_req_requests;
-assign main_soclinux_sdram_choose_req_cmd_valid = builder_rhs_self14;
-assign main_soclinux_sdram_choose_req_cmd_payload_a = builder_rhs_self15;
-assign main_soclinux_sdram_choose_req_cmd_payload_ba = builder_rhs_self16;
-assign main_soclinux_sdram_choose_req_cmd_payload_is_read = builder_rhs_self17;
-assign main_soclinux_sdram_choose_req_cmd_payload_is_write = builder_rhs_self18;
-assign main_soclinux_sdram_choose_req_cmd_payload_is_cmd = builder_rhs_self19;
+assign main_soclinux_sdram_choose_req_cmd_valid = builder_comb_rhs_self14;
+assign main_soclinux_sdram_choose_req_cmd_payload_a = builder_comb_rhs_self15;
+assign main_soclinux_sdram_choose_req_cmd_payload_ba = builder_comb_rhs_self16;
+assign main_soclinux_sdram_choose_req_cmd_payload_is_read = builder_comb_rhs_self17;
+assign main_soclinux_sdram_choose_req_cmd_payload_is_write = builder_comb_rhs_self18;
+assign main_soclinux_sdram_choose_req_cmd_payload_is_cmd = builder_comb_rhs_self19;
 always @(*) begin
     main_soclinux_sdram_choose_req_cmd_payload_cas <= 1'd0;
     if (main_soclinux_sdram_choose_req_cmd_valid) begin
-        main_soclinux_sdram_choose_req_cmd_payload_cas <= builder_t_self3;
+        main_soclinux_sdram_choose_req_cmd_payload_cas <= builder_comb_t_self3;
     end
 end
 always @(*) begin
     main_soclinux_sdram_choose_req_cmd_payload_ras <= 1'd0;
     if (main_soclinux_sdram_choose_req_cmd_valid) begin
-        main_soclinux_sdram_choose_req_cmd_payload_ras <= builder_t_self4;
+        main_soclinux_sdram_choose_req_cmd_payload_ras <= builder_comb_t_self4;
     end
 end
 always @(*) begin
     main_soclinux_sdram_choose_req_cmd_payload_we <= 1'd0;
     if (main_soclinux_sdram_choose_req_cmd_valid) begin
-        main_soclinux_sdram_choose_req_cmd_payload_we <= builder_t_self5;
+        main_soclinux_sdram_choose_req_cmd_payload_we <= builder_comb_t_self5;
     end
 end
 always @(*) begin
@@ -3095,24 +3192,24 @@ always @(*) begin
 end
 assign builder_roundrobin0_request = {(((main_soclinux_port_cmd_payload_addr[10:9] == 1'd0) & (~(((builder_locked0 | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid)};
 assign builder_roundrobin0_ce = ((~main_soclinux_sdram_interface_bank0_valid) & (~main_soclinux_sdram_interface_bank0_lock));
-assign main_soclinux_sdram_interface_bank0_addr = builder_rhs_self20;
-assign main_soclinux_sdram_interface_bank0_we = builder_rhs_self21;
-assign main_soclinux_sdram_interface_bank0_valid = builder_rhs_self22;
+assign main_soclinux_sdram_interface_bank0_addr = builder_comb_rhs_self20;
+assign main_soclinux_sdram_interface_bank0_we = builder_comb_rhs_self21;
+assign main_soclinux_sdram_interface_bank0_valid = builder_comb_rhs_self22;
 assign builder_roundrobin1_request = {(((main_soclinux_port_cmd_payload_addr[10:9] == 1'd1) & (~(((builder_locked1 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid)};
 assign builder_roundrobin1_ce = ((~main_soclinux_sdram_interface_bank1_valid) & (~main_soclinux_sdram_interface_bank1_lock));
-assign main_soclinux_sdram_interface_bank1_addr = builder_rhs_self23;
-assign main_soclinux_sdram_interface_bank1_we = builder_rhs_self24;
-assign main_soclinux_sdram_interface_bank1_valid = builder_rhs_self25;
+assign main_soclinux_sdram_interface_bank1_addr = builder_comb_rhs_self23;
+assign main_soclinux_sdram_interface_bank1_we = builder_comb_rhs_self24;
+assign main_soclinux_sdram_interface_bank1_valid = builder_comb_rhs_self25;
 assign builder_roundrobin2_request = {(((main_soclinux_port_cmd_payload_addr[10:9] == 2'd2) & (~(((builder_locked2 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid)};
 assign builder_roundrobin2_ce = ((~main_soclinux_sdram_interface_bank2_valid) & (~main_soclinux_sdram_interface_bank2_lock));
-assign main_soclinux_sdram_interface_bank2_addr = builder_rhs_self26;
-assign main_soclinux_sdram_interface_bank2_we = builder_rhs_self27;
-assign main_soclinux_sdram_interface_bank2_valid = builder_rhs_self28;
+assign main_soclinux_sdram_interface_bank2_addr = builder_comb_rhs_self26;
+assign main_soclinux_sdram_interface_bank2_we = builder_comb_rhs_self27;
+assign main_soclinux_sdram_interface_bank2_valid = builder_comb_rhs_self28;
 assign builder_roundrobin3_request = {(((main_soclinux_port_cmd_payload_addr[10:9] == 2'd3) & (~(((builder_locked3 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))))) & main_soclinux_port_cmd_valid)};
 assign builder_roundrobin3_ce = ((~main_soclinux_sdram_interface_bank3_valid) & (~main_soclinux_sdram_interface_bank3_lock));
-assign main_soclinux_sdram_interface_bank3_addr = builder_rhs_self29;
-assign main_soclinux_sdram_interface_bank3_we = builder_rhs_self30;
-assign main_soclinux_sdram_interface_bank3_valid = builder_rhs_self31;
+assign main_soclinux_sdram_interface_bank3_addr = builder_comb_rhs_self29;
+assign main_soclinux_sdram_interface_bank3_we = builder_comb_rhs_self30;
+assign main_soclinux_sdram_interface_bank3_valid = builder_comb_rhs_self31;
 assign main_soclinux_port_cmd_ready = ((((1'd0 | (((builder_roundrobin0_grant == 1'd0) & ((main_soclinux_port_cmd_payload_addr[10:9] == 1'd0) & (~(((builder_locked0 | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0)))))) & main_soclinux_sdram_interface_bank0_ready)) | (((builder_roundrobin1_grant == 1'd0) & ((main_soclinux_port_cmd_payload_addr[10:9] == 1'd1) & (~(((builder_locked1 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0)))))) & main_soclinux_sdram_interface_bank1_ready)) | (((builder_roundrobin2_grant == 1'd0) & ((main_soclinux_port_cmd_payload_addr[10:9] == 2'd2) & (~(((builder_locked2 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0)))))) & main_soclinux_sdram_interface_bank2_ready)) | (((builder_roundrobin3_grant == 1'd0) & ((main_soclinux_port_cmd_payload_addr[10:9] == 2'd3) & (~(((builder_locked3 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0)))))) & main_soclinux_sdram_interface_bank3_ready));
 assign main_soclinux_port_wdata_ready = builder_new_master_wdata_ready;
 assign main_soclinux_port_rdata_valid = builder_new_master_rdata_valid3;
@@ -3135,7 +3232,7 @@ assign builder_roundrobin0_grant = 1'd0;
 assign builder_roundrobin1_grant = 1'd0;
 assign builder_roundrobin2_grant = 1'd0;
 assign builder_roundrobin3_grant = 1'd0;
-assign main_soclinux_data_port_adr = main_soclinux_wb_sdram_adr[8:2];
+assign main_soclinux_data_port_adr = main_soclinux_wb_sdram_adr[5:2];
 always @(*) begin
     main_soclinux_data_port_dat_w <= 128'd0;
     main_soclinux_data_port_we <= 16'd0;
@@ -3170,9 +3267,9 @@ always @(*) begin
 end
 assign {main_soclinux_tag_do_dirty, main_soclinux_tag_do_tag} = main_soclinux_tag_port_dat_r;
 assign main_soclinux_tag_port_dat_w = {main_soclinux_tag_di_dirty, main_soclinux_tag_di_tag};
-assign main_soclinux_tag_port_adr = main_soclinux_wb_sdram_adr[8:2];
-assign main_soclinux_tag_di_tag = main_soclinux_wb_sdram_adr[29:9];
-assign main_soclinux_interface_adr = {main_soclinux_tag_do_tag, main_soclinux_wb_sdram_adr[8:2]};
+assign main_soclinux_tag_port_adr = main_soclinux_wb_sdram_adr[5:2];
+assign main_soclinux_tag_di_tag = main_soclinux_wb_sdram_adr[29:6];
+assign main_soclinux_interface_adr = {main_soclinux_tag_do_tag, main_soclinux_wb_sdram_adr[5:2]};
 always @(*) begin
     builder_fullmemorywe_next_state <= 2'd0;
     main_soclinux_interface_cyc <= 1'd0;
@@ -3188,7 +3285,7 @@ always @(*) begin
     case (builder_fullmemorywe_state)
         1'd1: begin
             main_soclinux_word_clr <= 1'd1;
-            if ((main_soclinux_tag_do_tag == main_soclinux_wb_sdram_adr[29:9])) begin
+            if ((main_soclinux_tag_do_tag == main_soclinux_wb_sdram_adr[29:6])) begin
                 main_soclinux_wb_sdram_ack <= 1'd1;
                 if (main_soclinux_wb_sdram_we) begin
                     main_soclinux_tag_di_dirty <= 1'd1;
@@ -3466,27 +3563,88 @@ always @(*) begin
 end
 assign {user_led7, user_led6, user_led5, user_led4, user_led3, user_led2, user_led1, user_led0} = (main_leds ^ 1'd0);
 assign main_done = (main_count == 1'd0);
+assign soclinux_start0 = soclinux_start1;
+assign soclinux_length0 = soclinux_length1;
+assign soclinux_done1 = soclinux_done0;
+assign soclinux_mode0 = 1'd0;
+assign soclinux_mosi = soclinux_mosi_storage;
+assign soclinux_miso_status = soclinux_miso;
+assign soclinux_cs = soclinux_sel;
+assign soclinux_cs_mode = soclinux_mode1;
+assign soclinux_loopback = soclinux_mode2;
+assign soclinux_clk_rise = (soclinux_clk_divider1 == (soclinux_clk_divider0[15:1] - 1'd1));
+assign soclinux_clk_fall = (soclinux_clk_divider1 == (soclinux_clk_divider0 - 1'd1));
+assign soclinux_clk_divider0 = soclinux_storage;
+always @(*) begin
+    builder_spimaster_next_state <= 2'd0;
+    soclinux_clk_enable <= 1'd0;
+    soclinux_count_spimaster_next_value <= 3'd0;
+    soclinux_count_spimaster_next_value_ce <= 1'd0;
+    soclinux_done0 <= 1'd0;
+    soclinux_irq <= 1'd0;
+    soclinux_miso_latch <= 1'd0;
+    soclinux_mosi_latch <= 1'd0;
+    soclinux_xfer_enable <= 1'd0;
+    builder_spimaster_next_state <= builder_spimaster_state;
+    case (builder_spimaster_state)
+        1'd1: begin
+            soclinux_count_spimaster_next_value <= 1'd0;
+            soclinux_count_spimaster_next_value_ce <= 1'd1;
+            if (soclinux_clk_fall) begin
+                soclinux_xfer_enable <= 1'd1;
+                builder_spimaster_next_state <= 2'd2;
+            end
+        end
+        2'd2: begin
+            soclinux_clk_enable <= 1'd1;
+            soclinux_xfer_enable <= 1'd1;
+            if (soclinux_clk_fall) begin
+                soclinux_count_spimaster_next_value <= (soclinux_count + 1'd1);
+                soclinux_count_spimaster_next_value_ce <= 1'd1;
+                if ((soclinux_count == (soclinux_length0 - 1'd1))) begin
+                    builder_spimaster_next_state <= 2'd3;
+                end
+            end
+        end
+        2'd3: begin
+            soclinux_xfer_enable <= 1'd1;
+            if (soclinux_clk_rise) begin
+                soclinux_miso_latch <= 1'd1;
+                soclinux_irq <= 1'd1;
+                builder_spimaster_next_state <= 1'd0;
+            end
+        end
+        default: begin
+            soclinux_done0 <= 1'd1;
+            if (soclinux_start0) begin
+                soclinux_done0 <= 1'd0;
+                soclinux_mosi_latch <= 1'd1;
+                builder_spimaster_next_state <= 1'd1;
+            end
+        end
+    endcase
+end
 always @(*) begin
     builder_interface0_ack <= 1'd0;
     builder_interface0_dat_r <= 32'd0;
-    builder_interface1_adr_next_value1 <= 14'd0;
-    builder_interface1_adr_next_value_ce1 <= 1'd0;
-    builder_interface1_dat_w_next_value0 <= 32'd0;
-    builder_interface1_dat_w_next_value_ce0 <= 1'd0;
-    builder_interface1_re_next_value2 <= 1'd0;
-    builder_interface1_re_next_value_ce2 <= 1'd0;
-    builder_interface1_we_next_value3 <= 1'd0;
-    builder_interface1_we_next_value_ce3 <= 1'd0;
+    builder_interface1_adr_wishbone2csr_next_value1 <= 14'd0;
+    builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd0;
+    builder_interface1_dat_w_wishbone2csr_next_value0 <= 32'd0;
+    builder_interface1_dat_w_wishbone2csr_next_value_ce0 <= 1'd0;
+    builder_interface1_re_wishbone2csr_next_value2 <= 1'd0;
+    builder_interface1_re_wishbone2csr_next_value_ce2 <= 1'd0;
+    builder_interface1_we_wishbone2csr_next_value3 <= 1'd0;
+    builder_interface1_we_wishbone2csr_next_value_ce3 <= 1'd0;
     builder_wishbone2csr_next_state <= 2'd0;
     builder_wishbone2csr_next_state <= builder_wishbone2csr_state;
     case (builder_wishbone2csr_state)
         1'd1: begin
-            builder_interface1_adr_next_value1 <= 1'd0;
-            builder_interface1_adr_next_value_ce1 <= 1'd1;
-            builder_interface1_re_next_value2 <= 1'd0;
-            builder_interface1_re_next_value_ce2 <= 1'd1;
-            builder_interface1_we_next_value3 <= 1'd0;
-            builder_interface1_we_next_value_ce3 <= 1'd1;
+            builder_interface1_adr_wishbone2csr_next_value1 <= 1'd0;
+            builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd1;
+            builder_interface1_re_wishbone2csr_next_value2 <= 1'd0;
+            builder_interface1_re_wishbone2csr_next_value_ce2 <= 1'd1;
+            builder_interface1_we_wishbone2csr_next_value3 <= 1'd0;
+            builder_interface1_we_wishbone2csr_next_value_ce3 <= 1'd1;
             builder_wishbone2csr_next_state <= 2'd2;
         end
         2'd2: begin
@@ -3495,15 +3653,15 @@ always @(*) begin
             builder_wishbone2csr_next_state <= 1'd0;
         end
         default: begin
-            builder_interface1_dat_w_next_value0 <= builder_interface0_dat_w;
-            builder_interface1_dat_w_next_value_ce0 <= 1'd1;
+            builder_interface1_dat_w_wishbone2csr_next_value0 <= builder_interface0_dat_w;
+            builder_interface1_dat_w_wishbone2csr_next_value_ce0 <= 1'd1;
             if ((builder_interface0_cyc & builder_interface0_stb)) begin
-                builder_interface1_adr_next_value1 <= builder_interface0_adr;
-                builder_interface1_adr_next_value_ce1 <= 1'd1;
-                builder_interface1_re_next_value2 <= ((~builder_interface0_we) & (builder_interface0_sel != 1'd0));
-                builder_interface1_re_next_value_ce2 <= 1'd1;
-                builder_interface1_we_next_value3 <= (builder_interface0_we & (builder_interface0_sel != 1'd0));
-                builder_interface1_we_next_value_ce3 <= 1'd1;
+                builder_interface1_adr_wishbone2csr_next_value1 <= builder_interface0_adr;
+                builder_interface1_adr_wishbone2csr_next_value_ce1 <= 1'd1;
+                builder_interface1_re_wishbone2csr_next_value2 <= ((~builder_interface0_we) & (builder_interface0_sel != 1'd0));
+                builder_interface1_re_wishbone2csr_next_value_ce2 <= 1'd1;
+                builder_interface1_we_wishbone2csr_next_value3 <= (builder_interface0_we & (builder_interface0_sel != 1'd0));
+                builder_interface1_we_wishbone2csr_next_value_ce3 <= 1'd1;
                 builder_wishbone2csr_next_state <= 1'd1;
             end
         end
@@ -3650,191 +3808,279 @@ assign builder_csr_bankarray_csrbank2_dfii_pi0_baddress0_w = main_soclinux_sdram
 assign builder_csr_bankarray_csrbank2_dfii_pi0_wrdata0_w = main_soclinux_sdram_wrdata_storage;
 assign builder_csr_bankarray_csrbank2_dfii_pi0_rddata_w = main_soclinux_sdram_rddata_status;
 assign main_soclinux_sdram_rddata_we = builder_csr_bankarray_csrbank2_dfii_pi0_rddata_we;
-assign builder_csr_bankarray_csrbank3_sel = (builder_csr_bankarray_interface3_bank_bus_adr[13:9] == 2'd3);
-assign builder_csr_bankarray_csrbank3_load0_r = builder_csr_bankarray_interface3_bank_bus_dat_w;
+assign builder_csr_bankarray_csrbank3_sel = (builder_csr_bankarray_interface3_bank_bus_adr[13:9] == 3'd6);
+assign builder_csr_bankarray_csrbank3_control0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[15:0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_load0_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_load0_we <= 1'd0;
+    builder_csr_bankarray_csrbank3_control0_re <= 1'd0;
+    builder_csr_bankarray_csrbank3_control0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 1'd0))) begin
-        builder_csr_bankarray_csrbank3_load0_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_load0_we <= builder_csr_bankarray_interface3_bank_bus_re;
+        builder_csr_bankarray_csrbank3_control0_re <= builder_csr_bankarray_interface3_bank_bus_we;
+        builder_csr_bankarray_csrbank3_control0_we <= builder_csr_bankarray_interface3_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank3_reload0_r = builder_csr_bankarray_interface3_bank_bus_dat_w;
+assign builder_csr_bankarray_csrbank3_status_r = builder_csr_bankarray_interface3_bank_bus_dat_w[1:0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_reload0_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_reload0_we <= 1'd0;
+    builder_csr_bankarray_csrbank3_status_re <= 1'd0;
+    builder_csr_bankarray_csrbank3_status_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 1'd1))) begin
-        builder_csr_bankarray_csrbank3_reload0_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_reload0_we <= builder_csr_bankarray_interface3_bank_bus_re;
+        builder_csr_bankarray_csrbank3_status_re <= builder_csr_bankarray_interface3_bank_bus_we;
+        builder_csr_bankarray_csrbank3_status_we <= builder_csr_bankarray_interface3_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank3_en0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank3_mosi0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[7:0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_en0_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_en0_we <= 1'd0;
+    builder_csr_bankarray_csrbank3_mosi0_re <= 1'd0;
+    builder_csr_bankarray_csrbank3_mosi0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 2'd2))) begin
-        builder_csr_bankarray_csrbank3_en0_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_en0_we <= builder_csr_bankarray_interface3_bank_bus_re;
+        builder_csr_bankarray_csrbank3_mosi0_re <= builder_csr_bankarray_interface3_bank_bus_we;
+        builder_csr_bankarray_csrbank3_mosi0_we <= builder_csr_bankarray_interface3_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank3_update_value0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank3_miso_r = builder_csr_bankarray_interface3_bank_bus_dat_w[7:0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_update_value0_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_update_value0_we <= 1'd0;
+    builder_csr_bankarray_csrbank3_miso_re <= 1'd0;
+    builder_csr_bankarray_csrbank3_miso_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 2'd3))) begin
-        builder_csr_bankarray_csrbank3_update_value0_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_update_value0_we <= builder_csr_bankarray_interface3_bank_bus_re;
+        builder_csr_bankarray_csrbank3_miso_re <= builder_csr_bankarray_interface3_bank_bus_we;
+        builder_csr_bankarray_csrbank3_miso_we <= builder_csr_bankarray_interface3_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank3_value_r = builder_csr_bankarray_interface3_bank_bus_dat_w;
+assign builder_csr_bankarray_csrbank3_cs0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[16:0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_value_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_value_we <= 1'd0;
+    builder_csr_bankarray_csrbank3_cs0_re <= 1'd0;
+    builder_csr_bankarray_csrbank3_cs0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 3'd4))) begin
-        builder_csr_bankarray_csrbank3_value_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_value_we <= builder_csr_bankarray_interface3_bank_bus_re;
+        builder_csr_bankarray_csrbank3_cs0_re <= builder_csr_bankarray_interface3_bank_bus_we;
+        builder_csr_bankarray_csrbank3_cs0_we <= builder_csr_bankarray_interface3_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank3_ev_status_r = builder_csr_bankarray_interface3_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank3_loopback0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_ev_status_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_ev_status_we <= 1'd0;
+    builder_csr_bankarray_csrbank3_loopback0_re <= 1'd0;
+    builder_csr_bankarray_csrbank3_loopback0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 3'd5))) begin
-        builder_csr_bankarray_csrbank3_ev_status_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_ev_status_we <= builder_csr_bankarray_interface3_bank_bus_re;
+        builder_csr_bankarray_csrbank3_loopback0_re <= builder_csr_bankarray_interface3_bank_bus_we;
+        builder_csr_bankarray_csrbank3_loopback0_we <= builder_csr_bankarray_interface3_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank3_ev_pending_r = builder_csr_bankarray_interface3_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank3_clk_divider0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[15:0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_ev_pending_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_ev_pending_we <= 1'd0;
+    builder_csr_bankarray_csrbank3_clk_divider0_re <= 1'd0;
+    builder_csr_bankarray_csrbank3_clk_divider0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 3'd6))) begin
-        builder_csr_bankarray_csrbank3_ev_pending_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_ev_pending_we <= builder_csr_bankarray_interface3_bank_bus_re;
+        builder_csr_bankarray_csrbank3_clk_divider0_re <= builder_csr_bankarray_interface3_bank_bus_we;
+        builder_csr_bankarray_csrbank3_clk_divider0_we <= builder_csr_bankarray_interface3_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank3_ev_enable0_r = builder_csr_bankarray_interface3_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csr_bankarray_csrbank3_ev_enable0_re <= 1'd0;
-    builder_csr_bankarray_csrbank3_ev_enable0_we <= 1'd0;
-    if ((builder_csr_bankarray_csrbank3_sel & (builder_csr_bankarray_interface3_bank_bus_adr[8:0] == 3'd7))) begin
-        builder_csr_bankarray_csrbank3_ev_enable0_re <= builder_csr_bankarray_interface3_bank_bus_we;
-        builder_csr_bankarray_csrbank3_ev_enable0_we <= builder_csr_bankarray_interface3_bank_bus_re;
+    soclinux_start1 <= 1'd0;
+    if (soclinux_control_re) begin
+        soclinux_start1 <= soclinux_control_storage[0];
     end
 end
-assign builder_csr_bankarray_csrbank3_load0_w = main_soclinux_timer_load_storage;
-assign builder_csr_bankarray_csrbank3_reload0_w = main_soclinux_timer_reload_storage;
-assign builder_csr_bankarray_csrbank3_en0_w = main_soclinux_timer_en_storage;
-assign builder_csr_bankarray_csrbank3_update_value0_w = main_soclinux_timer_update_value_storage;
-assign builder_csr_bankarray_csrbank3_value_w = main_soclinux_timer_value_status;
-assign main_soclinux_timer_value_we = builder_csr_bankarray_csrbank3_value_we;
-assign main_soclinux_timer_status_status = main_soclinux_timer_zero0;
-assign builder_csr_bankarray_csrbank3_ev_status_w = main_soclinux_timer_status_status;
-assign main_soclinux_timer_status_we = builder_csr_bankarray_csrbank3_ev_status_we;
-assign main_soclinux_timer_pending_status = main_soclinux_timer_zero1;
-assign builder_csr_bankarray_csrbank3_ev_pending_w = main_soclinux_timer_pending_status;
-assign main_soclinux_timer_pending_we = builder_csr_bankarray_csrbank3_ev_pending_we;
-assign main_soclinux_timer_zero2 = main_soclinux_timer_enable_storage;
-assign builder_csr_bankarray_csrbank3_ev_enable0_w = main_soclinux_timer_enable_storage;
-assign builder_csr_bankarray_csrbank4_sel = (builder_csr_bankarray_interface4_bank_bus_adr[13:9] == 2'd2);
-assign main_soclinux_uart_rxtx_r = builder_csr_bankarray_interface4_bank_bus_dat_w[7:0];
+assign soclinux_length1 = soclinux_control_storage[15:8];
+assign builder_csr_bankarray_csrbank3_control0_w = soclinux_control_storage;
 always @(*) begin
-    main_soclinux_uart_rxtx_re <= 1'd0;
-    main_soclinux_uart_rxtx_we <= 1'd0;
+    soclinux_status_status <= 2'd0;
+    soclinux_status_status[0] <= soclinux_done1;
+    soclinux_status_status[1] <= soclinux_mode0;
+end
+assign builder_csr_bankarray_csrbank3_status_w = soclinux_status_status;
+assign soclinux_status_we = builder_csr_bankarray_csrbank3_status_we;
+assign builder_csr_bankarray_csrbank3_mosi0_w = soclinux_mosi_storage;
+assign builder_csr_bankarray_csrbank3_miso_w = soclinux_miso_status;
+assign soclinux_miso_we = builder_csr_bankarray_csrbank3_miso_we;
+assign soclinux_sel = soclinux_cs_storage[0];
+assign soclinux_mode1 = soclinux_cs_storage[16];
+assign builder_csr_bankarray_csrbank3_cs0_w = soclinux_cs_storage;
+assign soclinux_mode2 = soclinux_loopback_storage;
+assign builder_csr_bankarray_csrbank3_loopback0_w = soclinux_loopback_storage;
+assign builder_csr_bankarray_csrbank3_clk_divider0_w = soclinux_storage;
+assign builder_csr_bankarray_csrbank4_sel = (builder_csr_bankarray_interface4_bank_bus_adr[13:9] == 2'd3);
+assign builder_csr_bankarray_csrbank4_load0_r = builder_csr_bankarray_interface4_bank_bus_dat_w;
+always @(*) begin
+    builder_csr_bankarray_csrbank4_load0_re <= 1'd0;
+    builder_csr_bankarray_csrbank4_load0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 1'd0))) begin
-        main_soclinux_uart_rxtx_re <= builder_csr_bankarray_interface4_bank_bus_we;
-        main_soclinux_uart_rxtx_we <= builder_csr_bankarray_interface4_bank_bus_re;
+        builder_csr_bankarray_csrbank4_load0_re <= builder_csr_bankarray_interface4_bank_bus_we;
+        builder_csr_bankarray_csrbank4_load0_we <= builder_csr_bankarray_interface4_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_txfull_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank4_reload0_r = builder_csr_bankarray_interface4_bank_bus_dat_w;
 always @(*) begin
-    builder_csr_bankarray_csrbank4_txfull_re <= 1'd0;
-    builder_csr_bankarray_csrbank4_txfull_we <= 1'd0;
+    builder_csr_bankarray_csrbank4_reload0_re <= 1'd0;
+    builder_csr_bankarray_csrbank4_reload0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 1'd1))) begin
-        builder_csr_bankarray_csrbank4_txfull_re <= builder_csr_bankarray_interface4_bank_bus_we;
-        builder_csr_bankarray_csrbank4_txfull_we <= builder_csr_bankarray_interface4_bank_bus_re;
+        builder_csr_bankarray_csrbank4_reload0_re <= builder_csr_bankarray_interface4_bank_bus_we;
+        builder_csr_bankarray_csrbank4_reload0_we <= builder_csr_bankarray_interface4_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_rxempty_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank4_en0_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csr_bankarray_csrbank4_rxempty_re <= 1'd0;
-    builder_csr_bankarray_csrbank4_rxempty_we <= 1'd0;
+    builder_csr_bankarray_csrbank4_en0_re <= 1'd0;
+    builder_csr_bankarray_csrbank4_en0_we <= 1'd0;
     if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 2'd2))) begin
-        builder_csr_bankarray_csrbank4_rxempty_re <= builder_csr_bankarray_interface4_bank_bus_we;
-        builder_csr_bankarray_csrbank4_rxempty_we <= builder_csr_bankarray_interface4_bank_bus_re;
+        builder_csr_bankarray_csrbank4_en0_re <= builder_csr_bankarray_interface4_bank_bus_we;
+        builder_csr_bankarray_csrbank4_en0_we <= builder_csr_bankarray_interface4_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_ev_status_r = builder_csr_bankarray_interface4_bank_bus_dat_w[1:0];
+assign builder_csr_bankarray_csrbank4_update_value0_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
+always @(*) begin
+    builder_csr_bankarray_csrbank4_update_value0_re <= 1'd0;
+    builder_csr_bankarray_csrbank4_update_value0_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 2'd3))) begin
+        builder_csr_bankarray_csrbank4_update_value0_re <= builder_csr_bankarray_interface4_bank_bus_we;
+        builder_csr_bankarray_csrbank4_update_value0_we <= builder_csr_bankarray_interface4_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank4_value_r = builder_csr_bankarray_interface4_bank_bus_dat_w;
+always @(*) begin
+    builder_csr_bankarray_csrbank4_value_re <= 1'd0;
+    builder_csr_bankarray_csrbank4_value_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd4))) begin
+        builder_csr_bankarray_csrbank4_value_re <= builder_csr_bankarray_interface4_bank_bus_we;
+        builder_csr_bankarray_csrbank4_value_we <= builder_csr_bankarray_interface4_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank4_ev_status_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
 always @(*) begin
     builder_csr_bankarray_csrbank4_ev_status_re <= 1'd0;
     builder_csr_bankarray_csrbank4_ev_status_we <= 1'd0;
-    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 2'd3))) begin
+    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd5))) begin
         builder_csr_bankarray_csrbank4_ev_status_re <= builder_csr_bankarray_interface4_bank_bus_we;
         builder_csr_bankarray_csrbank4_ev_status_we <= builder_csr_bankarray_interface4_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_ev_pending_r = builder_csr_bankarray_interface4_bank_bus_dat_w[1:0];
+assign builder_csr_bankarray_csrbank4_ev_pending_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
 always @(*) begin
     builder_csr_bankarray_csrbank4_ev_pending_re <= 1'd0;
     builder_csr_bankarray_csrbank4_ev_pending_we <= 1'd0;
-    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd4))) begin
+    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd6))) begin
         builder_csr_bankarray_csrbank4_ev_pending_re <= builder_csr_bankarray_interface4_bank_bus_we;
         builder_csr_bankarray_csrbank4_ev_pending_we <= builder_csr_bankarray_interface4_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_ev_enable0_r = builder_csr_bankarray_interface4_bank_bus_dat_w[1:0];
+assign builder_csr_bankarray_csrbank4_ev_enable0_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
 always @(*) begin
     builder_csr_bankarray_csrbank4_ev_enable0_re <= 1'd0;
     builder_csr_bankarray_csrbank4_ev_enable0_we <= 1'd0;
-    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd5))) begin
+    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd7))) begin
         builder_csr_bankarray_csrbank4_ev_enable0_re <= builder_csr_bankarray_interface4_bank_bus_we;
         builder_csr_bankarray_csrbank4_ev_enable0_we <= builder_csr_bankarray_interface4_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_txempty_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank4_load0_w = main_soclinux_timer_load_storage;
+assign builder_csr_bankarray_csrbank4_reload0_w = main_soclinux_timer_reload_storage;
+assign builder_csr_bankarray_csrbank4_en0_w = main_soclinux_timer_en_storage;
+assign builder_csr_bankarray_csrbank4_update_value0_w = main_soclinux_timer_update_value_storage;
+assign builder_csr_bankarray_csrbank4_value_w = main_soclinux_timer_value_status;
+assign main_soclinux_timer_value_we = builder_csr_bankarray_csrbank4_value_we;
+assign main_soclinux_timer_status_status = main_soclinux_timer_zero0;
+assign builder_csr_bankarray_csrbank4_ev_status_w = main_soclinux_timer_status_status;
+assign main_soclinux_timer_status_we = builder_csr_bankarray_csrbank4_ev_status_we;
+assign main_soclinux_timer_pending_status = main_soclinux_timer_zero1;
+assign builder_csr_bankarray_csrbank4_ev_pending_w = main_soclinux_timer_pending_status;
+assign main_soclinux_timer_pending_we = builder_csr_bankarray_csrbank4_ev_pending_we;
+assign main_soclinux_timer_zero2 = main_soclinux_timer_enable_storage;
+assign builder_csr_bankarray_csrbank4_ev_enable0_w = main_soclinux_timer_enable_storage;
+assign builder_csr_bankarray_csrbank5_sel = (builder_csr_bankarray_interface5_bank_bus_adr[13:9] == 2'd2);
+assign main_soclinux_uart_rxtx_r = builder_csr_bankarray_interface5_bank_bus_dat_w[7:0];
 always @(*) begin
-    builder_csr_bankarray_csrbank4_txempty_re <= 1'd0;
-    builder_csr_bankarray_csrbank4_txempty_we <= 1'd0;
-    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd6))) begin
-        builder_csr_bankarray_csrbank4_txempty_re <= builder_csr_bankarray_interface4_bank_bus_we;
-        builder_csr_bankarray_csrbank4_txempty_we <= builder_csr_bankarray_interface4_bank_bus_re;
+    main_soclinux_uart_rxtx_re <= 1'd0;
+    main_soclinux_uart_rxtx_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 1'd0))) begin
+        main_soclinux_uart_rxtx_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        main_soclinux_uart_rxtx_we <= builder_csr_bankarray_interface5_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_rxfull_r = builder_csr_bankarray_interface4_bank_bus_dat_w[0];
+assign builder_csr_bankarray_csrbank5_txfull_r = builder_csr_bankarray_interface5_bank_bus_dat_w[0];
 always @(*) begin
-    builder_csr_bankarray_csrbank4_rxfull_re <= 1'd0;
-    builder_csr_bankarray_csrbank4_rxfull_we <= 1'd0;
-    if ((builder_csr_bankarray_csrbank4_sel & (builder_csr_bankarray_interface4_bank_bus_adr[8:0] == 3'd7))) begin
-        builder_csr_bankarray_csrbank4_rxfull_re <= builder_csr_bankarray_interface4_bank_bus_we;
-        builder_csr_bankarray_csrbank4_rxfull_we <= builder_csr_bankarray_interface4_bank_bus_re;
+    builder_csr_bankarray_csrbank5_txfull_re <= 1'd0;
+    builder_csr_bankarray_csrbank5_txfull_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 1'd1))) begin
+        builder_csr_bankarray_csrbank5_txfull_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        builder_csr_bankarray_csrbank5_txfull_we <= builder_csr_bankarray_interface5_bank_bus_re;
     end
 end
-assign builder_csr_bankarray_csrbank4_txfull_w = main_soclinux_uart_txfull_status;
-assign main_soclinux_uart_txfull_we = builder_csr_bankarray_csrbank4_txfull_we;
-assign builder_csr_bankarray_csrbank4_rxempty_w = main_soclinux_uart_rxempty_status;
-assign main_soclinux_uart_rxempty_we = builder_csr_bankarray_csrbank4_rxempty_we;
+assign builder_csr_bankarray_csrbank5_rxempty_r = builder_csr_bankarray_interface5_bank_bus_dat_w[0];
+always @(*) begin
+    builder_csr_bankarray_csrbank5_rxempty_re <= 1'd0;
+    builder_csr_bankarray_csrbank5_rxempty_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 2'd2))) begin
+        builder_csr_bankarray_csrbank5_rxempty_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        builder_csr_bankarray_csrbank5_rxempty_we <= builder_csr_bankarray_interface5_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank5_ev_status_r = builder_csr_bankarray_interface5_bank_bus_dat_w[1:0];
+always @(*) begin
+    builder_csr_bankarray_csrbank5_ev_status_re <= 1'd0;
+    builder_csr_bankarray_csrbank5_ev_status_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 2'd3))) begin
+        builder_csr_bankarray_csrbank5_ev_status_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        builder_csr_bankarray_csrbank5_ev_status_we <= builder_csr_bankarray_interface5_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank5_ev_pending_r = builder_csr_bankarray_interface5_bank_bus_dat_w[1:0];
+always @(*) begin
+    builder_csr_bankarray_csrbank5_ev_pending_re <= 1'd0;
+    builder_csr_bankarray_csrbank5_ev_pending_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 3'd4))) begin
+        builder_csr_bankarray_csrbank5_ev_pending_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        builder_csr_bankarray_csrbank5_ev_pending_we <= builder_csr_bankarray_interface5_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank5_ev_enable0_r = builder_csr_bankarray_interface5_bank_bus_dat_w[1:0];
+always @(*) begin
+    builder_csr_bankarray_csrbank5_ev_enable0_re <= 1'd0;
+    builder_csr_bankarray_csrbank5_ev_enable0_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 3'd5))) begin
+        builder_csr_bankarray_csrbank5_ev_enable0_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        builder_csr_bankarray_csrbank5_ev_enable0_we <= builder_csr_bankarray_interface5_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank5_txempty_r = builder_csr_bankarray_interface5_bank_bus_dat_w[0];
+always @(*) begin
+    builder_csr_bankarray_csrbank5_txempty_re <= 1'd0;
+    builder_csr_bankarray_csrbank5_txempty_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 3'd6))) begin
+        builder_csr_bankarray_csrbank5_txempty_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        builder_csr_bankarray_csrbank5_txempty_we <= builder_csr_bankarray_interface5_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank5_rxfull_r = builder_csr_bankarray_interface5_bank_bus_dat_w[0];
+always @(*) begin
+    builder_csr_bankarray_csrbank5_rxfull_re <= 1'd0;
+    builder_csr_bankarray_csrbank5_rxfull_we <= 1'd0;
+    if ((builder_csr_bankarray_csrbank5_sel & (builder_csr_bankarray_interface5_bank_bus_adr[8:0] == 3'd7))) begin
+        builder_csr_bankarray_csrbank5_rxfull_re <= builder_csr_bankarray_interface5_bank_bus_we;
+        builder_csr_bankarray_csrbank5_rxfull_we <= builder_csr_bankarray_interface5_bank_bus_re;
+    end
+end
+assign builder_csr_bankarray_csrbank5_txfull_w = main_soclinux_uart_txfull_status;
+assign main_soclinux_uart_txfull_we = builder_csr_bankarray_csrbank5_txfull_we;
+assign builder_csr_bankarray_csrbank5_rxempty_w = main_soclinux_uart_rxempty_status;
+assign main_soclinux_uart_rxempty_we = builder_csr_bankarray_csrbank5_rxempty_we;
 always @(*) begin
     main_soclinux_uart_status_status <= 2'd0;
     main_soclinux_uart_status_status[0] <= main_soclinux_uart_tx0;
     main_soclinux_uart_status_status[1] <= main_soclinux_uart_rx0;
 end
-assign builder_csr_bankarray_csrbank4_ev_status_w = main_soclinux_uart_status_status;
-assign main_soclinux_uart_status_we = builder_csr_bankarray_csrbank4_ev_status_we;
+assign builder_csr_bankarray_csrbank5_ev_status_w = main_soclinux_uart_status_status;
+assign main_soclinux_uart_status_we = builder_csr_bankarray_csrbank5_ev_status_we;
 always @(*) begin
     main_soclinux_uart_pending_status <= 2'd0;
     main_soclinux_uart_pending_status[0] <= main_soclinux_uart_tx1;
     main_soclinux_uart_pending_status[1] <= main_soclinux_uart_rx1;
 end
-assign builder_csr_bankarray_csrbank4_ev_pending_w = main_soclinux_uart_pending_status;
-assign main_soclinux_uart_pending_we = builder_csr_bankarray_csrbank4_ev_pending_we;
+assign builder_csr_bankarray_csrbank5_ev_pending_w = main_soclinux_uart_pending_status;
+assign main_soclinux_uart_pending_we = builder_csr_bankarray_csrbank5_ev_pending_we;
 assign main_soclinux_uart_tx2 = main_soclinux_uart_enable_storage[0];
 assign main_soclinux_uart_rx2 = main_soclinux_uart_enable_storage[1];
-assign builder_csr_bankarray_csrbank4_ev_enable0_w = main_soclinux_uart_enable_storage;
-assign builder_csr_bankarray_csrbank4_txempty_w = main_soclinux_uart_txempty_status;
-assign main_soclinux_uart_txempty_we = builder_csr_bankarray_csrbank4_txempty_we;
-assign builder_csr_bankarray_csrbank4_rxfull_w = main_soclinux_uart_rxfull_status;
-assign main_soclinux_uart_rxfull_we = builder_csr_bankarray_csrbank4_rxfull_we;
+assign builder_csr_bankarray_csrbank5_ev_enable0_w = main_soclinux_uart_enable_storage;
+assign builder_csr_bankarray_csrbank5_txempty_w = main_soclinux_uart_txempty_status;
+assign main_soclinux_uart_txempty_we = builder_csr_bankarray_csrbank5_txempty_we;
+assign builder_csr_bankarray_csrbank5_rxfull_w = main_soclinux_uart_rxfull_status;
+assign main_soclinux_uart_rxfull_we = builder_csr_bankarray_csrbank5_rxfull_we;
 assign builder_csr_interconnect_adr = builder_interface1_adr;
 assign builder_csr_interconnect_re = builder_interface1_re;
 assign builder_csr_interconnect_we = builder_interface1_we;
@@ -3845,608 +4091,641 @@ assign builder_csr_bankarray_interface1_bank_bus_adr = builder_csr_interconnect_
 assign builder_csr_bankarray_interface2_bank_bus_adr = builder_csr_interconnect_adr;
 assign builder_csr_bankarray_interface3_bank_bus_adr = builder_csr_interconnect_adr;
 assign builder_csr_bankarray_interface4_bank_bus_adr = builder_csr_interconnect_adr;
+assign builder_csr_bankarray_interface5_bank_bus_adr = builder_csr_interconnect_adr;
 assign builder_csr_bankarray_sram_bus_adr = builder_csr_interconnect_adr;
 assign builder_csr_bankarray_interface0_bank_bus_re = builder_csr_interconnect_re;
 assign builder_csr_bankarray_interface1_bank_bus_re = builder_csr_interconnect_re;
 assign builder_csr_bankarray_interface2_bank_bus_re = builder_csr_interconnect_re;
 assign builder_csr_bankarray_interface3_bank_bus_re = builder_csr_interconnect_re;
 assign builder_csr_bankarray_interface4_bank_bus_re = builder_csr_interconnect_re;
+assign builder_csr_bankarray_interface5_bank_bus_re = builder_csr_interconnect_re;
 assign builder_csr_bankarray_sram_bus_re = builder_csr_interconnect_re;
 assign builder_csr_bankarray_interface0_bank_bus_we = builder_csr_interconnect_we;
 assign builder_csr_bankarray_interface1_bank_bus_we = builder_csr_interconnect_we;
 assign builder_csr_bankarray_interface2_bank_bus_we = builder_csr_interconnect_we;
 assign builder_csr_bankarray_interface3_bank_bus_we = builder_csr_interconnect_we;
 assign builder_csr_bankarray_interface4_bank_bus_we = builder_csr_interconnect_we;
+assign builder_csr_bankarray_interface5_bank_bus_we = builder_csr_interconnect_we;
 assign builder_csr_bankarray_sram_bus_we = builder_csr_interconnect_we;
 assign builder_csr_bankarray_interface0_bank_bus_dat_w = builder_csr_interconnect_dat_w;
 assign builder_csr_bankarray_interface1_bank_bus_dat_w = builder_csr_interconnect_dat_w;
 assign builder_csr_bankarray_interface2_bank_bus_dat_w = builder_csr_interconnect_dat_w;
 assign builder_csr_bankarray_interface3_bank_bus_dat_w = builder_csr_interconnect_dat_w;
 assign builder_csr_bankarray_interface4_bank_bus_dat_w = builder_csr_interconnect_dat_w;
+assign builder_csr_bankarray_interface5_bank_bus_dat_w = builder_csr_interconnect_dat_w;
 assign builder_csr_bankarray_sram_bus_dat_w = builder_csr_interconnect_dat_w;
-assign builder_csr_interconnect_dat_r = (((((builder_csr_bankarray_interface0_bank_bus_dat_r | builder_csr_bankarray_interface1_bank_bus_dat_r) | builder_csr_bankarray_interface2_bank_bus_dat_r) | builder_csr_bankarray_interface3_bank_bus_dat_r) | builder_csr_bankarray_interface4_bank_bus_dat_r) | builder_csr_bankarray_sram_bus_dat_r);
+assign builder_csr_interconnect_dat_r = ((((((builder_csr_bankarray_interface0_bank_bus_dat_r | builder_csr_bankarray_interface1_bank_bus_dat_r) | builder_csr_bankarray_interface2_bank_bus_dat_r) | builder_csr_bankarray_interface3_bank_bus_dat_r) | builder_csr_bankarray_interface4_bank_bus_dat_r) | builder_csr_bankarray_interface5_bank_bus_dat_r) | builder_csr_bankarray_sram_bus_dat_r);
 always @(*) begin
-    builder_rhs_self0 <= 30'd0;
+    builder_comb_rhs_self0 <= 30'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self0 <= main_soclinux_pbus_adr;
+            builder_comb_rhs_self0 <= main_soclinux_pbus_adr;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self1 <= 32'd0;
+    builder_comb_rhs_self1 <= 32'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self1 <= main_soclinux_pbus_dat_w;
+            builder_comb_rhs_self1 <= main_soclinux_pbus_dat_w;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self2 <= 4'd0;
+    builder_comb_rhs_self2 <= 4'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self2 <= main_soclinux_pbus_sel;
+            builder_comb_rhs_self2 <= main_soclinux_pbus_sel;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self3 <= 1'd0;
+    builder_comb_rhs_self3 <= 1'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self3 <= main_soclinux_pbus_cyc;
+            builder_comb_rhs_self3 <= main_soclinux_pbus_cyc;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self4 <= 1'd0;
+    builder_comb_rhs_self4 <= 1'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self4 <= main_soclinux_pbus_stb;
+            builder_comb_rhs_self4 <= main_soclinux_pbus_stb;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self5 <= 1'd0;
+    builder_comb_rhs_self5 <= 1'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self5 <= main_soclinux_pbus_we;
+            builder_comb_rhs_self5 <= main_soclinux_pbus_we;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self6 <= 3'd0;
+    builder_comb_rhs_self6 <= 3'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self6 <= main_soclinux_pbus_cti;
+            builder_comb_rhs_self6 <= main_soclinux_pbus_cti;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self7 <= 2'd0;
+    builder_comb_rhs_self7 <= 2'd0;
     case (builder_grant)
         default: begin
-            builder_rhs_self7 <= main_soclinux_pbus_bte;
+            builder_comb_rhs_self7 <= main_soclinux_pbus_bte;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self8 <= 1'd0;
+    builder_comb_rhs_self8 <= 1'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[0];
+            builder_comb_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[0];
         end
         1'd1: begin
-            builder_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[1];
+            builder_comb_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[1];
         end
         2'd2: begin
-            builder_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[2];
+            builder_comb_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[2];
         end
         default: begin
-            builder_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[3];
+            builder_comb_rhs_self8 <= main_soclinux_sdram_choose_cmd_requests[3];
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self9 <= 13'd0;
+    builder_comb_rhs_self9 <= 13'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_rhs_self9 <= main_soclinux_sdram_bankmachine0_cmd_payload_a;
+            builder_comb_rhs_self9 <= main_soclinux_sdram_bankmachine0_cmd_payload_a;
         end
         1'd1: begin
-            builder_rhs_self9 <= main_soclinux_sdram_bankmachine1_cmd_payload_a;
+            builder_comb_rhs_self9 <= main_soclinux_sdram_bankmachine1_cmd_payload_a;
         end
         2'd2: begin
-            builder_rhs_self9 <= main_soclinux_sdram_bankmachine2_cmd_payload_a;
+            builder_comb_rhs_self9 <= main_soclinux_sdram_bankmachine2_cmd_payload_a;
         end
         default: begin
-            builder_rhs_self9 <= main_soclinux_sdram_bankmachine3_cmd_payload_a;
+            builder_comb_rhs_self9 <= main_soclinux_sdram_bankmachine3_cmd_payload_a;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self10 <= 2'd0;
+    builder_comb_rhs_self10 <= 2'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_rhs_self10 <= main_soclinux_sdram_bankmachine0_cmd_payload_ba;
+            builder_comb_rhs_self10 <= main_soclinux_sdram_bankmachine0_cmd_payload_ba;
         end
         1'd1: begin
-            builder_rhs_self10 <= main_soclinux_sdram_bankmachine1_cmd_payload_ba;
+            builder_comb_rhs_self10 <= main_soclinux_sdram_bankmachine1_cmd_payload_ba;
         end
         2'd2: begin
-            builder_rhs_self10 <= main_soclinux_sdram_bankmachine2_cmd_payload_ba;
+            builder_comb_rhs_self10 <= main_soclinux_sdram_bankmachine2_cmd_payload_ba;
         end
         default: begin
-            builder_rhs_self10 <= main_soclinux_sdram_bankmachine3_cmd_payload_ba;
+            builder_comb_rhs_self10 <= main_soclinux_sdram_bankmachine3_cmd_payload_ba;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self11 <= 1'd0;
+    builder_comb_rhs_self11 <= 1'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_rhs_self11 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_read;
+            builder_comb_rhs_self11 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_read;
         end
         1'd1: begin
-            builder_rhs_self11 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_read;
+            builder_comb_rhs_self11 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_read;
         end
         2'd2: begin
-            builder_rhs_self11 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_read;
+            builder_comb_rhs_self11 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_read;
         end
         default: begin
-            builder_rhs_self11 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_read;
+            builder_comb_rhs_self11 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_read;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self12 <= 1'd0;
+    builder_comb_rhs_self12 <= 1'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_rhs_self12 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_write;
+            builder_comb_rhs_self12 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_write;
         end
         1'd1: begin
-            builder_rhs_self12 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_write;
+            builder_comb_rhs_self12 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_write;
         end
         2'd2: begin
-            builder_rhs_self12 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_write;
+            builder_comb_rhs_self12 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_write;
         end
         default: begin
-            builder_rhs_self12 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_write;
+            builder_comb_rhs_self12 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_write;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self13 <= 1'd0;
+    builder_comb_rhs_self13 <= 1'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_rhs_self13 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_cmd;
+            builder_comb_rhs_self13 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_cmd;
         end
         1'd1: begin
-            builder_rhs_self13 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_cmd;
+            builder_comb_rhs_self13 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_cmd;
         end
         2'd2: begin
-            builder_rhs_self13 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_cmd;
+            builder_comb_rhs_self13 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_cmd;
         end
         default: begin
-            builder_rhs_self13 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_cmd;
+            builder_comb_rhs_self13 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_cmd;
         end
     endcase
 end
 always @(*) begin
-    builder_t_self0 <= 1'd0;
+    builder_comb_t_self0 <= 1'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_t_self0 <= main_soclinux_sdram_bankmachine0_cmd_payload_cas;
+            builder_comb_t_self0 <= main_soclinux_sdram_bankmachine0_cmd_payload_cas;
         end
         1'd1: begin
-            builder_t_self0 <= main_soclinux_sdram_bankmachine1_cmd_payload_cas;
+            builder_comb_t_self0 <= main_soclinux_sdram_bankmachine1_cmd_payload_cas;
         end
         2'd2: begin
-            builder_t_self0 <= main_soclinux_sdram_bankmachine2_cmd_payload_cas;
+            builder_comb_t_self0 <= main_soclinux_sdram_bankmachine2_cmd_payload_cas;
         end
         default: begin
-            builder_t_self0 <= main_soclinux_sdram_bankmachine3_cmd_payload_cas;
+            builder_comb_t_self0 <= main_soclinux_sdram_bankmachine3_cmd_payload_cas;
         end
     endcase
 end
 always @(*) begin
-    builder_t_self1 <= 1'd0;
+    builder_comb_t_self1 <= 1'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_t_self1 <= main_soclinux_sdram_bankmachine0_cmd_payload_ras;
+            builder_comb_t_self1 <= main_soclinux_sdram_bankmachine0_cmd_payload_ras;
         end
         1'd1: begin
-            builder_t_self1 <= main_soclinux_sdram_bankmachine1_cmd_payload_ras;
+            builder_comb_t_self1 <= main_soclinux_sdram_bankmachine1_cmd_payload_ras;
         end
         2'd2: begin
-            builder_t_self1 <= main_soclinux_sdram_bankmachine2_cmd_payload_ras;
+            builder_comb_t_self1 <= main_soclinux_sdram_bankmachine2_cmd_payload_ras;
         end
         default: begin
-            builder_t_self1 <= main_soclinux_sdram_bankmachine3_cmd_payload_ras;
+            builder_comb_t_self1 <= main_soclinux_sdram_bankmachine3_cmd_payload_ras;
         end
     endcase
 end
 always @(*) begin
-    builder_t_self2 <= 1'd0;
+    builder_comb_t_self2 <= 1'd0;
     case (main_soclinux_sdram_choose_cmd_grant)
         1'd0: begin
-            builder_t_self2 <= main_soclinux_sdram_bankmachine0_cmd_payload_we;
+            builder_comb_t_self2 <= main_soclinux_sdram_bankmachine0_cmd_payload_we;
         end
         1'd1: begin
-            builder_t_self2 <= main_soclinux_sdram_bankmachine1_cmd_payload_we;
+            builder_comb_t_self2 <= main_soclinux_sdram_bankmachine1_cmd_payload_we;
         end
         2'd2: begin
-            builder_t_self2 <= main_soclinux_sdram_bankmachine2_cmd_payload_we;
+            builder_comb_t_self2 <= main_soclinux_sdram_bankmachine2_cmd_payload_we;
         end
         default: begin
-            builder_t_self2 <= main_soclinux_sdram_bankmachine3_cmd_payload_we;
+            builder_comb_t_self2 <= main_soclinux_sdram_bankmachine3_cmd_payload_we;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self14 <= 1'd0;
+    builder_comb_rhs_self14 <= 1'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_rhs_self14 <= main_soclinux_sdram_choose_req_requests[0];
+            builder_comb_rhs_self14 <= main_soclinux_sdram_choose_req_requests[0];
         end
         1'd1: begin
-            builder_rhs_self14 <= main_soclinux_sdram_choose_req_requests[1];
+            builder_comb_rhs_self14 <= main_soclinux_sdram_choose_req_requests[1];
         end
         2'd2: begin
-            builder_rhs_self14 <= main_soclinux_sdram_choose_req_requests[2];
+            builder_comb_rhs_self14 <= main_soclinux_sdram_choose_req_requests[2];
         end
         default: begin
-            builder_rhs_self14 <= main_soclinux_sdram_choose_req_requests[3];
+            builder_comb_rhs_self14 <= main_soclinux_sdram_choose_req_requests[3];
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self15 <= 13'd0;
+    builder_comb_rhs_self15 <= 13'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_rhs_self15 <= main_soclinux_sdram_bankmachine0_cmd_payload_a;
+            builder_comb_rhs_self15 <= main_soclinux_sdram_bankmachine0_cmd_payload_a;
         end
         1'd1: begin
-            builder_rhs_self15 <= main_soclinux_sdram_bankmachine1_cmd_payload_a;
+            builder_comb_rhs_self15 <= main_soclinux_sdram_bankmachine1_cmd_payload_a;
         end
         2'd2: begin
-            builder_rhs_self15 <= main_soclinux_sdram_bankmachine2_cmd_payload_a;
+            builder_comb_rhs_self15 <= main_soclinux_sdram_bankmachine2_cmd_payload_a;
         end
         default: begin
-            builder_rhs_self15 <= main_soclinux_sdram_bankmachine3_cmd_payload_a;
+            builder_comb_rhs_self15 <= main_soclinux_sdram_bankmachine3_cmd_payload_a;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self16 <= 2'd0;
+    builder_comb_rhs_self16 <= 2'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_rhs_self16 <= main_soclinux_sdram_bankmachine0_cmd_payload_ba;
+            builder_comb_rhs_self16 <= main_soclinux_sdram_bankmachine0_cmd_payload_ba;
         end
         1'd1: begin
-            builder_rhs_self16 <= main_soclinux_sdram_bankmachine1_cmd_payload_ba;
+            builder_comb_rhs_self16 <= main_soclinux_sdram_bankmachine1_cmd_payload_ba;
         end
         2'd2: begin
-            builder_rhs_self16 <= main_soclinux_sdram_bankmachine2_cmd_payload_ba;
+            builder_comb_rhs_self16 <= main_soclinux_sdram_bankmachine2_cmd_payload_ba;
         end
         default: begin
-            builder_rhs_self16 <= main_soclinux_sdram_bankmachine3_cmd_payload_ba;
+            builder_comb_rhs_self16 <= main_soclinux_sdram_bankmachine3_cmd_payload_ba;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self17 <= 1'd0;
+    builder_comb_rhs_self17 <= 1'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_rhs_self17 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_read;
+            builder_comb_rhs_self17 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_read;
         end
         1'd1: begin
-            builder_rhs_self17 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_read;
+            builder_comb_rhs_self17 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_read;
         end
         2'd2: begin
-            builder_rhs_self17 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_read;
+            builder_comb_rhs_self17 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_read;
         end
         default: begin
-            builder_rhs_self17 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_read;
+            builder_comb_rhs_self17 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_read;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self18 <= 1'd0;
+    builder_comb_rhs_self18 <= 1'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_rhs_self18 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_write;
+            builder_comb_rhs_self18 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_write;
         end
         1'd1: begin
-            builder_rhs_self18 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_write;
+            builder_comb_rhs_self18 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_write;
         end
         2'd2: begin
-            builder_rhs_self18 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_write;
+            builder_comb_rhs_self18 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_write;
         end
         default: begin
-            builder_rhs_self18 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_write;
+            builder_comb_rhs_self18 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_write;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self19 <= 1'd0;
+    builder_comb_rhs_self19 <= 1'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_rhs_self19 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_cmd;
+            builder_comb_rhs_self19 <= main_soclinux_sdram_bankmachine0_cmd_payload_is_cmd;
         end
         1'd1: begin
-            builder_rhs_self19 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_cmd;
+            builder_comb_rhs_self19 <= main_soclinux_sdram_bankmachine1_cmd_payload_is_cmd;
         end
         2'd2: begin
-            builder_rhs_self19 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_cmd;
+            builder_comb_rhs_self19 <= main_soclinux_sdram_bankmachine2_cmd_payload_is_cmd;
         end
         default: begin
-            builder_rhs_self19 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_cmd;
+            builder_comb_rhs_self19 <= main_soclinux_sdram_bankmachine3_cmd_payload_is_cmd;
         end
     endcase
 end
 always @(*) begin
-    builder_t_self3 <= 1'd0;
+    builder_comb_t_self3 <= 1'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_t_self3 <= main_soclinux_sdram_bankmachine0_cmd_payload_cas;
+            builder_comb_t_self3 <= main_soclinux_sdram_bankmachine0_cmd_payload_cas;
         end
         1'd1: begin
-            builder_t_self3 <= main_soclinux_sdram_bankmachine1_cmd_payload_cas;
+            builder_comb_t_self3 <= main_soclinux_sdram_bankmachine1_cmd_payload_cas;
         end
         2'd2: begin
-            builder_t_self3 <= main_soclinux_sdram_bankmachine2_cmd_payload_cas;
+            builder_comb_t_self3 <= main_soclinux_sdram_bankmachine2_cmd_payload_cas;
         end
         default: begin
-            builder_t_self3 <= main_soclinux_sdram_bankmachine3_cmd_payload_cas;
+            builder_comb_t_self3 <= main_soclinux_sdram_bankmachine3_cmd_payload_cas;
         end
     endcase
 end
 always @(*) begin
-    builder_t_self4 <= 1'd0;
+    builder_comb_t_self4 <= 1'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_t_self4 <= main_soclinux_sdram_bankmachine0_cmd_payload_ras;
+            builder_comb_t_self4 <= main_soclinux_sdram_bankmachine0_cmd_payload_ras;
         end
         1'd1: begin
-            builder_t_self4 <= main_soclinux_sdram_bankmachine1_cmd_payload_ras;
+            builder_comb_t_self4 <= main_soclinux_sdram_bankmachine1_cmd_payload_ras;
         end
         2'd2: begin
-            builder_t_self4 <= main_soclinux_sdram_bankmachine2_cmd_payload_ras;
+            builder_comb_t_self4 <= main_soclinux_sdram_bankmachine2_cmd_payload_ras;
         end
         default: begin
-            builder_t_self4 <= main_soclinux_sdram_bankmachine3_cmd_payload_ras;
+            builder_comb_t_self4 <= main_soclinux_sdram_bankmachine3_cmd_payload_ras;
         end
     endcase
 end
 always @(*) begin
-    builder_t_self5 <= 1'd0;
+    builder_comb_t_self5 <= 1'd0;
     case (main_soclinux_sdram_choose_req_grant)
         1'd0: begin
-            builder_t_self5 <= main_soclinux_sdram_bankmachine0_cmd_payload_we;
+            builder_comb_t_self5 <= main_soclinux_sdram_bankmachine0_cmd_payload_we;
         end
         1'd1: begin
-            builder_t_self5 <= main_soclinux_sdram_bankmachine1_cmd_payload_we;
+            builder_comb_t_self5 <= main_soclinux_sdram_bankmachine1_cmd_payload_we;
         end
         2'd2: begin
-            builder_t_self5 <= main_soclinux_sdram_bankmachine2_cmd_payload_we;
+            builder_comb_t_self5 <= main_soclinux_sdram_bankmachine2_cmd_payload_we;
         end
         default: begin
-            builder_t_self5 <= main_soclinux_sdram_bankmachine3_cmd_payload_we;
+            builder_comb_t_self5 <= main_soclinux_sdram_bankmachine3_cmd_payload_we;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self20 <= 22'd0;
+    builder_comb_rhs_self20 <= 22'd0;
     case (builder_roundrobin0_grant)
         default: begin
-            builder_rhs_self20 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
+            builder_comb_rhs_self20 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self21 <= 1'd0;
+    builder_comb_rhs_self21 <= 1'd0;
     case (builder_roundrobin0_grant)
         default: begin
-            builder_rhs_self21 <= main_soclinux_port_cmd_payload_we;
+            builder_comb_rhs_self21 <= main_soclinux_port_cmd_payload_we;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self22 <= 1'd0;
+    builder_comb_rhs_self22 <= 1'd0;
     case (builder_roundrobin0_grant)
         default: begin
-            builder_rhs_self22 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 1'd0) & (~(((builder_locked0 | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
+            builder_comb_rhs_self22 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 1'd0) & (~(((builder_locked0 | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self23 <= 22'd0;
+    builder_comb_rhs_self23 <= 22'd0;
     case (builder_roundrobin1_grant)
         default: begin
-            builder_rhs_self23 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
+            builder_comb_rhs_self23 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self24 <= 1'd0;
+    builder_comb_rhs_self24 <= 1'd0;
     case (builder_roundrobin1_grant)
         default: begin
-            builder_rhs_self24 <= main_soclinux_port_cmd_payload_we;
+            builder_comb_rhs_self24 <= main_soclinux_port_cmd_payload_we;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self25 <= 1'd0;
+    builder_comb_rhs_self25 <= 1'd0;
     case (builder_roundrobin1_grant)
         default: begin
-            builder_rhs_self25 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 1'd1) & (~(((builder_locked1 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
+            builder_comb_rhs_self25 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 1'd1) & (~(((builder_locked1 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self26 <= 22'd0;
+    builder_comb_rhs_self26 <= 22'd0;
     case (builder_roundrobin2_grant)
         default: begin
-            builder_rhs_self26 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
+            builder_comb_rhs_self26 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self27 <= 1'd0;
+    builder_comb_rhs_self27 <= 1'd0;
     case (builder_roundrobin2_grant)
         default: begin
-            builder_rhs_self27 <= main_soclinux_port_cmd_payload_we;
+            builder_comb_rhs_self27 <= main_soclinux_port_cmd_payload_we;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self28 <= 1'd0;
+    builder_comb_rhs_self28 <= 1'd0;
     case (builder_roundrobin2_grant)
         default: begin
-            builder_rhs_self28 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 2'd2) & (~(((builder_locked2 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
+            builder_comb_rhs_self28 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 2'd2) & (~(((builder_locked2 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank3_lock & (builder_roundrobin3_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self29 <= 22'd0;
+    builder_comb_rhs_self29 <= 22'd0;
     case (builder_roundrobin3_grant)
         default: begin
-            builder_rhs_self29 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
+            builder_comb_rhs_self29 <= {main_soclinux_port_cmd_payload_addr[23:11], main_soclinux_port_cmd_payload_addr[8:0]};
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self30 <= 1'd0;
+    builder_comb_rhs_self30 <= 1'd0;
     case (builder_roundrobin3_grant)
         default: begin
-            builder_rhs_self30 <= main_soclinux_port_cmd_payload_we;
+            builder_comb_rhs_self30 <= main_soclinux_port_cmd_payload_we;
         end
     endcase
 end
 always @(*) begin
-    builder_rhs_self31 <= 1'd0;
+    builder_comb_rhs_self31 <= 1'd0;
     case (builder_roundrobin3_grant)
         default: begin
-            builder_rhs_self31 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 2'd3) & (~(((builder_locked3 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
+            builder_comb_rhs_self31 <= (((main_soclinux_port_cmd_payload_addr[10:9] == 2'd3) & (~(((builder_locked3 | (main_soclinux_sdram_interface_bank0_lock & (builder_roundrobin0_grant == 1'd0))) | (main_soclinux_sdram_interface_bank1_lock & (builder_roundrobin1_grant == 1'd0))) | (main_soclinux_sdram_interface_bank2_lock & (builder_roundrobin2_grant == 1'd0))))) & main_soclinux_port_cmd_valid);
         end
     endcase
 end
 always @(*) begin
-    builder_self0 <= 2'd0;
+    builder_sync_rhs_self0 <= 2'd0;
     case (main_soclinux_sdram_steerer_sel)
         1'd0: begin
-            builder_self0 <= main_soclinux_sdram_nop_ba;
+            builder_sync_rhs_self0 <= main_soclinux_sdram_nop_ba;
         end
         1'd1: begin
-            builder_self0 <= main_soclinux_sdram_choose_req_cmd_payload_ba;
+            builder_sync_rhs_self0 <= main_soclinux_sdram_choose_req_cmd_payload_ba;
         end
         2'd2: begin
-            builder_self0 <= main_soclinux_sdram_choose_req_cmd_payload_ba;
+            builder_sync_rhs_self0 <= main_soclinux_sdram_choose_req_cmd_payload_ba;
         end
         default: begin
-            builder_self0 <= main_soclinux_sdram_cmd_payload_ba;
+            builder_sync_rhs_self0 <= main_soclinux_sdram_cmd_payload_ba;
         end
     endcase
 end
 always @(*) begin
-    builder_self1 <= 13'd0;
+    builder_sync_rhs_self1 <= 13'd0;
     case (main_soclinux_sdram_steerer_sel)
         1'd0: begin
-            builder_self1 <= main_soclinux_sdram_nop_a;
+            builder_sync_rhs_self1 <= main_soclinux_sdram_nop_a;
         end
         1'd1: begin
-            builder_self1 <= main_soclinux_sdram_choose_req_cmd_payload_a;
+            builder_sync_rhs_self1 <= main_soclinux_sdram_choose_req_cmd_payload_a;
         end
         2'd2: begin
-            builder_self1 <= main_soclinux_sdram_choose_req_cmd_payload_a;
+            builder_sync_rhs_self1 <= main_soclinux_sdram_choose_req_cmd_payload_a;
         end
         default: begin
-            builder_self1 <= main_soclinux_sdram_cmd_payload_a;
+            builder_sync_rhs_self1 <= main_soclinux_sdram_cmd_payload_a;
         end
     endcase
 end
 always @(*) begin
-    builder_self2 <= 1'd0;
+    builder_sync_rhs_self2 <= 1'd0;
     case (main_soclinux_sdram_steerer_sel)
         1'd0: begin
-            builder_self2 <= 1'd0;
+            builder_sync_rhs_self2 <= 1'd0;
         end
         1'd1: begin
-            builder_self2 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_cas);
+            builder_sync_rhs_self2 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_cas);
         end
         2'd2: begin
-            builder_self2 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_cas);
+            builder_sync_rhs_self2 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_cas);
         end
         default: begin
-            builder_self2 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_cas);
+            builder_sync_rhs_self2 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_cas);
         end
     endcase
 end
 always @(*) begin
-    builder_self3 <= 1'd0;
+    builder_sync_rhs_self3 <= 1'd0;
     case (main_soclinux_sdram_steerer_sel)
         1'd0: begin
-            builder_self3 <= 1'd0;
+            builder_sync_rhs_self3 <= 1'd0;
         end
         1'd1: begin
-            builder_self3 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_ras);
+            builder_sync_rhs_self3 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_ras);
         end
         2'd2: begin
-            builder_self3 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_ras);
+            builder_sync_rhs_self3 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_ras);
         end
         default: begin
-            builder_self3 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_ras);
+            builder_sync_rhs_self3 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_ras);
         end
     endcase
 end
 always @(*) begin
-    builder_self4 <= 1'd0;
+    builder_sync_rhs_self4 <= 1'd0;
     case (main_soclinux_sdram_steerer_sel)
         1'd0: begin
-            builder_self4 <= 1'd0;
+            builder_sync_rhs_self4 <= 1'd0;
         end
         1'd1: begin
-            builder_self4 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_we);
+            builder_sync_rhs_self4 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_we);
         end
         2'd2: begin
-            builder_self4 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_we);
+            builder_sync_rhs_self4 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_we);
         end
         default: begin
-            builder_self4 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_we);
+            builder_sync_rhs_self4 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_we);
         end
     endcase
 end
 always @(*) begin
-    builder_self5 <= 1'd0;
+    builder_sync_rhs_self5 <= 1'd0;
     case (main_soclinux_sdram_steerer_sel)
         1'd0: begin
-            builder_self5 <= 1'd0;
+            builder_sync_rhs_self5 <= 1'd0;
         end
         1'd1: begin
-            builder_self5 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_read);
+            builder_sync_rhs_self5 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_read);
         end
         2'd2: begin
-            builder_self5 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_read);
+            builder_sync_rhs_self5 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_read);
         end
         default: begin
-            builder_self5 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_is_read);
+            builder_sync_rhs_self5 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_is_read);
         end
     endcase
 end
 always @(*) begin
-    builder_self6 <= 1'd0;
+    builder_sync_rhs_self6 <= 1'd0;
     case (main_soclinux_sdram_steerer_sel)
         1'd0: begin
-            builder_self6 <= 1'd0;
+            builder_sync_rhs_self6 <= 1'd0;
         end
         1'd1: begin
-            builder_self6 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_write);
+            builder_sync_rhs_self6 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_write);
         end
         2'd2: begin
-            builder_self6 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_write);
+            builder_sync_rhs_self6 <= ((main_soclinux_sdram_choose_req_cmd_valid & main_soclinux_sdram_choose_req_cmd_ready) & main_soclinux_sdram_choose_req_cmd_payload_is_write);
         end
         default: begin
-            builder_self6 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_is_write);
+            builder_sync_rhs_self6 <= ((main_soclinux_sdram_cmd_valid & main_soclinux_sdram_cmd_ready) & main_soclinux_sdram_cmd_payload_is_write);
+        end
+    endcase
+end
+always @(*) begin
+    builder_sync_f_self <= 1'd0;
+    case (soclinux_mosi_sel)
+        1'd0: begin
+            builder_sync_f_self <= soclinux_self[0];
+        end
+        1'd1: begin
+            builder_sync_f_self <= soclinux_self[1];
+        end
+        2'd2: begin
+            builder_sync_f_self <= soclinux_self[2];
+        end
+        2'd3: begin
+            builder_sync_f_self <= soclinux_self[3];
+        end
+        3'd4: begin
+            builder_sync_f_self <= soclinux_self[4];
+        end
+        3'd5: begin
+            builder_sync_f_self <= soclinux_self[5];
+        end
+        3'd6: begin
+            builder_sync_f_self <= soclinux_self[6];
+        end
+        default: begin
+            builder_sync_f_self <= soclinux_self[7];
         end
     endcase
 end
@@ -4981,13 +5260,13 @@ always @(posedge sys_clk) begin
         endcase
     end
     main_soclinux_sdram_dfi_p0_cs_n <= 1'd0;
-    main_soclinux_sdram_dfi_p0_bank <= builder_self0;
-    main_soclinux_sdram_dfi_p0_address <= builder_self1;
-    main_soclinux_sdram_dfi_p0_cas_n <= (~builder_self2);
-    main_soclinux_sdram_dfi_p0_ras_n <= (~builder_self3);
-    main_soclinux_sdram_dfi_p0_we_n <= (~builder_self4);
-    main_soclinux_sdram_dfi_p0_rddata_en <= builder_self5;
-    main_soclinux_sdram_dfi_p0_wrdata_en <= builder_self6;
+    main_soclinux_sdram_dfi_p0_bank <= builder_sync_rhs_self0;
+    main_soclinux_sdram_dfi_p0_address <= builder_sync_rhs_self1;
+    main_soclinux_sdram_dfi_p0_cas_n <= (~builder_sync_rhs_self2);
+    main_soclinux_sdram_dfi_p0_ras_n <= (~builder_sync_rhs_self3);
+    main_soclinux_sdram_dfi_p0_we_n <= (~builder_sync_rhs_self4);
+    main_soclinux_sdram_dfi_p0_rddata_en <= builder_sync_rhs_self5;
+    main_soclinux_sdram_dfi_p0_wrdata_en <= builder_sync_rhs_self6;
     if (main_soclinux_sdram_tccdcon_valid) begin
         main_soclinux_sdram_tccdcon_count <= 1'd0;
         if (1'd1) begin
@@ -5116,18 +5395,53 @@ always @(posedge sys_clk) begin
     end else begin
         main_count <= 22'd3125000;
     end
+    soclinux_clk_divider1 <= (soclinux_clk_divider1 + 1'd1);
+    if (soclinux_clk_rise) begin
+        spisdcard_clk <= soclinux_clk_enable;
+    end else begin
+        if (soclinux_clk_fall) begin
+            soclinux_clk_divider1 <= 1'd0;
+            spisdcard_clk <= 1'd0;
+        end
+    end
+    spisdcard_cs_n <= (~(soclinux_cs & (soclinux_xfer_enable | (soclinux_cs_mode == 1'd1))));
+    if (soclinux_mosi_latch) begin
+        soclinux_self <= soclinux_mosi;
+        soclinux_mosi_sel <= 3'd7;
+    end else begin
+        if (soclinux_clk_fall) begin
+            if (soclinux_xfer_enable) begin
+                spisdcard_mosi <= builder_sync_f_self;
+            end
+            soclinux_mosi_sel <= (soclinux_mosi_sel - 1'd1);
+        end
+    end
+    if (soclinux_clk_rise) begin
+        if (soclinux_loopback) begin
+            soclinux_miso_data <= {soclinux_miso_data, spisdcard_mosi};
+        end else begin
+            soclinux_miso_data <= {soclinux_miso_data, spisdcard_miso};
+        end
+    end
+    if (soclinux_miso_latch) begin
+        soclinux_miso <= soclinux_miso_data;
+    end
+    builder_spimaster_state <= builder_spimaster_next_state;
+    if (soclinux_count_spimaster_next_value_ce) begin
+        soclinux_count <= soclinux_count_spimaster_next_value;
+    end
     builder_wishbone2csr_state <= builder_wishbone2csr_next_state;
-    if (builder_interface1_dat_w_next_value_ce0) begin
-        builder_interface1_dat_w <= builder_interface1_dat_w_next_value0;
+    if (builder_interface1_dat_w_wishbone2csr_next_value_ce0) begin
+        builder_interface1_dat_w <= builder_interface1_dat_w_wishbone2csr_next_value0;
     end
-    if (builder_interface1_adr_next_value_ce1) begin
-        builder_interface1_adr <= builder_interface1_adr_next_value1;
+    if (builder_interface1_adr_wishbone2csr_next_value_ce1) begin
+        builder_interface1_adr <= builder_interface1_adr_wishbone2csr_next_value1;
     end
-    if (builder_interface1_re_next_value_ce2) begin
-        builder_interface1_re <= builder_interface1_re_next_value2;
+    if (builder_interface1_re_wishbone2csr_next_value_ce2) begin
+        builder_interface1_re <= builder_interface1_re_wishbone2csr_next_value2;
     end
-    if (builder_interface1_we_next_value_ce3) begin
-        builder_interface1_we <= builder_interface1_we_next_value3;
+    if (builder_interface1_we_wishbone2csr_next_value_ce3) begin
+        builder_interface1_we <= builder_interface1_we_wishbone2csr_next_value3;
     end
     builder_csr_bankarray_interface0_bank_bus_dat_r <= 1'd0;
     if (builder_csr_bankarray_csrbank0_sel) begin
@@ -5216,99 +5530,147 @@ always @(posedge sys_clk) begin
     if (builder_csr_bankarray_csrbank3_sel) begin
         case (builder_csr_bankarray_interface3_bank_bus_adr[8:0])
             1'd0: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_load0_w;
+                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_control0_w;
             end
             1'd1: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_reload0_w;
+                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_status_w;
             end
             2'd2: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_en0_w;
+                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_mosi0_w;
             end
             2'd3: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_update_value0_w;
+                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_miso_w;
             end
             3'd4: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_value_w;
+                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_cs0_w;
             end
             3'd5: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_ev_status_w;
+                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_loopback0_w;
             end
             3'd6: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_ev_pending_w;
-            end
-            3'd7: begin
-                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_ev_enable0_w;
+                builder_csr_bankarray_interface3_bank_bus_dat_r <= builder_csr_bankarray_csrbank3_clk_divider0_w;
             end
         endcase
     end
-    if (builder_csr_bankarray_csrbank3_load0_re) begin
-        main_soclinux_timer_load_storage <= builder_csr_bankarray_csrbank3_load0_r;
+    if (builder_csr_bankarray_csrbank3_control0_re) begin
+        soclinux_control_storage <= builder_csr_bankarray_csrbank3_control0_r;
     end
-    main_soclinux_timer_load_re <= builder_csr_bankarray_csrbank3_load0_re;
-    if (builder_csr_bankarray_csrbank3_reload0_re) begin
-        main_soclinux_timer_reload_storage <= builder_csr_bankarray_csrbank3_reload0_r;
+    soclinux_control_re <= builder_csr_bankarray_csrbank3_control0_re;
+    soclinux_status_re <= builder_csr_bankarray_csrbank3_status_re;
+    if (builder_csr_bankarray_csrbank3_mosi0_re) begin
+        soclinux_mosi_storage <= builder_csr_bankarray_csrbank3_mosi0_r;
     end
-    main_soclinux_timer_reload_re <= builder_csr_bankarray_csrbank3_reload0_re;
-    if (builder_csr_bankarray_csrbank3_en0_re) begin
-        main_soclinux_timer_en_storage <= builder_csr_bankarray_csrbank3_en0_r;
+    soclinux_mosi_re <= builder_csr_bankarray_csrbank3_mosi0_re;
+    soclinux_miso_re <= builder_csr_bankarray_csrbank3_miso_re;
+    if (builder_csr_bankarray_csrbank3_cs0_re) begin
+        soclinux_cs_storage <= builder_csr_bankarray_csrbank3_cs0_r;
     end
-    main_soclinux_timer_en_re <= builder_csr_bankarray_csrbank3_en0_re;
-    if (builder_csr_bankarray_csrbank3_update_value0_re) begin
-        main_soclinux_timer_update_value_storage <= builder_csr_bankarray_csrbank3_update_value0_r;
+    soclinux_cs_re <= builder_csr_bankarray_csrbank3_cs0_re;
+    if (builder_csr_bankarray_csrbank3_loopback0_re) begin
+        soclinux_loopback_storage <= builder_csr_bankarray_csrbank3_loopback0_r;
     end
-    main_soclinux_timer_update_value_re <= builder_csr_bankarray_csrbank3_update_value0_re;
-    main_soclinux_timer_value_re <= builder_csr_bankarray_csrbank3_value_re;
-    main_soclinux_timer_status_re <= builder_csr_bankarray_csrbank3_ev_status_re;
-    if (builder_csr_bankarray_csrbank3_ev_pending_re) begin
-        main_soclinux_timer_pending_r <= builder_csr_bankarray_csrbank3_ev_pending_r;
+    soclinux_loopback_re <= builder_csr_bankarray_csrbank3_loopback0_re;
+    if (builder_csr_bankarray_csrbank3_clk_divider0_re) begin
+        soclinux_storage <= builder_csr_bankarray_csrbank3_clk_divider0_r;
     end
-    main_soclinux_timer_pending_re <= builder_csr_bankarray_csrbank3_ev_pending_re;
-    if (builder_csr_bankarray_csrbank3_ev_enable0_re) begin
-        main_soclinux_timer_enable_storage <= builder_csr_bankarray_csrbank3_ev_enable0_r;
-    end
-    main_soclinux_timer_enable_re <= builder_csr_bankarray_csrbank3_ev_enable0_re;
+    soclinux_re <= builder_csr_bankarray_csrbank3_clk_divider0_re;
     builder_csr_bankarray_interface4_bank_bus_dat_r <= 1'd0;
     if (builder_csr_bankarray_csrbank4_sel) begin
         case (builder_csr_bankarray_interface4_bank_bus_adr[8:0])
             1'd0: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= main_soclinux_uart_rxtx_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_load0_w;
             end
             1'd1: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_txfull_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_reload0_w;
             end
             2'd2: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_rxempty_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_en0_w;
             end
             2'd3: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_ev_status_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_update_value0_w;
             end
             3'd4: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_ev_pending_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_value_w;
             end
             3'd5: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_ev_enable0_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_ev_status_w;
             end
             3'd6: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_txempty_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_ev_pending_w;
             end
             3'd7: begin
-                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_rxfull_w;
+                builder_csr_bankarray_interface4_bank_bus_dat_r <= builder_csr_bankarray_csrbank4_ev_enable0_w;
             end
         endcase
     end
-    main_soclinux_uart_txfull_re <= builder_csr_bankarray_csrbank4_txfull_re;
-    main_soclinux_uart_rxempty_re <= builder_csr_bankarray_csrbank4_rxempty_re;
-    main_soclinux_uart_status_re <= builder_csr_bankarray_csrbank4_ev_status_re;
+    if (builder_csr_bankarray_csrbank4_load0_re) begin
+        main_soclinux_timer_load_storage <= builder_csr_bankarray_csrbank4_load0_r;
+    end
+    main_soclinux_timer_load_re <= builder_csr_bankarray_csrbank4_load0_re;
+    if (builder_csr_bankarray_csrbank4_reload0_re) begin
+        main_soclinux_timer_reload_storage <= builder_csr_bankarray_csrbank4_reload0_r;
+    end
+    main_soclinux_timer_reload_re <= builder_csr_bankarray_csrbank4_reload0_re;
+    if (builder_csr_bankarray_csrbank4_en0_re) begin
+        main_soclinux_timer_en_storage <= builder_csr_bankarray_csrbank4_en0_r;
+    end
+    main_soclinux_timer_en_re <= builder_csr_bankarray_csrbank4_en0_re;
+    if (builder_csr_bankarray_csrbank4_update_value0_re) begin
+        main_soclinux_timer_update_value_storage <= builder_csr_bankarray_csrbank4_update_value0_r;
+    end
+    main_soclinux_timer_update_value_re <= builder_csr_bankarray_csrbank4_update_value0_re;
+    main_soclinux_timer_value_re <= builder_csr_bankarray_csrbank4_value_re;
+    main_soclinux_timer_status_re <= builder_csr_bankarray_csrbank4_ev_status_re;
     if (builder_csr_bankarray_csrbank4_ev_pending_re) begin
-        main_soclinux_uart_pending_r <= builder_csr_bankarray_csrbank4_ev_pending_r;
+        main_soclinux_timer_pending_r <= builder_csr_bankarray_csrbank4_ev_pending_r;
     end
-    main_soclinux_uart_pending_re <= builder_csr_bankarray_csrbank4_ev_pending_re;
+    main_soclinux_timer_pending_re <= builder_csr_bankarray_csrbank4_ev_pending_re;
     if (builder_csr_bankarray_csrbank4_ev_enable0_re) begin
-        main_soclinux_uart_enable_storage <= builder_csr_bankarray_csrbank4_ev_enable0_r;
+        main_soclinux_timer_enable_storage <= builder_csr_bankarray_csrbank4_ev_enable0_r;
     end
-    main_soclinux_uart_enable_re <= builder_csr_bankarray_csrbank4_ev_enable0_re;
-    main_soclinux_uart_txempty_re <= builder_csr_bankarray_csrbank4_txempty_re;
-    main_soclinux_uart_rxfull_re <= builder_csr_bankarray_csrbank4_rxfull_re;
+    main_soclinux_timer_enable_re <= builder_csr_bankarray_csrbank4_ev_enable0_re;
+    builder_csr_bankarray_interface5_bank_bus_dat_r <= 1'd0;
+    if (builder_csr_bankarray_csrbank5_sel) begin
+        case (builder_csr_bankarray_interface5_bank_bus_adr[8:0])
+            1'd0: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= main_soclinux_uart_rxtx_w;
+            end
+            1'd1: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= builder_csr_bankarray_csrbank5_txfull_w;
+            end
+            2'd2: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= builder_csr_bankarray_csrbank5_rxempty_w;
+            end
+            2'd3: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= builder_csr_bankarray_csrbank5_ev_status_w;
+            end
+            3'd4: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= builder_csr_bankarray_csrbank5_ev_pending_w;
+            end
+            3'd5: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= builder_csr_bankarray_csrbank5_ev_enable0_w;
+            end
+            3'd6: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= builder_csr_bankarray_csrbank5_txempty_w;
+            end
+            3'd7: begin
+                builder_csr_bankarray_interface5_bank_bus_dat_r <= builder_csr_bankarray_csrbank5_rxfull_w;
+            end
+        endcase
+    end
+    main_soclinux_uart_txfull_re <= builder_csr_bankarray_csrbank5_txfull_re;
+    main_soclinux_uart_rxempty_re <= builder_csr_bankarray_csrbank5_rxempty_re;
+    main_soclinux_uart_status_re <= builder_csr_bankarray_csrbank5_ev_status_re;
+    if (builder_csr_bankarray_csrbank5_ev_pending_re) begin
+        main_soclinux_uart_pending_r <= builder_csr_bankarray_csrbank5_ev_pending_r;
+    end
+    main_soclinux_uart_pending_re <= builder_csr_bankarray_csrbank5_ev_pending_re;
+    if (builder_csr_bankarray_csrbank5_ev_enable0_re) begin
+        main_soclinux_uart_enable_storage <= builder_csr_bankarray_csrbank5_ev_enable0_r;
+    end
+    main_soclinux_uart_enable_re <= builder_csr_bankarray_csrbank5_ev_enable0_re;
+    main_soclinux_uart_txempty_re <= builder_csr_bankarray_csrbank5_txempty_re;
+    main_soclinux_uart_rxfull_re <= builder_csr_bankarray_csrbank5_rxfull_re;
     if (sys_rst) begin
         main_soclinux_reset_storage <= 2'd0;
         main_soclinux_reset_re <= 1'd0;
@@ -5449,6 +5811,26 @@ always @(posedge sys_clk) begin
         main_chaser <= 8'd0;
         main_mode <= 1'd0;
         main_count <= 22'd3125000;
+        spisdcard_mosi <= 1'd0;
+        spisdcard_cs_n <= 1'd0;
+        spisdcard_clk <= 1'd0;
+        soclinux_miso <= 8'd0;
+        soclinux_control_storage <= 16'd0;
+        soclinux_control_re <= 1'd0;
+        soclinux_status_re <= 1'd0;
+        soclinux_mosi_re <= 1'd0;
+        soclinux_miso_re <= 1'd0;
+        soclinux_cs_storage <= 17'd1;
+        soclinux_cs_re <= 1'd0;
+        soclinux_loopback_storage <= 1'd0;
+        soclinux_loopback_re <= 1'd0;
+        soclinux_count <= 3'd0;
+        soclinux_clk_divider1 <= 16'd0;
+        soclinux_self <= 8'd0;
+        soclinux_mosi_sel <= 3'd0;
+        soclinux_miso_data <= 8'd0;
+        soclinux_storage <= 16'd125;
+        soclinux_re <= 1'd0;
         builder_interface1_re <= 1'd0;
         builder_interface1_we <= 1'd0;
         builder_slaves <= 6'd0;
@@ -5470,6 +5852,7 @@ always @(posedge sys_clk) begin
         builder_fullmemorywe_state <= 2'd0;
         builder_litedramnativeportconverter_state <= 1'd0;
         builder_fsm_state <= 2'd0;
+        builder_spimaster_state <= 2'd0;
         builder_wishbone2csr_state <= 2'd0;
     end
     builder_impl_regs0 <= serial_rx;
@@ -5611,11 +5994,11 @@ assign main_soclinux_sdram_bankmachine3_rdport_dat_r = storage_5[main_soclinux_s
 
 
 //------------------------------------------------------------------------------
-// Memory tag_mem: 128-words x 24-bit
+// Memory tag_mem: 16-words x 27-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [23:0] tag_mem[0:127];
-reg [6:0] tag_mem_adr0;
+reg [26:0] tag_mem[0:15];
+reg [3:0] tag_mem_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_tag_port_we)
 		tag_mem[main_soclinux_tag_port_adr] <= main_soclinux_tag_port_dat_w;
@@ -5822,11 +6205,11 @@ VexRiscvLitexSmpCluster_Cc1_Iw32Is4096Iy1_Dw32Ds4096Dy1_ITs4DTs4_Ood_Wm_Hb1 VexR
 );
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain0: 128-words x 8-bit
+// Memory data_mem_grain0: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain0[0:127];
-reg [6:0] data_mem_grain0_adr0;
+reg [7:0] data_mem_grain0[0:15];
+reg [3:0] data_mem_grain0_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[0])
 		data_mem_grain0[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[7:0];
@@ -5836,11 +6219,11 @@ assign main_soclinux_data_port_dat_r[7:0] = data_mem_grain0[data_mem_grain0_adr0
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain1: 128-words x 8-bit
+// Memory data_mem_grain1: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain1[0:127];
-reg [6:0] data_mem_grain1_adr0;
+reg [7:0] data_mem_grain1[0:15];
+reg [3:0] data_mem_grain1_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[1])
 		data_mem_grain1[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[15:8];
@@ -5850,11 +6233,11 @@ assign main_soclinux_data_port_dat_r[15:8] = data_mem_grain1[data_mem_grain1_adr
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain2: 128-words x 8-bit
+// Memory data_mem_grain2: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain2[0:127];
-reg [6:0] data_mem_grain2_adr0;
+reg [7:0] data_mem_grain2[0:15];
+reg [3:0] data_mem_grain2_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[2])
 		data_mem_grain2[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[23:16];
@@ -5864,11 +6247,11 @@ assign main_soclinux_data_port_dat_r[23:16] = data_mem_grain2[data_mem_grain2_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain3: 128-words x 8-bit
+// Memory data_mem_grain3: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain3[0:127];
-reg [6:0] data_mem_grain3_adr0;
+reg [7:0] data_mem_grain3[0:15];
+reg [3:0] data_mem_grain3_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[3])
 		data_mem_grain3[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[31:24];
@@ -5878,11 +6261,11 @@ assign main_soclinux_data_port_dat_r[31:24] = data_mem_grain3[data_mem_grain3_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain4: 128-words x 8-bit
+// Memory data_mem_grain4: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain4[0:127];
-reg [6:0] data_mem_grain4_adr0;
+reg [7:0] data_mem_grain4[0:15];
+reg [3:0] data_mem_grain4_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[4])
 		data_mem_grain4[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[39:32];
@@ -5892,11 +6275,11 @@ assign main_soclinux_data_port_dat_r[39:32] = data_mem_grain4[data_mem_grain4_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain5: 128-words x 8-bit
+// Memory data_mem_grain5: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain5[0:127];
-reg [6:0] data_mem_grain5_adr0;
+reg [7:0] data_mem_grain5[0:15];
+reg [3:0] data_mem_grain5_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[5])
 		data_mem_grain5[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[47:40];
@@ -5906,11 +6289,11 @@ assign main_soclinux_data_port_dat_r[47:40] = data_mem_grain5[data_mem_grain5_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain6: 128-words x 8-bit
+// Memory data_mem_grain6: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain6[0:127];
-reg [6:0] data_mem_grain6_adr0;
+reg [7:0] data_mem_grain6[0:15];
+reg [3:0] data_mem_grain6_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[6])
 		data_mem_grain6[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[55:48];
@@ -5920,11 +6303,11 @@ assign main_soclinux_data_port_dat_r[55:48] = data_mem_grain6[data_mem_grain6_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain7: 128-words x 8-bit
+// Memory data_mem_grain7: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain7[0:127];
-reg [6:0] data_mem_grain7_adr0;
+reg [7:0] data_mem_grain7[0:15];
+reg [3:0] data_mem_grain7_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[7])
 		data_mem_grain7[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[63:56];
@@ -5934,11 +6317,11 @@ assign main_soclinux_data_port_dat_r[63:56] = data_mem_grain7[data_mem_grain7_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain8: 128-words x 8-bit
+// Memory data_mem_grain8: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain8[0:127];
-reg [6:0] data_mem_grain8_adr0;
+reg [7:0] data_mem_grain8[0:15];
+reg [3:0] data_mem_grain8_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[8])
 		data_mem_grain8[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[71:64];
@@ -5948,11 +6331,11 @@ assign main_soclinux_data_port_dat_r[71:64] = data_mem_grain8[data_mem_grain8_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain9: 128-words x 8-bit
+// Memory data_mem_grain9: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain9[0:127];
-reg [6:0] data_mem_grain9_adr0;
+reg [7:0] data_mem_grain9[0:15];
+reg [3:0] data_mem_grain9_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[9])
 		data_mem_grain9[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[79:72];
@@ -5962,11 +6345,11 @@ assign main_soclinux_data_port_dat_r[79:72] = data_mem_grain9[data_mem_grain9_ad
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain10: 128-words x 8-bit
+// Memory data_mem_grain10: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain10[0:127];
-reg [6:0] data_mem_grain10_adr0;
+reg [7:0] data_mem_grain10[0:15];
+reg [3:0] data_mem_grain10_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[10])
 		data_mem_grain10[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[87:80];
@@ -5976,11 +6359,11 @@ assign main_soclinux_data_port_dat_r[87:80] = data_mem_grain10[data_mem_grain10_
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain11: 128-words x 8-bit
+// Memory data_mem_grain11: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain11[0:127];
-reg [6:0] data_mem_grain11_adr0;
+reg [7:0] data_mem_grain11[0:15];
+reg [3:0] data_mem_grain11_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[11])
 		data_mem_grain11[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[95:88];
@@ -5990,11 +6373,11 @@ assign main_soclinux_data_port_dat_r[95:88] = data_mem_grain11[data_mem_grain11_
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain12: 128-words x 8-bit
+// Memory data_mem_grain12: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain12[0:127];
-reg [6:0] data_mem_grain12_adr0;
+reg [7:0] data_mem_grain12[0:15];
+reg [3:0] data_mem_grain12_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[12])
 		data_mem_grain12[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[103:96];
@@ -6004,11 +6387,11 @@ assign main_soclinux_data_port_dat_r[103:96] = data_mem_grain12[data_mem_grain12
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain13: 128-words x 8-bit
+// Memory data_mem_grain13: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain13[0:127];
-reg [6:0] data_mem_grain13_adr0;
+reg [7:0] data_mem_grain13[0:15];
+reg [3:0] data_mem_grain13_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[13])
 		data_mem_grain13[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[111:104];
@@ -6018,11 +6401,11 @@ assign main_soclinux_data_port_dat_r[111:104] = data_mem_grain13[data_mem_grain1
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain14: 128-words x 8-bit
+// Memory data_mem_grain14: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain14[0:127];
-reg [6:0] data_mem_grain14_adr0;
+reg [7:0] data_mem_grain14[0:15];
+reg [3:0] data_mem_grain14_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[14])
 		data_mem_grain14[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[119:112];
@@ -6032,11 +6415,11 @@ assign main_soclinux_data_port_dat_r[119:112] = data_mem_grain14[data_mem_grain1
 
 
 //------------------------------------------------------------------------------
-// Memory data_mem_grain15: 128-words x 8-bit
+// Memory data_mem_grain15: 16-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First
-reg [7:0] data_mem_grain15[0:127];
-reg [6:0] data_mem_grain15_adr0;
+reg [7:0] data_mem_grain15[0:15];
+reg [3:0] data_mem_grain15_adr0;
 always @(posedge sys_clk) begin
 	if (main_soclinux_data_port_we[15])
 		data_mem_grain15[main_soclinux_data_port_adr] <= main_soclinux_data_port_dat_w[127:120];
@@ -6046,10 +6429,10 @@ assign main_soclinux_data_port_dat_r[127:120] = data_mem_grain15[data_mem_grain1
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain0: 5677-words x 8-bit
+// Memory rom_grain0: 8696-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain0[0:5676];
+reg [7:0] rom_grain0[0:8695];
 initial begin
 	$readmemh("de0nano_rom_grain0.init", rom_grain0);
 end
@@ -6061,10 +6444,10 @@ assign main_soclinux_soclinux_dat_r[7:0] = rom_grain0_dat0;
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain1: 5677-words x 8-bit
+// Memory rom_grain1: 8696-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain1[0:5676];
+reg [7:0] rom_grain1[0:8695];
 initial begin
 	$readmemh("de0nano_rom_grain1.init", rom_grain1);
 end
@@ -6076,10 +6459,10 @@ assign main_soclinux_soclinux_dat_r[15:8] = rom_grain1_dat0;
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain2: 5677-words x 8-bit
+// Memory rom_grain2: 8696-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain2[0:5676];
+reg [7:0] rom_grain2[0:8695];
 initial begin
 	$readmemh("de0nano_rom_grain2.init", rom_grain2);
 end
@@ -6091,10 +6474,10 @@ assign main_soclinux_soclinux_dat_r[23:16] = rom_grain2_dat0;
 
 
 //------------------------------------------------------------------------------
-// Memory rom_grain3: 5677-words x 8-bit
+// Memory rom_grain3: 8696-words x 8-bit
 //------------------------------------------------------------------------------
 // Port 0 | Read: Sync  | Write: ---- | 
-reg [7:0] rom_grain3[0:5676];
+reg [7:0] rom_grain3[0:8695];
 initial begin
 	$readmemh("de0nano_rom_grain3.init", rom_grain3);
 end
@@ -7160,5 +7543,5 @@ ALTDDIO_IN #(
 endmodule
 
 // -----------------------------------------------------------------------------
-//  Auto-Generated by LiteX on 2025-10-16 14:21:33.
+//  Auto-Generated by LiteX on 2025-10-16 14:57:17.
 //------------------------------------------------------------------------------

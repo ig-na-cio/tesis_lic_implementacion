@@ -104,6 +104,14 @@ set_location_assignment PIN_B1 -to user_led6 -comment "user_led:6"
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to user_led6 -comment "user_led:6"
 set_location_assignment PIN_L3 -to user_led7 -comment "user_led:7"
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to user_led7 -comment "user_led:7"
+set_location_assignment -comment "spisdcard:0.mosi" -to spisdcard_mosi Pin_D3
+set_instance_assignment -name io_standard -comment "spisdcard:0.mosi" "3.3-V LVTTL" -to spisdcard_mosi
+set_location_assignment -comment "spisdcard:0.miso" -to spisdcard_miso Pin_C3
+set_instance_assignment -name io_standard -comment "spisdcard:0.miso" "3.3-V LVTTL" -to spisdcard_miso
+set_location_assignment -comment "spisdcard:0.cs_n" -to spisdcard_cs_n Pin_A2
+set_instance_assignment -name io_standard -comment "spisdcard:0.cs_n" "3.3-V LVTTL" -to spisdcard_cs_n
+set_location_assignment -comment "spisdcard:0.clk" -to spisdcard_clk Pin_A3
+set_instance_assignment -name io_standard -comment "spisdcard:0.clk" "3.3-V LVTTL" -to spisdcard_clk
 set_global_assignment -name SDC_FILE de0nano.sdc
 set_global_assignment -name VERILOG_MACRO "SYNTHESIS=1"
 set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
