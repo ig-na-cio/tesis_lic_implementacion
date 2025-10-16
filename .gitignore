@@ -17,12 +17,38 @@ quartus/*.sld
 quartus/*.svf
 quartus/*.bak
 
+quartus/first/*.sof
+quartus/first/*.rpt
+quartus/first/*.pof
+quartus/first/db/
+quartus/first/incremental_db/
+quartus/first/output_files/
+quartus/first/simulation/
+quartus/first/*.sh
+quartus/first/*.done
+quartus/first/*.smsg
+quartus/first/*.summary
+quartus/first/*.jdi
+quartus/first/*.pin
+quartus/first/*.rbf
+quartus/first/*.sdc
+quartus/first/*.sld
+quartus/first/*.svf
+quartus/first/*.bak
+
 quartus/initfiles/*.bin
 quartus/initfiles/*.elf
 quartus/initfiles/*.hex
 quartus/initfiles/*.o
 
+quartus/first/initfiles/*.bin
+quartus/first/initfiles/*.elf
+quartus/first/initfiles/*.hex
+quartus/first/initfiles/*.o
+
 rtl/*.bak
+
+rtl/first/*.bak
 
 sim/rtl/*.bak
 sim/testbenches/*.bak
