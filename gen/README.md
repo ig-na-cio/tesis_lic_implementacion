@@ -60,12 +60,12 @@ Entonces ahora los pasos son:
 
 5. Ejecutamos el target
 
-```
+``` Bash
 $ ./terasic_de0nano_propio.py --build
 
 # o si queremos cargarlo en la FPGA conectada
 
-$ ./terasic_de0nano_propio.py --build --loads
+$ ./terasic_de0nano_propio.py --build --load
 ```
 
 6. Tenemos el proyecto de Quartus y archivos HDL y de inicialización listos en targets/build. Puede ser necesario ejecutar algunos scripts de este repositorio, leer los otros README.
