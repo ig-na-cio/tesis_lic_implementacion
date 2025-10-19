@@ -1,3 +1,5 @@
+# Proceso de agregar un mòdulo
+
 Recordamos la estructura definida en el README y agregamos cores/
 
 ```
@@ -22,34 +24,36 @@ y
             - terasic_de0nano.py (2)
 ```
 
+## CLINT
+
 Para agregar un modulo de CLINT debemos:
 
-1. Crear el archivo clint.py a cores/.
+1. Crear el archivo clint.py en cores/.
 
 2. Implementar la clase CLINT heredada de LiteXModule. Ver uart.py de ejemplo.
 
-3. Importar el modulo a soc.py e implementar el metodo add_clint. Capaz puede hacerse directamente en terasic_de0nano_propio.py sobre la clase BaseSoC
+3. Importar el módulo a soc.py e implementar el método `add_clint`. Puede hacerse directamente en terasic_de0nano_propio.py sobre la clase BaseSoC
 
-4. Llamar al metodo en el BaseSoc de terasic_de0nano_propio.py
+4. Llamar al método en el BaseSoc de terasic_de0nano_propio.py
 
-## Implementacion del modulo CLINT
+### Implementación del módulo
 
-La clase debe tener atributos, que en este caso seran los tres registros que vimos y la senal de interrupcion.
+La clase debe tener atributos, que en este caso serán los tres registros que vimos y la señal de interrupción. Algunas notas:
 
 
-> NOTA: Los registros conviene instanciarlos como CSR() y usar CSRStatus(), no hace falta conectarlos al bus.
+- Los registros pueden instanciarse como CSR() y usar CSRStatus(), pero se accederían como CSR y no dirección de memoria habitual.
 
-> NOTA2: El procesador tiene definidas lineas de interrupcion en los parametros. Podemos anadir llamando a self.irq.add("clint")
+- El procesador tiene definidas lineas de interrupción en los parámetros. Podemos añadir llamando a `self.irq.add("clint")`.
 
-> NOTA3: La irq puede instanciarse como Signal()
+- La irq puede instanciarse como Signal().
 
-> NOTA4: No usa pines, es interno al FPGA Core. No modificamos terasic_de0nano_propio_pl.py
+- No usa pines, es interno al FPGA Core. No modificamos terasic_de0nano_propio_pl.py
 
-> NOTA5: Creo que Litex lo agrega al interrupt_map y csr_map. En cuanto al mem_map no hace falta porque no es accedido por bus.
+- Verificar que se agregue al `mem_map` si son `Signal`s, o `csr_map` si son `CSR`s.
 
-### Algunos cosas de uart.py que nos pueden guiar
+Algunos cosas de uart.py que nos pueden guiar:
 
-Ademas de lo mencionado antes:
+Además de lo mencionado antes:
 ``` Python
 # {...}
 class UART(LiteXModule, UARTInterface):
@@ -87,15 +91,13 @@ class UART(LiteXModule, UARTInterface):
 # {...}
 
 ```
-- Con CSRStorage() creamos un registro que puede ser escrito por el software. Accedido en la implementacion nuestra como name.storage
 
-- Con CSRStatus() creamos uno que puede ser leido por el software. Accedido en la implementacion nuestra como name.status
+- Con CSRStorage() creamos un registro que puede ser escrito por el software. Accedido en la implementación nuestra como name.storage.
+
+- Con CSRStatus() creamos uno que puede ser leído por el software. Accedido en la implementación nuestra como name.status.
 
 
-## Modificacion
-
-La implementacion del modulo puede verse en clint.py
-Luego en terasic_de0nano_propio.py agregamos:
+La implementacion del modulo puede verse en [CLINT](clint.py). Luego en terasic_de0nano_propio.py agregamos:
 
 ``` Python
     # {...}
@@ -120,7 +122,8 @@ Luego en terasic_de0nano_propio.py agregamos:
 ```
 
 Y luego nos aseguramos que se conecten con el CPU:
-```
+
+``` Verilog
 module VexRiscv (
   input  wire [31:0]   externalResetVector,
   input  wire          timerInterrupt,
@@ -128,7 +131,9 @@ module VexRiscv (
   // {...}
   }
 ```
-y en la instanciacion del modulo en el SoC
+
+y en la instanciación del módulo en el SoC:
+
 ```
 VexRiscv VexRiscv(
 	// Inputs.
@@ -148,7 +153,7 @@ VexRiscv VexRiscv(
     }
 ```
 
-Para esto debemos modificar el archivo core.py de vexriscv, localizado en en litex/litex/soc/cores/cpu/vexriscv
+Para esto último debemos modificar el archivo core.py de vexriscv, localizado en en litex/litex/soc/cores/cpu/vexriscv.
 
 ``` Python
     def __init__(self, platform, variant="standard", with_timer=False):
@@ -175,10 +180,9 @@ Para esto debemos modificar el archivo core.py de vexriscv, localizado en en lit
         # {...}
 ```
 
-# Problema!!
+#### Problema
 
-Resulta que si los registros internos son CSR, no lo mapea al MMIO como queriamos. Hay que haceros registros accesibles por bus. Esto trae los siguientes cambios:
-
+Resulta que si los registros internos son CSR, no lo mapea al MMIO como queriamos. Hay que hacerlos registros accesibles por bus. Ésto trae los siguientes cambios:
 
 ``` Python
         # CLINT
@@ -197,76 +201,8 @@ Resulta que si los registros internos son CSR, no lo mapea al MMIO como queriamo
 
 ```
 
-y
+y en [CLINT](clint.py) todo básicamente.
 
-``` Python
-class CLINT(LiteXModule):
-    def __init__(self, sys_clk_freq):
-        # msip: Genera interrupciones de software cuando habilitado
-        self.msip      = Signal(1) #, description="Software interrupt")
-        # mtimecmp: Valor de comparacion del timer
-        self.mtimecmp  = Signal(64) #, description="Timer compare value")
-        # mtime: Valor del contador
-        self.mtime     = Signal(64) #, description="Timer")
+## PLIC
 
-        self.ev      = EventManager()
-        self.ev.msip = EventSourceLevel(description="Software interrupt")
-        self.ev.mtip = EventSourceLevel(description="Timer interrupt")
-        self.ev.finalize()
-
-        self.irq_msip = Signal()
-        self.irq_mtip = Signal()
-
-        # msip
-        # Se escribe desde software
-
-        # mtimecmp
-        # Se escribe desde software
-
-        # mtime
-        self.counter = Signal(64) # Contador auxiliar
-        # x.eq(y): Asignar a x el valor y
-        # sync significa que se ejecuta en subida de cada clock.
-        self.sync   += self.counter.eq(self.counter + 1)
-        # comb es siempre
-        self.comb   += self.mtime.eq(self.counter)
-
-        # Interrupciones
-        self.comb   += self.ev.msip.trigger.eq(self.msip)
-        self.comb   += self.irq_msip.eq(self.ev.msip.trigger)
-
-        self.comb   += self.ev.mtip.trigger.eq(self.mtime >= self.mtimecmp)
-        self.comb   += self.irq_mtip.eq(self.ev.mtip.trigger)
-
-
-        # Y ahora la parte del bus y MMIO
-        # Seria nuestro "adaptador"
-        self.bus = wishbone.Interface(data_width=32, adr_width=16) # 16 para decodificar bien
-
-        # self.bus.cyc: se esta usando el bus
-        # self.bus.stb: strobe activo, se quiere comunicar
-        # self.bus.we: write enable
-        # El >> 2 es para manejar correctamente el tamano de las palabras
-        
-        self.sync += [
-            If(self.bus.cyc & self.bus.stb & ~self.bus.we, # Es una lectura
-                Case(self.bus.adr, {
-                    0x0000 >> 2: self.bus.dat_r.eq(self.msip),
-                    0x4000 >> 2: self.bus.dat_r.eq(self.mtimecmp[0:32]), # dividimos porque es rv32
-                    0x4004 >> 2: self.bus.dat_r.eq(self.mtimecmp[32:64]),
-                    0xBFF8 >> 2: self.bus.dat_r.eq(self.mtime[0:32]), # idem
-                    0xBFFC >> 2: self.bus.dat_r.eq(self.mtime[32:64]),
-                })
-            )
-        ]
-
-        self.sync += [
-            If(self.bus.cyc & self.bus.stb & self.bus.we, # Es una escritura
-                Case(self.bus.adr, {
-                    0x0000 >> 2: self.msip.eq(self.bus.dat_w[0]),
-                    0x4000 >> 2: self.mtimecmp.eq(self.bus.dat_w), # dividimos porque es rv32
-                    0x4004 >> 2: self.mtimecmp.eq(self.bus.dat_w),
-                })
-            )
-        ]
-```
+Proceso muy similar, ver [PLIC](plic.py).
