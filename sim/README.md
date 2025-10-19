@@ -47,3 +47,25 @@ Y despues
 ```
 
 YY de ahi podemos cancelar el booteo y despues bootear con la sdcard
+
+Debemos correr
+``` Bash
+python prepare_for_sim.py
+```
+Este script nos agrega delay en algunas asignaciones que sino generan bucle.
+
+
+Es necesario agregar unas constantes para que el memtest no testee TODA la memoria, que tarda mucho
+``` Python
+    # En make.py
+        # SoC constants ----------------------------------------------------------------------------
+        for k, v in board.soc_constants.items():
+            soc.add_constant(k, v)
+        
+        soc.add_constant("MEMTEST_BUS_SIZE", 128)
+        soc.add_constant("MEMTEST_DATA_SIZE", 128)
+        soc.add_constant("MEMTEST_ADDR_SIZE", 128)
+        soc.add_constant("MEMTEST_BUS_DEBUG", 0)
+        soc.add_constant("SDRAM_INIT_CYCLES", 10)
+        soc.add_constant("SDRAM_REFRESH_CYCLES", 10)
+```
