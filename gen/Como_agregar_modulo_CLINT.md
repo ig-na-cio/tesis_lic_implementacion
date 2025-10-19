@@ -134,7 +134,7 @@ module VexRiscv (
 
 y en la instanciación del módulo en el SoC:
 
-```
+``` Verilog
 VexRiscv VexRiscv(
 	// Inputs.
 	.clk                    (sys_clk),

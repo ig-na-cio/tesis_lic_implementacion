@@ -121,4 +121,4 @@ La SD Card no es accedida por direcciones de memoria como la SDRAM. Se modifican
 
 > NOTA1: Agregar soporte para la SD Card duplicó los registros y unidades lógicas en uso del diseño.
 
-> NOTA2:Recordar que para simular, debemos ejecutar algunos scripts. Referirse a los otros README.
+> NOTA2: Recordar que para simular, debemos ejecutar algunos scripts. Referirse a los otros README.
