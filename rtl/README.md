@@ -19,3 +19,5 @@ Todos los archivos fueron generados por Litex.
 - `csr.csv`: Mapa de memoria y registros CSR en formato csv.
 
 - `bios_objdump.S`: Objdump del binario `bios.bin` que Litex carga en la ROM. Es el código que inicializa los periféricos y busca la manera de bootear.
+
+- `bios_sim_objdump.S`: Igual que el anterior pero sobre una BIOS reducida en pruebas para poder simular.

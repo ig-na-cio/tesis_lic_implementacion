@@ -1,5 +1,5 @@
 
-build/de0nano/software/bios/bios.elf:     file format elf32-littleriscv
+bios.elf:     file format elf32-littleriscv
 
 
 Disassembly of section .text:

@@ -12,6 +12,8 @@ En este directorio contenemos los archivos para cargar el proyecto en Quartus. A
 
 - `de0nano_sram_grainN.init`: Con N en {0,1,2,3}. Contiene el código contenido en la SRAM. En nuestro caso, no la inicializamos. Funciona igual al de la ROM.
 
+- `sim_initfiles/*.init`: Archivos de inicialización de la ROM para poder simular en tiempo razonable. Deben reemplazarse por los otros si quieren usarse.
+
 - `de0nano.qpf`: Archivo que reconoce Quartus para abrir el proyecto.
 
 - `de0nano.qsf`: Cofiguraciones de paths a los archivos del proyecto y asignaciones de pines. Fundamental que los paths estén correctamente definidos.
@@ -19,4 +21,6 @@ En este directorio contenemos los archivos para cargar el proyecto en Quartus. A
 - `de0nano.sdc`: Configuración del clock.
 
 
-> NOTA: Para simular, debemos copiar los `*.init` en el directorio simulation/modelsim.
+> NOTA1: Para simular, debemos copiar los `*.init` en el directorio simulation/modelsim.
+
+> NOTA2: Los archivos `*.init` son por defecto aquellos para la FPGA física, no para simulación.
