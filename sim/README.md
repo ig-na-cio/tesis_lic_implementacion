@@ -36,7 +36,7 @@ class SoCLinux(SoCCore):
 # ...
 ```
 
-También, a través de argumentos, podemos modificar la presencia de SDRAM o no, el módelo, etc. En el proyecto de `linux-on-vexriscv-litex` se ejecuta así:
+También, a través de argumentos, podemos modificar la presencia de SDRAM o no, el módelo, etc. En el proyecto de `linux-on-litex-vexriscv` se ejecuta así:
 
 ``` Bash
 # Para ver los argumentos del comando
