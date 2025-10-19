@@ -28,7 +28,7 @@ with open(hex_file, "r") as f:
             continue
         
         if len(line) != 8:
-            raise ValueError(f"Hay una instruccion de tamano incorrecto: {line}")
+            raise ValueError(f"Hay una instruccion de tamaño incorrecto: {line}")
 
         # Little-endian: byte menos significativo al grain0, el mas al grain3
         bytes = [line[6:8], line[4:6], line[2:4], line[0:2]]

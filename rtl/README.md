@@ -2,7 +2,7 @@
 
 Todos los archivos fueron generados por Litex.
 
-- `de0nano.v`: SoC completo para la de0nano.
+- `de0nano.v`: SoC completo para la de0nano. El archivo en este repositorio está como es generado por Litex. Puede ser necesario modificar algunas cosas para simularlo. Ver [scripts](../scripts/README.md).
 
 - `Ram_1w_1rs_Intel.v`: Módulo auxiliar.
 
