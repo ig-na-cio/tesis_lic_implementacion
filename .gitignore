@@ -54,3 +54,5 @@ rtl/first/*.bak
 
 sim/rtl/*.bak
 sim/testbenches/*.bak
+
+rtl/*.v

@@ -1,5 +1,5 @@
-input_file_path = "de0nano.v"
-output_file_path = "de0nano.v"
+input_file_path = "../rtl/de0nano.v"
+output_file_path = "../rtl/de0nano.v"
 
 
 with open(input_file_path, 'r') as f:
