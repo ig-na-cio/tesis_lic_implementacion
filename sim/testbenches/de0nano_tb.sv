@@ -48,8 +48,10 @@ module de0nano_tb();
       .user_led6(),
       .user_led7()
    );
-
-	sdram #(.PRINT(1))
+	
+	// Modelo basico que simula algunas funcionalidades de
+   //	la SDRAM IS42S16160
+	sdram #(.PRINT(0))
    SDRAM (
 		.a(sdram_a),
       .ba(sdram_ba),
@@ -62,8 +64,17 @@ module de0nano_tb();
       .ras_n(sdram_ras_n),
       .we_n(sdram_we_n)
    );
-
-
+	
+	// Decodificador de las señales transmitidas por
+	// UART por parte del SoC
+	// No implementa la transmicion hacia el SoC
+   uart_monitor #(
+    .CLK_FREQUENCY(50_000_000),
+    .BAUD_RATE(115200)
+	) UART_MONITOR (
+    .clk(clk50),
+    .uart_tx(serial_tx)
+	);
 	
    always #10 clk50 = ~clk50;
    
