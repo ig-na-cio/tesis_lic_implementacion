@@ -68,7 +68,7 @@ $ python3 prepare_for_sim.py
 
 El tercero se resuelve copiando los `*.init`, y reemplazando los presentes en esa carpeta, en quartus/simulation/modelsim
 
-Por otro lado, cuando se ejecuta el `memtest` de la BIOS, se prueba *toda* la memoria. Por eso modificamos algunas constantes en la generación del SoC para que se reduzca el tiempo de simulación. Notese que esto probablemente modifica la BIOS y el contenido de la ROM, y que para cargar el diseño en la FPGA quizás querramos modificarlo para que en la de0nano se pruebe correctamente.
+Por otro lado, cuando se ejecuta el `memtest` de la BIOS, se prueba *toda* la memoria. Por eso modificamos algunas constantes en la generación del SoC para que se reduzca el tiempo de simulación. Notese que esto probablemente modifica la BIOS y el contenido de la ROM, y que para cargar el diseño en la FPGA quizás querramos modificarlo para que en la de0nano se pruebe correctamente. Los últimos dos eliminan el timeout entre operaciones y evitan la impresión del banner de Litex, que en simulación demora mucho.
 
 ``` Python
     # En make.py
@@ -82,6 +82,8 @@ Por otro lado, cuando se ejecuta el `memtest` de la BIOS, se prueba *toda* la me
         soc.add_constant("MEMTEST_BUS_DEBUG", 0)
         soc.add_constant("SDRAM_INIT_CYCLES", 10)
         soc.add_constant("SDRAM_REFRESH_CYCLES", 10)
+        soc.add_constant("CONFIG_BIOS_NO_DELAYS")
+        soc.add_constant("CONFIG_BIOS_NO_PROMPT")
 ```
 
 Con otro de los scripts, `initialize_rom.sh` que usa `prepare_code.py`, podemos reemplazar el contenido de la ROM, la BIOS de Litex, por código propio. Este debe compilarse y colocarse en la ROM de una manera muy especifica, por eso hicimos esos scripts que lo facilitan. Su funcionamiento está explicado en [scripts](../scripts/README.md). Recuerdese que la BIOS inicializa los controladores de la SDRAM y periféricos, sin su ejecución quizás no se puede acceder a ellos.
