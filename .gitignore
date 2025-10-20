@@ -56,3 +56,4 @@ sim/rtl/*.bak
 sim/testbenches/*.bak
 
 rtl/*.v
+quartus/*.init
