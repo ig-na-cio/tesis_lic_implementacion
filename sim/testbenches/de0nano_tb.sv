@@ -49,7 +49,8 @@ module de0nano_tb();
       .user_led7()
    );
 
-	sdram SDRAM (
+	sdram #(.PRINT(1))
+   SDRAM (
 		.a(sdram_a),
       .ba(sdram_ba),
       .cas_n(sdram_cas_n),
@@ -61,6 +62,8 @@ module de0nano_tb();
       .ras_n(sdram_ras_n),
       .we_n(sdram_we_n)
    );
+
+
 	
    always #10 clk50 = ~clk50;
    
