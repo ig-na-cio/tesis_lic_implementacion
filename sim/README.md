@@ -92,6 +92,10 @@ Con otro de los scripts, `initialize_rom.sh` que usa `prepare_code.py`, podemos 
 
 - `rtl/sdram.sv`: Modelo que representa algunas de las funciones del chip físico de la SDRAM.
 
+- `rtl/uart_monitor.sv`: Módulo que decodifica la mayoría de lo que el SoC envía por UART.
+
+- `rtl/spisdcard_monitor.sv`: Módulo que decodifica la mayoría de lo que el SoC envía por SPISDCARD.
+
 - `rtl/first/`: Archivos correspondientes a la [generación](../gen/README.md) del primer método.
 
 - `testbenches/de0nano_tb.sv`: Instanciación del SoC y simulación de algunos periféricos.
