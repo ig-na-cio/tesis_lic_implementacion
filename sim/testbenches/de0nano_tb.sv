@@ -76,6 +76,16 @@ module de0nano_tb();
     .uart_tx(serial_tx)
 	);
 	
+
+   // Decodificador de las señales transmitidas a
+   // la SD Card por SPI por parte del SoC
+   // No implementa respuesta
+   spisdcard_monitor SPISDCARD_MONITOR (
+      .spisdcard_clk(spisdcard_clk),
+      .spisdcard_cs_n(spisdcard_cs_n),
+      .spisdcard_mosi(spisdcard_mosi)
+   );
+
    always #10 clk50 = ~clk50;
    
    initial begin
