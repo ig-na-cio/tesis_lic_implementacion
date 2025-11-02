@@ -1,6 +1,6 @@
-# RISC-V SoC con `linux-on-litex-vexriscv` en de0nano
+# RISC-V SoC con `linux-on-litex-vexriscv` en de0nano y Linux adaptado con `The Yocto Project`
 
-En este proyecto generamos un SoC con un procesador VexRiscv con el framework de Litex y el proyecto de Litex `linux-on-litex-vexriscv` para la FPGA de0nano y verificamos su funcionamiento con Quartus y ModelSim.
+En este proyecto generamos un SoC con un procesador VexRiscv con el framework de Litex y el proyecto de Litex `linux-on-litex-vexriscv` para la FPGA de0nano y verificamos su funcionamiento con Quartus y ModelSim. Luego, generemos una imagen de Linux adapatada al SoC con `The Yocto Project`.
 
 ## Directorios
 
@@ -13,5 +13,7 @@ En este proyecto generamos un SoC con un procesador VexRiscv con el framework de
 - [`scripts/`](/scripts): Scripts nuestros para poder simular en ModelSim y compilar código propio para el SoC.
 
 - [`sim/`](/sim): Archivos de HDL de módulos de simulación y testbenches.
+
+- [`linux/`](/linux): Archivos para Linux.
 
 Cada uno de estos directorios tiene un README detallado explicando su contenido y funcionamiento.
