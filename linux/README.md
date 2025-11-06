@@ -12,4 +12,8 @@ Repositorio de la layer para la de0nano [aquí](https://github.com/ig-na-cio/met
 
 ## Boot.json
 
-- `boot.json`: Es el json que busca la BIOS en la SD Card para cargar los anteriores archivos. Estos se cargan en las direcciones, de la SDRAM, que indica el json.
+- `boot.json`: Es el json que busca la BIOS en la SD Card para cargar los anteriores archivos. Estos se cargan en las direcciones, de la SDRAM, que indica el json. Luego, la BIOS ejecuta el archivo de la última línea del json.
+
+## Opensbi
+
+- `opensbi.bin`: Binario de OpenSBI generado por Litex.
